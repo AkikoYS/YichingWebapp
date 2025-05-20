@@ -1,0 +1,82 @@
+<!-- log.html -->
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>占いログ一覧</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f3f3f3;
+        }
+
+        img {
+            max-height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html" class="nav-link">易経くじ</a></li>
+                <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
+                <li><a href="how-to.html" class="nav-link">占い方</a></li>
+                <li><a href="hexagrams.html" class="nav-link">六十四卦</a></li>
+                <li><a href="bagua.html" class="nav-link">八卦</a></li>
+                <li><a href="how-to-read.html" class="nav-link">卦の見方</a></li>
+                <li><span class="nav-link active">ログ一覧</span></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h2 style="text-align: center;">あなたの占いログ</h2>
+    <div style="max-width: 1000px; margin: auto;">
+        <table id="log-table">
+            <thead>
+                <tr>
+                    <th>日時</th>
+                    <th>質問</th>
+                    <th>本卦</th>
+                    <th>変爻</th>
+                    <th>変卦</th>
+                    <th>裏卦</th>
+                    <th>総卦</th>
+                    <th>互卦</th>
+                    <th>易断PDF</th>
+                    <th>削除</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <footer class="simple-footer">
+        Iching — Book of Change ©2025
+        </footer>
+
+    <script>
+        console.log("logic.js 読み込みチェック");
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="logic.js"></script>
+    <script src="log.js"></script>
+
+</body>
+
+</html>

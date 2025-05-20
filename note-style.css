@@ -1,0 +1,128 @@
+/* note-style.css */
+
+/* ベース設定 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, Meiryo, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/* メインコンテンツ */
+main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2em 1em;
+}
+
+/* 見出し */
+main h1,
+main h2,
+main h3 {
+    font-weight: bold;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.4;
+    color: #111;
+}
+
+main h1 {
+    font-size: 2em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.3em;
+}
+
+main h2 {
+    font-size: 1.5em;
+    border-left: 4px solid #ccc;
+    padding-left: 0.5em;
+    
+}
+
+main h3 {
+    font-size: 1.2em;
+    color: #555;
+    text-align: left !important;
+}
+
+/* 段落 */
+main p {
+    margin-bottom: 1.5em;
+    text-align:left;
+}
+
+/* リスト */
+main ul,
+main ol {
+    margin-left: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+main li {
+    margin-bottom: 0.5em;
+}
+
+/* 引用 */
+main blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 1em;
+    color: #666;
+    margin: 1.5em 0;
+    font-style: italic;
+    background-color: #f9f9f9;
+}
+
+/* コードブロック */
+main pre {
+    background-color: #f4f4f4;
+    padding: 1em;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+    border-radius: 4px;
+}
+
+/* テーブル */
+main table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+}
+
+main th,
+main td {
+    border: 1px solid #ddd;
+    padding: 0.75em;
+    text-align: left;
+}
+
+main th {
+    background-color: #f2f2f2;
+}
+
+/* 画像 */
+main img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 強調 */
+main strong {
+    font-weight: bold;
+    color: #000;
+}
+
+/* リンク */
+main a {
+    color: #1e90ff;
+    text-decoration: none;
+}
+
+main a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易経くじ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="title-container">
+        <img src="assets/images/title.svg" alt="易経くじ" class="title-svg" />
+    </div>
+
+    <div id="question-section" class="fade show">
+        <h2 style="text-align:center">天に問いたい内容を記してください（任意）</h2>
+        <textarea id="question-input" maxlength="50" placeholder="例：転職するべきでしょうか？"></textarea>
+        <div id="question-warning" style="color: red; font-size: 0.9em; text-align: center; display: none;">
+            文字数は50字以内にしてください。
+        </div>
+        <button id="start-button">占いを始める</button>
+    </div>
+
+    <div id="main-app" class="fade">
+        <h2 id="instructionText" style="text-align:center">こころに念じながら６回クリックしてください</h2>
+
+        <!-- Lottieで表示するスピナー -->
+        <div id="lottie-spinner" style="width: 300px; height: 300px;"></div>
+
+
+        <!-- 進行状況を表示するコンテナ -->
+        <div id="progress-container" style="display: flex; justify-content: flex-wrap; gap: 10px"></div>
+
+        <!-- 卦の内容表示 -->
+        <div id="result"></div>
+
+        <!-- もう一度引くボタン -->
+        <button id="reset-button" style="display: none; margin: 100px auto; display: block;">他の内容を占う</button>
+    </div>
+    <!-- JavaScriptを読み込む -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.11/lottie.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

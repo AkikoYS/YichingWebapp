@@ -63,6 +63,7 @@ main ol {
 
 main li {
     margin-bottom: 0.5em;
+    text-align: left;
 }
 
 /* 引用 */

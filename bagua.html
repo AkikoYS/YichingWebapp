@@ -5,7 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>八卦</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href=" style.css">
+    <link rel="stylesheet" href=" note-style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico">
+
+
 </head>
 
 <body>
@@ -23,24 +29,94 @@
         </nav>
     </header>
 
-    <h2 style="text-align: center;">保存された占いログ</h2>
-    <div style="max-width: 1000px; margin: auto;">
-        <table id="log-table">
-            <thead>
-                <tr>
-                    <th>日時</th>
-                    <th>質問</th>
-                    <th>本卦</th>
-                    <th>変爻</th>
-                    <th>変卦</th>
-                    <th>裏卦</th>
-                    <th>総卦</th>
-                    <th>互卦</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+    <main>
+        <a title="Benoît Stella alias BenduKiwi, CC BY-SA 3.0 &lt;http://creativecommons.org/licenses/by-sa/3.0/&gt;, via Wikimedia Commons"
+            href="https://commons.wikimedia.org/wiki/File:Pakua_with_name.svg"><img width="300" alt="Pakua with name"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Pakua_with_name.svg/512px-Pakua_with_name.svg.png?20060923211647" ></a>
+        
+        <h2 style="text-align: center;">八卦とは</h2>
+    <p>古代宇宙のひとたちは、混沌とした太極から陰と陽が二つにわかれ、その後、それが四象（老陽・少陽・老陰・少陰）にわかれ、さらに分裂して8種類の象になると考えました。そうしたわけで八卦は、陰（--）と陽（ー）の爻（こう）と呼ばれる記号を3つ組み合わせて作られます。この組み合わせにより、次のようなの象徴が生まれます。</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>卦名</th>
+                <th>記号</th>
+                <th>自然象</th>
+                <th>性質</th>
+                <th>方位</th>
+                <th>イメージ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>乾（けん）</td>
+                <td>&#9776;</td>
+                <td>天</td>
+                <td>剛健・創造</td>
+                <td>北西</td>
+                <td>父性・リーダーシップ</td>
+            </tr>
+            <tr>
+                <td>兌（だ）</td>
+                <td>&#9777;</td>
+                <td>沢</td>
+                <td>喜悦・柔和</td>
+                <td>西</td>
+                <td>少女・楽しみ</td>
+            </tr>
+            <tr>
+                <td>離（り）</td>
+                <td>&#9778;</td>
+                <td>火</td>
+                <td>明朗・情熱</td>
+                <td>南</td>
+                <td>中女・知性</td>
+            </tr>
+            <tr>
+                <td>震（しん）</td>
+                <td>&#9779;</td>
+                <td>雷</td>
+                <td>活動・発展</td>
+                <td>東</td>
+                <td>長男・行動力</td>
+            </tr>
+            <tr>
+                <td>巽（そん）</td>
+                <td>&#9780;</td>
+                <td>風</td>
+                <td>柔順・拡散</td>
+                <td>南東</td>
+                <td>長女・柔軟性</td>
+            </tr>
+            <tr>
+                <td>坎（かん）</td>
+                <td>&#9781;</td>
+                <td>水</td>
+                <td>陥没・知恵</td>
+                <td>北</td>
+                <td>中男・困難</td>
+            </tr>
+            <tr>
+                <td>艮（ごん）</td>
+                <td>&#9782;</td>
+                <td>山</td>
+                <td>静止・止まる</td>
+                <td>北東</td>
+                <td>少男・堅実</td>
+            </tr>
+            <tr>
+                <td>坤（こん）</td>
+                <td>&#9783;</td>
+                <td>地</td>
+                <td>受容・柔順</td>
+                <td>南西</td>
+                <td>母性・安定</td>
+            </tr>
+        </tbody>
+    </table>
+      
+</main>
 
     <script src="log.js"></script>
 </body>

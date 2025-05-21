@@ -6,44 +6,50 @@
     <meta charset="UTF-8">
     <title>占い方</title>
     <link rel="stylesheet" href="style.css">
-    
+    <link rel="stylesheet" href="note-style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico">
+
 </head>
 
 <body>
     <header class="main-header">
         <nav class="nav-menu">
             <ul>
-                <li><a href = "index.html" class="nav-link">易経くじ</a></li>
+                <li><a href="index.html" class="nav-link">易経くじ</a></li>
                 <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
                 <li><span class="nav-link active">占い方</span></li>
                 <li><a href="hexagrams.html" class="nav-link">六十四卦</a></li>
-                <li><a href="bagua.html" class="nav-link">八卦</a></li>                
+                <li><a href="bagua.html" class="nav-link">八卦</a></li>
                 <li><a href="how-to-read" class="nav-link">卦の見方</a></li>
                 <li><a href="log.html" class="nav-link">ログ一覧</a></li>
             </ul>
         </nav>
     </header>
     <main>
+        <img src="assets/images/picture_howto.jpg" alt="">
+        <h2 style="text-align: center;">易経くじの引き方</h2>
 
-    <h2 style="text-align: center;">易経くじの引き方</h2>
+        <ol>
+            <li>まず占いたい内容を空欄に記し、<strong>「占いを始める」</strong>ボタンを押してください。スピナーが現れます</li>
+            <li>占いたい内容を念じながらスピナーをクリックしてください。一回クリックすると回り始め、もう一度クリックすると止まり、初爻が陰か陽かが決まります。これを６回繰り返してください。初爻から上爻まで６の爻が並ぶと<strong>本卦</strong>の卦象が決まります。下に本卦が示す意味とイメージが表示されます。
+            </li>
+            <li><strong>「裏の意味」</strong>ボタンを押すと、<strong>裏卦</strong>が、<strong>「客観的に見ると」</strong>ボタンを押すと総卦が、<strong>「物事の本質」</strong>を押すと<strong>互卦</strong>が示され、それぞれの意味とイメージが表示されます。
+            </li>
+            <li><strong>「今後の展開」</strong>ボタンを押すと、<strong>「最後にスピナーをもう一度クリックしてください」></strong>、という指示が現れます。指示に従い、スピナーをクリックすると回り始め、もう一回クリックすると<strong>変爻</strong>が決まり、変爻の<strong>爻辞</strong>が示されます。最初は６回クリックしましたが、ここでは１回だけです。
+            </li>
+            <li>爻辞の下にある<strong>「長い目で見たらどうなるか？」</strong>ボタンを押すと、<strong>変卦/</strong>とその意味、イメージが表示されます。</li>
+            <li><strong>「本卦に戻る」</strong>ボタンを押すと、<strong>「総合的な易断」</strong>ボタンが本卦の下に現れます。これを押すと、本卦、変爻、変卦、裏卦、総卦、互卦を含む、総合的な易の診断結果が表示されます。
+            </li>
+            <li>易断をログとして記録したければ、<strong>「記録する」</strong>のボタンを押すと、結果がログに新規で追加されます。</li>
+            <li><strong>「他のことを占う」</strong>ボタンを押すと初期画面に戻ります。</li>
+        </ol>
+    </main>
 
-    1. まず占いたいことを記し、「占いを始める」ボタンを押してください。
-    2  占いたい内容を念じながらスピナーをクリックしてください。一回クリックと回り始め、もう一度クリックすると止まり、陰か陽の初爻が決まります。これを６回繰り返してください。上爻まで決まると本卦が決定し、意味とイメージが表示されます。
-    3  「裏の意味」ボタンを押すと裏卦が、「客観的に見ると」ボタンを押すと総卦が、「物事の本質」を押すと互卦が示され、それぞれの意味とイメージが表示されます。
-    4 「今後の展開」ボタンを押すと、「最後にスピナーをもう一度クリックしてください」、という指示が現れます。指示のとおりにスピナーをクリックすると回り始め、もう一回クリックすると変爻が決まります。変爻が決まると、爻辞が示されます。
-    5 爻辞の下の「長い目で見たらどうなるか？」ボタンを押すと、変卦とその意味、イメージが表示されます。
-    6 「本卦に戻る」ボタンを押すと、「総合的な易断」のボタンが本卦の下に現れます。これを押すと、本卦、変爻、変卦、裏卦、総卦、互卦を含む、総合的な易の診断結果が表示されます。
-    7 診断結果をログとして記録したい場合、「記録する」のボタンを押すと、ログ記録に結果が追加されます。
-    8 「他のことを占う」ボタンを押すと初期画面に戻ります。
-
-    
-
-
-</main>
-      
     <footer class="simple-footer">
         Iching — Book of Change ©2025
-        </footer>
+    </footer>
 
     <script src="log.js"></script>
 </body>

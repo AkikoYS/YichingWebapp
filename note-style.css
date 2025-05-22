@@ -39,7 +39,7 @@ main h2 {
     font-size: 1.5em;
     border-left: 4px solid #ccc;
     padding-left: 0.5em;
-    
+
 }
 
 main h3 {
@@ -51,7 +51,7 @@ main h3 {
 /* 段落 */
 main p {
     margin-bottom: 1.5em;
-    text-align:left;
+    text-align: left;
 }
 
 /* リスト */
@@ -126,4 +126,92 @@ main a {
 
 main a:hover {
     text-decoration: underline;
+}
+
+/* 八卦シンボルの文字サイズ拡大 */
+.big-symbol {
+    font-size: 1.5em;
+}
+
+.bigger-symbol {
+    font-size: 4em;
+}
+
+/* 八卦画像のアニメーション */
+.rotate-on-load {
+    animation: spin 4s ease-out forwards;
+    display: block;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+        /* 3回転 */
+    }
+}
+
+/*六十四卦の表スタイル*/
+table.hexagram-table {
+    border-collapse: collapse;
+    width: 60%;
+    table-layout: fixed;
+    font-family: 'serif';
+    margin-left: auto;
+    margin-right: auto;
+    display: table; }
+
+.hexagram-table th,
+.hexagram-table td {
+    border: 1px solid #999;
+    text-align: center;
+    padding: 2px;
+    font-size: 1em;
+}
+
+.header-top {
+    background-color: #ffd700;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 50px;
+    font-size: 1em;
+}
+
+.header-side {
+    background-color: #f9cbd3;
+    text-align: center;
+    font-size: 2em;
+    line-height: 50px;
+}
+
+.hexagram {
+    font-family: monospace;
+    font-size: 5em;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.corner-cell {
+    position: relative;
+    background: linear-gradient(to top left, transparent 49%, #999 49.5%, #999 50.5%, transparent 51%);
+}
+
+.corner-cell .upper-label {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.corner-cell .lower-label {
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    font-size: 0.9em;
+    color: #333;
 }

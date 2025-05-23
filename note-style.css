@@ -1,12 +1,13 @@
 /* note-style.css */
 
+
 /* ベース設定 */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, Meiryo, sans-serif;
     font-size: 16px;
     line-height: 1.8;
     color: #333;
-    background-color: #fff;
+    background-color:#f9f8f6;
     margin: 0;
     padding: 0;
 }
@@ -194,7 +195,7 @@ table.hexagram-table {
     line-height: 1;
     vertical-align: middle;
 }
-
+ /*六十四卦の表の右上セル*/
 .corner-cell {
     position: relative;
     background: linear-gradient(to top left, transparent 49%, #999 49.5%, #999 50.5%, transparent 51%);
@@ -202,16 +203,34 @@ table.hexagram-table {
 
 .corner-cell .upper-label {
     position: absolute;
-    top: 20px;
-    left: 10px;
+    top: 6px;
+    left: 8px;
     font-size: 0.9em;
     color: #333;
 }
 
 .corner-cell .lower-label {
     position: absolute;
-    bottom: 20px;
+    bottom: 5px;
     right: 10px;
     font-size: 0.9em;
     color: #333;
 }
+ /*六十四卦のトグルボタン*/
+.toggle-button {
+    padding: 8px 18px;
+        font-size: 1em;
+        background-color: #b50b0b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 1em auto;
+        transition: background-color 0.3s ease;
+    }
+    
+    .toggle-button.alt {
+        background-color: #0d3643;
+    }
+

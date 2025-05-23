@@ -30,9 +30,9 @@
     <main><img src="assets/images/book.jpg" alt="">
         <h2 style="text-align: center;">六十四卦とはなにか</h2>
 
-        <p>六十四卦と卦辞を考案したのは周の文王だと言われています。八卦（乾・兌・離・震・巽・坎・艮・坤）は、それぞれ三本の爻（こう）で構成され、陰陽の組み合わせによって自然界の基本的な現象や性質を象徴していますが、これを上下に組み合わせることで、64通りの卦が生成され、より複雑で具体的な自然現象や人間社会の事象を象徴的に表現することが可能となりました。
+        <p>六十四卦と卦辞を考案したのは周王朝を創始した武王の父である<strong>文王</strong>と言われています。八卦（乾・兌・離・震・巽・坎・艮・坤）はいずれも三本の爻（こう）で構成され、陰陽の組み合わせによって自然界の基本的な現象や性質を象徴しますが、これを上下に組み合わせることで、64通りの卦が生成され、より複雑で具体的な自然現象や人間社会の事象を象徴的に表現することが可能となりました。
         </p>
-        <p>六十四卦は、それぞれが独自の象徴と意味を持ち、自然界の現象や人間社会の出来事、心理状態などを表現しています。各卦には「卦辞（かじ）」と呼ばれる短い解説文が付されており、さらに各爻には「爻辞（こうじ）」という詳細な解説が存在します。
+        <p>六十四卦は、それぞれが独自の象徴と意味を持ち、自然界の現象や人間社会の出来事、心理状態などを表現しています。各卦には<strong>「卦辞（かじ）」</strong>と呼ばれる短い解説文が付されており、さらに各爻には<strong>「爻辞（こうじ）」</strong>という詳細な解説が存在します。
         </p>
         <p>六十四卦の構造は、以下のように整理されます。</p>
 
@@ -43,349 +43,30 @@
 
             <li><strong>六爻</strong>：下から上へ順に「初爻」「二爻」「三爻」「四爻」「五爻」「上爻」と呼ばれ、それぞれが時間の流れや事象の進展段階を示します</li>
         </ul>
+        <p>上卦を横軸、下卦を縦軸にとって六十四卦をリスト化したものが、<a href="#"
+                onclick="document.getElementById('hexTable').style.display = 'table'; document.getElementById('hexTable').scrollIntoView({behavior: 'smooth'}); return false;">こちらの表</a>です。たとえば、初爻（=最初に引かれる一番下の爻）から上爻（=最後にひかれる一番上の爻）まですべて「陽(ー)
+            」なら、下卦は「乾（天）」、上卦も「乾（天）」となり、組み合わせた卦は<strong>「乾為天（䷀）」</strong>となります。</p>
+
+        <p>一方、初爻から五爻までが「陽（ー）」、上爻が「陰（--）」であれば、下卦が「乾（天）」、上卦は「兌（沢）」となり、組み合わせた卦は<strong>「沢天夬（䷪）」</strong>となります。
+        </p>
+
+        <p>この表の右上から左下の対角線上にある8つの卦はどれも上卦と下卦が同じ形をしており、<a href="bagua.html" alt="">八卦</a>の性質が強く出た卦となります。
+        </p>
+        <p>ちなみに『易経』で解説されている六十四卦はこうした整然と整理された順番には並んでおらず、乾為天を第一卦、火水未済を第六十四卦として一見、規則性のないランダムな配列となっています（<a href="#"
+                style="text-decoration: underline; color: #1e90ff; cursor: pointer;"
+                onclick="toggleHexagramOrder(); document.getElementById('hexTable').scrollIntoView({behavior: 'smooth'}); return false;">卦番号順の表</a>）。誰が決めたかもわからないこうした順序は、天地から万物が生まれたのち、精妙に変化して循環する有様を見事に捉えたものです。実際、何がどのように変化していくのかは、<strong>序卦伝（じょかでん）</strong>というテキストに詳しく説明されています。こうして並んだ六十四卦のうち、<strong>上経三十卦</strong>（=一卦から三十卦まで）は、自然界の原理原則を、<strong>下卦三十四卦</strong>（三十一卦から六十四卦）は人間界の原理原則を示したものと言われています。
+            この配列はまず、天地から万物が生まれたのち、物事が精妙に変化し、循環する有様を見事に捉えたものです。実際、何がどう変化していくのかについてのこの配列の理由は<strong>序卦伝（じょかでん）</strong>という解説テキストに詳しく説明されています。この配列のうち、<strong>上経三十卦</strong>（=一卦から三十卦まで）は、自然界の原理原則を、<strong>下卦三十四卦</strong>（三十一卦から六十四卦）は人間界の原理原則を示しています。
+        </p>
+
     </main>
-    <button id="toggleBtn" onclick="toggleHexagramOrder()"
-        style="margin: 1em auto; display: block; font-size: 1.2em;">卦番号順で表示</button>
-    <table class="hexagram-table">
-        <table class="hexagram-table">
-            <tr>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9783;</div>坤（地）
-                </th>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9782;</div>艮（山）
-                </th>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9781;</div>坎（水）
-                </th>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9780;</div>巽（風）
-                </th>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9779;</div>震（雷）
-                </th>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9778;</div>離（火）
-                </th>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9777;</div>兌（沢）
-                </th>
-                <th class="header-top">
-                    <div class="bigger-symbol">&#9776;</div>乾（天）
-                </th>
-                <th class="corner-cell"><span class="upper-label">上卦</span><span class="lower-label">下卦</span></th>
-            </tr>
-            <tr>
+    <button id="toggleBtn" class="toggle-button" onclick="toggleHexagramOrder()">卦番号順で表示</button>
+    <table class="hexagram-table" id="hexTable" style="display:none" ;>
 
-                <!-- <td>
-                    <div class="hexagram">&#x4DCA;</div>
-                    <div>11地天泰</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD9;</div>
-                    <div>26山天大畜</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DC4;</div>
-                    <div>5水天需</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DC8;</div>
-                    <div>9風天小畜</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE1;</div>
-                    <div>34雷天大壮</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DCD;</div>
-                    <div>14火天大有</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DEA;</div>
-                    <div>43沢天夬</div>
-                </td>
-                <td>
-                    <div class="hexagram">䷀</div>
-                    <div>1乾為天</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9776;</div>乾（天）
-                </th>
-            </tr>
-            <tr>
+    </table>
 
-                <td>
-                    <div class="hexagram">&#x4DD2;</div>
-                    <div>19 地沢臨</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE8;</div>
-                    <div>41山沢損</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DFB</div>
-                    <div>60水沢節</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DFC;</div>
-                    <div>61風沢中孚</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF5;</div>
-                    <div>54雷沢帰妹</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE5;</div>
-                    <div>38火沢睽</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF9;</div>
-                    <div>58兌為沢</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DC9;</div>
-                    <div>10天沢履</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9777;</div>兌（沢）
-                </th>
-            </tr>
-            <tr>
-
-                <td>
-                    <div class="hexagram">&#x4DE3;</div>
-                    <div>36地火明夷</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD5;</div>
-                    <div>22山火賁</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DFE;</div>
-                    <div>63水火既済</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE4;</div>
-                    <div>37風火家人</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF6;</div>
-                    <div>55雷火豊</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DDD;</div>
-                    <div>30離為火</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF0;</div>
-                    <div>49沢火革</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DCC;</div>
-                    <div>13天火同人</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9778;</div>離（火）
-                </th>
-            </tr>
-            <tr>
-
-                <td>
-                    <div class="hexagram">&#x4DD7;</div>
-                    <div>24地雷復</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DDA;</div>
-                    <div>27山雷頤</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DC2;</div>
-                    <div>3水雷屯</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE9;</div>
-                    <div>42風雷益</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF2;</div>
-                    <div>51震為雷</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD4;</div>
-                    <div>21火雷噬嗑</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD0;</div>
-                    <div>17沢雷随</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD8;</div>
-                    <div>25天雷无妄</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9779;</div>震（雷）
-                </th>
-            </tr>
-            <tr>
-
-                <td>
-                    <div class="hexagram">&#x4DED;</div>
-                    <div>46地風升</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD1;</div>
-                    <div>18山風蠱</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DEF;</div>
-                    <div>48水風井</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF8;</div>
-                    <div>57巽為風</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DDF;</div>
-                    <div>32雷風恒</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF1;</div>
-                    <div>50火風鼎</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DDB;</div>
-                    <div>28沢風大過</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DEB;</div>
-                    <div>44天風姤</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9780;</div>巽（風）
-                </th>
-            </tr>
-            <tr>
-
-                <td>
-                    <div class="hexagram">&#x4DC6;</div>
-                    <div>7地水師</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DC3;</div>
-                    <div>4山水蒙</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DDC;</div>
-                    <div>29坎為水</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DFA;</div>
-                    <div>59風水渙</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE7;</div>
-                    <div>40雷水解</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DFF;</div>
-                    <div>64火水未済</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DEE;</div>
-                    <div>47沢水困</div>
-                </td>
-                <td>
-                    <div class="hexagram">䷯</div>
-                    <div></div>6天水訟</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9781;</div>坎（水）
-                </th>
-            </tr>
-            <tr>
-
-                <td>
-                    <div class="hexagram">&#x4DCE;</div>
-                    <div>15地山謙</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF3;</div>
-                    <div>52艮為山</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE6;</div>
-                    <div>39水山蹇</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF4;</div>
-                    <div>53風山漸</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DFD;</div>
-                    <div>62雷山小過</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DF7;</div>
-                    <div>56火山旅</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DDE;</div>
-                    <div>31沢山咸</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE0;</div>
-                    <div>33天山遯</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9781;</div>艮（山）
-                </th>
-            </tr>
-            <tr>
-
-                <td>
-                    <div class="hexagram">&#x4DC1;</div>
-                    <div>2坤為地</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD6;</div>
-                    <div>23山地剥</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DC7;</div>
-                    <div>8水地比</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DD3;</div>
-                    <div>20風地観</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DCF;</div>
-                    <div>16雷地豫
-                    </div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DE2;</div>
-                    <div>35火地晋</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DEC;</div>
-                    <div>45沢地萃</div>
-                </td>
-                <td>
-                    <div class="hexagram">&#x4DCB;</div>
-                    <div>12天地否</div>
-                </td>
-                <th class="header-side">
-                    <div class="bigger-symbol">&#9783;</div>坤（地）
-                </th>
-            </tr> -->
-        </table>
-        <footer class="simple-footer">
-            Iching — Book of Change ©2025
-        </footer>
-
-        <script src="log.js"></script>
+    <footer class="simple-footer">
+        Iching — Book of Change ©2025
+    </footer>
 </body>
 
 </html>

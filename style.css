@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, Meiryo, sans-serif;
     background-color: #f9f8f6;
     color: #333;
     text-align: center;
@@ -235,6 +235,8 @@ h2 {
     margin: 0;
     /* ボタン間の隙間は親で調整 */
 }
+
+
 
 .variant-button:hover {
     background-color: #0d3643;

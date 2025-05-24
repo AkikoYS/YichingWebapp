@@ -234,3 +234,52 @@ table.hexagram-table {
         background-color: #0d3643;
     }
 
+    /*タグ*/
+
+        .tag-container {
+            margin-top: 2em;
+            padding: 1em 0;
+            border-top: 1px solid #ccc;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5em;
+        }
+    
+        .tag {
+            display: inline-block;
+            padding: 0.4em 0.8em;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 0.9em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+    
+        .tag:hover {
+            background-color: #eee;
+            color: #000;     }
+
+/* 卦ページ専用スタイル */
+.hexagram-page main {
+    padding: 2em 1em;
+    background: #fffdf8;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.hexagram-page h2 {
+    font-size: 1.4em;
+    border-left: 5px solid #999;
+    padding-left: 0.6em;
+    margin-top: 2em;
+}
+
+.hexagram-page ul li {
+    display: inline-block;
+    background-color: #f2f2f2;
+    border-radius: 1em;
+    padding: 0.3em 1em;
+    margin: 0.2em;
+    font-size: 0.9em; }

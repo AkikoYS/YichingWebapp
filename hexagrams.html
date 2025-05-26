@@ -11,7 +11,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico">
-    <script src="toggle-table.js"></script>
+    <!-- <script src="public/modal.js" defer></script> -->
+   
 </head>
 
 <body>
@@ -54,20 +55,28 @@
         <p>この表の右上から左下の対角線上にある8つの卦はどれも上卦と下卦が同じ形をしており、<a href="bagua.html" alt="bagua">八卦</a>の性質が強く出た卦となります。
         </p>
         <p>ちなみに『易経』で解説されている六十四卦はこうした整然と整理された順番には並んでおらず、乾為天を第一卦、火水未済を第六十四卦として一見、規則性のないランダムな配列となっています（<a href="#"
-                style="text-decoration: underline; color: #1e90ff; cursor: pointer;"
+                style=" color: #1e90ff; cursor: pointer;"
                 onclick="toggleHexagramOrder(); document.getElementById('hexTable').scrollIntoView({behavior: 'smooth'}); return false;">卦番号順の表</a>）。誰が決めたかもわからないこうした順序は、天地から万物が生まれたのち、精妙に変化して循環する有様を見事に捉えたものです。実際、何がどのように変化していくのかは、<strong>序卦伝（じょかでん）</strong>というテキストに詳しく説明されています。こうして並んだ六十四卦のうち、<strong>上経三十卦</strong>（=一卦から三十卦まで）は、自然界の原理原則を、<strong>下卦三十四卦</strong>（三十一卦から六十四卦）は人間界の原理原則を示したものと言われています。
             この配列はまず、天地から万物が生まれたのち、物事が精妙に変化し、循環する有様を見事に捉えたものです。実際、何がどう変化していくのかについてのこの配列の理由は<strong>序卦伝（じょかでん）</strong>という解説テキストに詳しく説明されています。この配列のうち、<strong>上経三十卦</strong>（=一卦から三十卦まで）は、自然界の原理原則を、<strong>下卦三十四卦</strong>（三十一卦から六十四卦）は人間界の原理原則を示しています。
         </p>
 
     </main>
+    <!-- モーダル -->
+    <div id="hexagram-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+    <!-- 卦一覧 -->
     <button id="toggleBtn" class="toggle-button" onclick="toggleHexagramOrder()">卦番号順で表示</button>
-    <table class="hexagram-table" id="hexTable" style="display:none" ;>
+    <table class="hexagram-table" id="hexTable"></table>
 
-    </table>
 
     <footer class="simple-footer">
         Iching — Book of Change ©2025
     </footer>
+    <script src="toggle-table.js"></script>
 </body>
 
 </html>

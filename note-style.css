@@ -7,7 +7,7 @@ body {
     font-size: 16px;
     line-height: 1.8;
     color: #333;
-    background-color:#f9f8f6;
+    background-color: #f9f8f6;
     margin: 0;
     padding: 0;
 }
@@ -121,8 +121,10 @@ main strong {
 
 /* リンク */
 main a {
+    font-size: 1em;
     color: #1e90ff;
     text-decoration: none;
+    transition: text-decoration 0.2s;
 }
 
 main a:hover {
@@ -159,12 +161,13 @@ main a:hover {
 /*六十四卦の表スタイル*/
 table.hexagram-table {
     border-collapse: collapse;
-    width: 60%;
+    width: 70%;
     table-layout: fixed;
     font-family: 'serif';
     margin-left: auto;
     margin-right: auto;
-    display: table; }
+    display: table;
+}
 
 .hexagram-table th,
 .hexagram-table td {
@@ -195,7 +198,8 @@ table.hexagram-table {
     line-height: 1;
     vertical-align: middle;
 }
- /*六十四卦の表の右上セル*/
+
+/*六十四卦の表の右上セル*/
 .corner-cell {
     position: relative;
     background: linear-gradient(to top left, transparent 49%, #999 49.5%, #999 50.5%, transparent 51%);
@@ -216,70 +220,124 @@ table.hexagram-table {
     font-size: 0.9em;
     color: #333;
 }
- /*六十四卦のトグルボタン*/
+
+/*六十四卦のトグルボタン*/
 .toggle-button {
     padding: 8px 18px;
-        font-size: 1em;
-        background-color: #b50b0b;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        display: block;
-        margin: 1em auto;
-        transition: background-color 0.3s ease;
-    }
-    
-    .toggle-button.alt {
-        background-color: #0d3643;
-    }
-
-    /*タグ*/
-
-        .tag-container {
-            margin-top: 2em;
-            padding: 1em 0;
-            border-top: 1px solid #ccc;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5em;
-        }
-    
-        .tag {
-            display: inline-block;
-            padding: 0.4em 0.8em;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            text-decoration: none;
-            color: #333;
-            background-color: #f9f9f9;
-            font-size: 0.9em;
-            transition: background-color 0.3s, color 0.3s;
-        }
-    
-        .tag:hover {
-            background-color: #eee;
-            color: #000;     }
-
-/* 卦ページ専用スタイル */
-.hexagram-page main {
-    padding: 2em 1em;
-    background: #fffdf8;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    font-size: 1em;
+    background-color: #b50b0b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 1em auto;
+    transition: background-color 0.3s ease;
 }
 
-.hexagram-page h2 {
-    font-size: 1.4em;
-    border-left: 5px solid #999;
-    padding-left: 0.6em;
+.toggle-button.alt {
+    background-color: #0d3643;
+}
+
+/*タグ*/
+.tag-container {
     margin-top: 2em;
+    padding: 1em 0;
+    border-top: 1px solid #ccc;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
 }
 
-.hexagram-page ul li {
+.tag {
     display: inline-block;
-    background-color: #f2f2f2;
-    border-radius: 1em;
-    padding: 0.3em 1em;
-    margin: 0.2em;
-    font-size: 0.9em; }
+    padding: 0.4em 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f9f9f9;
+    font-size: 0.9em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.tag:hover {
+    background-color: #eee;
+    color: #000;
+}
+
+/*リストの卦名*/
+.hex-link {
+    font-size: 1em;
+    /* 通常の本文と同じサイズに */
+    color: black;
+    text-decoration: none;
+}
+
+.hex-link:hover {
+    text-decoration: underline;
+}
+
+/*=======
+モーダル
+===========*/
+@media screen and (max-width: 480px) {
+    .modal-content {
+        font-size: 0.95em;
+        padding: 1em;
+    }
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    /* 高い値で前面に */
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);/* 半透明の背景 */
+    overflow-y: auto;
+        /* スクロール対応 */
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 1.5em;
+    max-width: 600px;
+    width: 100%;
+    margin: 5vh auto;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    font-size:1rem;
+    line-height: 1.6;
+}
+
+.close {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+.close:hover {
+    color: #d00;
+}
+
+.modal .close {
+    font-size: 1.8em;
+    position: absolute;
+    top: 0.5em;
+    right: 0.8em;
+    cursor: pointer;
+}

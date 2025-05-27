@@ -8,6 +8,7 @@
     <title>六十四卦</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="note-style.css">
+    <link rel="stylesheet" href="base.css">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico">
@@ -17,7 +18,12 @@
 
 <body>
     <header class="main-header">
-        <nav class="nav-menu">
+        <div class="title-container">
+            <div class="title-container">
+                <a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg" /></a>
+            </div>
+        </div>
+        <nav class="nav-menu" id="nav-menu">
             <ul>
                 <li><a href="index.html" class="nav-link">易経くじ</a></li>
                 <li><a href="about-Iching.html" class="nav-link">易経とは</a></li>
@@ -28,6 +34,11 @@
                 <li><a href="log.html" class="nav-link">ログ一覧</a></li>
             </ul>
         </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </header>
     <main><img src="assets/images/book.jpg" alt="">
         <h2 style="text-align: center;">六十四卦とはなにか</h2>
@@ -77,6 +88,7 @@
         Iching — Book of Change ©2025
     </footer>
     <script src="toggle-table.js"></script>
+    <script src="ui.js"></script>
 </body>
 
 </html>

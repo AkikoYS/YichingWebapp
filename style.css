@@ -1,76 +1,13 @@
-/*style.css*/
+/*==============
+style.css
+================*/
 
-* {
-    box-sizing: border-box;
-}
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, Meiryo, sans-serif;
-    background-color: #f9f8f6;
-    color: #333;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-}
+/* =========
+main
+=========== */
+/* index.htmlのタイトル */
 
-/*=======ナビケーション==========*/
-.main-header {
-    background-color: #ffffff;
-    padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
-}
-
-.nav-menu ul {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.nav-link {
-    text-decoration: none;
-    color: black;
-    position: relative;
-    transition: color 0.3s;
-}
-
-.nav-link:hover {
-    color: #b50b0b;
-}
-
-/* 現在ページにいるリンク */
-.nav-link.active {
-    cursor: default;
-    pointer-events: none;
-    color: #000;
-}
-
-.nav-link.active::after {
-    content: "";
-    position: absolute;
-    bottom: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 140%;
-    height: 3px;
-    background-color: black;
-}
-
-/* =========main=========== */
-/* タイトル */
-.title-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.title-svg {
-    width: 300px;
-    /* 必要に応じて調整 */
-    height: auto;
-}
 
 h2 {
     font-size: 1em;
@@ -116,8 +53,8 @@ h2 {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    display: inline-block;
-    margin-top: 8px;
+    display: block;
+    margin: 20px auto;
     transition: background-color 0.3s ease;
 }
 
@@ -138,7 +75,7 @@ h2 {
     overflow: hidden;
 }
 
-/* もう一度引くボタンのスタイル */
+/* 「もう一度引く」ボタンのスタイル */
 #reset-button {
     display: block;
     margin: 10px auto;
@@ -155,7 +92,6 @@ h2 {
 #reset-button:hover {
     background-color: #c9302c;
 }
-
 
 /*卦のタイトル*/
 .hexagram-title {
@@ -315,15 +251,10 @@ h2 {
 }
 
 
-/* スピナーの表示 */
-#lottie-spinner {
-    margin: 0 auto;
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-}
 
-/* 易断サマリー */
+/* ==============
+易断サマリー 
+===============*/
 .fortune-summary {
     font-family: "Helvetica Neue", Arial, sans-serif;
     background-color: #f9f6ff;
@@ -368,6 +299,9 @@ h2 {
     opacity: 1;
 }
 
+/* =============
+ログ画面
+============== */
 /* ログ画面の文字 */
 #log-table {
     font-size: 0.85em;
@@ -401,17 +335,4 @@ h2 {
 .delete-button:hover {
     color: red;
     cursor: pointer;
-}
-/* ---------------
-フッター 
----------------*/
-.simple-footer {
-    background-color: #fff;
-    text-align: center;
-    padding: 15px 0;
-    font-family: "Georgia", serif;
-    font-size: 0.9em;
-    color: #666;
-    border-top: 1px solid #ddd;
-    margin-top: 40px;
 }

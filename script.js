@@ -110,6 +110,40 @@ function maybeShowFinalFortuneButton() {
     }
 }
 
+// ✅ スピナーをふわっと表示（再拡大）
+function showSpinnerAnimated() {
+    const spinner = document.getElementById('lottie-spinner');
+    if (!spinner) return;
+
+    spinner.style.display = 'block';
+    spinner.classList.remove('spinner-disappear');
+    void spinner.offsetWidth; // ← 再描画トリガー
+    spinner.classList.add('spinner-appear');
+}
+
+// ✅ スピナーをふわっと縮小して非表示
+function hideSpinnerAnimated() {
+    const spinner = document.getElementById('lottie-spinner');
+    if (!spinner) return;
+
+    spinner.classList.remove('spinner-appear');
+    void spinner.offsetWidth;
+    spinner.classList.add('spinner-disappear');
+
+    setTimeout(() => {
+        spinner.style.display = 'none';
+    }, 600); // CSSのアニメ時間と一致
+}
+
+// ✅ 結果表示をふわっとせり上げる
+function revealResult() {
+    const result = document.getElementById('result');
+    if (!result) return;
+
+    result.classList.add('result-reveal');
+}
+
+
 // ===== 3. 表示処理 =====
 
 //占う内容が制限文字数を超えた場合の警告
@@ -126,6 +160,11 @@ function showHexagram(hexagram, isOriginal = false) {
     result.innerHTML = "";
     result.innerHTML = createHexagramHTML(hexagram);
     selectedHexagram = hexagram;
+
+    // ✅ スマホ時にスピナーを縮小して消す
+    if (isOriginal && window.innerWidth <= 768) {
+        hideSpinnerAnimated();
+    }
 
     // ✅ 1回だけしか originalHexagram に代入しない
     if (isOriginal && !originalHexagram) {
@@ -270,6 +309,8 @@ function showVariantButtons(originalHexagram) {
     maybeShowFinalFortuneButton();
 }
 
+
+
 // ===== 4. 今後の展開関連処理 =====
 
 // 今後の展開（変爻と変卦）の準備関数
@@ -287,6 +328,19 @@ function prepareForFutureExpansion() {
 function handleFutureExpansion(originalHex) {
     if (!originalHex) originalHex = originalHexagram; // fallback対策
     resetButton.style.display = "none";
+
+
+    if (!futureExpansionUsed && !cachedChangedHexagram) {
+        // ✅ スマホだけスピナーを再表示（ふわっと登場）
+        if (window.innerWidth <= 768) {
+            showSpinnerAnimated();
+        }
+        setupSpinnerForChangedHexagram(originalHex);
+
+    } else {
+        // ✅ 2回目以降はクリックなしで即表示
+        showCachedChangedHexagram(originalHex);
+    }
 
     //1回目のボタン押す（まだ一度もボタンが押されておらず、変卦の結果の一時保存も行われていない場合）
     if (!futureExpansionUsed && !cachedChangedHexagram) {
@@ -381,6 +435,12 @@ function displayChangedLine(index, hexagram) {
 
     // 結果表示
     result.innerHTML = `<div class="spinner-progress-message"><strong>変爻は${yaoNames[index]}です</strong></div>`;
+
+    // ✅ スマホ時にスピナーをふわっと消す
+    if (window.innerWidth <= 768) {
+        hideSpinnerAnimated();
+    }
+
     updateResultBorder();
 
     setTimeout(() => {
@@ -620,8 +680,8 @@ function displayFinalFortune() {
 
         // ✅ DOMが反映されるまで待ってから取得
         setTimeout(() => {
-   
-            generatePdfFromSummary((pdfUri)=> {
+
+            generatePdfFromSummary((pdfUri) => {
                 currentPdfUri = pdfUri;
                 renderSaveButton();
                 resetButton.style.display = "inline-block";

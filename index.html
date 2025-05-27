@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>易経くじ</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="spinner.css">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico">
@@ -13,21 +15,27 @@
 
 <body>
     <header class="main-header">
-        <nav class="nav-menu">
+        <div class="title-container">
+            <a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg" /></a>
+            </div>
+        <nav class="nav-menu" id="nav-menu">
             <ul>
                 <li><span class="nav-link active">易経くじ</span></li>
                 <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
                 <li><a href="how-to.html" class="nav-link">占い方</a></li>
                 <li><a href="hexagrams.html" class="nav-link">六十四卦</a></li>
-                <li><a href="bagua.html" class="nav-link">八卦</a></li>                
+                <li><a href="bagua.html" class="nav-link">八卦</a></li>
                 <li><a href="how-to-read.html" class="nav-link">卦の見方</a></li>
                 <li><a href="log.html" class="nav-link">ログ一覧</a></li>
             </ul>
         </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+        <span></span>
+        <span></span>
+        </div>
     </header>
-    <div class="title-container">
-        <img src="assets/images/title.svg" alt="易経くじ" class="title-svg" />
-    </div>
+
 
     <div id="question-section" class="fade show">
         <h2 style="text-align:center">天に問いたい内容を記してください（任意）</h2>
@@ -57,13 +65,14 @@
 
     <footer class="simple-footer">
         Iching — Book of Change ©2025
-        </footer>
+    </footer>
 
     <!-- JavaScriptを読み込む -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.11/lottie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
     <script src="logic.js"></script>
     <script src="script.js"></script>
+    <script src="ui.js"></script>
 
 
 </body>

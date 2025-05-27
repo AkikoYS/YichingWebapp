@@ -1,16 +1,7 @@
 /* note-style.css */
 
 
-/* ベース設定 */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, Meiryo, sans-serif;
-    font-size: 16px;
-    line-height: 1.8;
-    color: #333;
-    background-color: #f9f8f6;
-    margin: 0;
-    padding: 0;
-}
+
 
 /* メインコンテンツ */
 main {
@@ -87,7 +78,10 @@ main pre {
     border-radius: 4px;
 }
 
-/* テーブル */
+/* ----------
+テーブル
+----------- */
+/* PCレイアウト（通常表示） */
 main table {
     width: 100%;
     border-collapse: collapse;
@@ -104,6 +98,92 @@ main td {
 main th {
     background-color: #f2f2f2;
 }
+
+/* モバイル表示：カード形式に切り替え */
+@media (max-width: 768px) {
+    main table {
+        border: none;
+    }
+
+    main thead {
+        display: none;
+    }
+
+    main tbody {
+        display: block;
+    }
+
+    main tr.tr-card {
+        display: block;
+        width: 100%;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+
+    main tr.tr-card td {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: none;
+    }
+
+    .hexagram-header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .hexagram-name {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .hexagram-symbol {
+        font-size: 2.4em;
+        line-height: 1;
+    }
+
+    .hexagram-info {
+        font-size: 0.9em;
+        line-height: 1.5;
+    }
+
+    .hexagram-info .label {
+        font-weight: bold;
+        font-size: 0.8em;
+        color: #666;
+        display: inline-block;
+        min-width: 4em;
+    }
+}
+
+/* テーブル行を非カード形式に戻すために、PCでは通常表示 */
+@media (min-width: 769px) {
+    main thead {
+        display: table-header-group;
+    }
+
+    main tbody {
+        display: table-row-group;
+    }
+
+    main tr {
+        display: table-row;
+    }
+
+    main td {
+        display: table-cell;
+    }
+
+    .tr-card .hexagram-header,
+    .tr-card .hexagram-info {
+        display: none;
+    } }
 
 /* 画像 */
 main img {
@@ -132,7 +212,7 @@ main a:hover {
 }
 
 /* 八卦シンボルの文字サイズ拡大 */
-.big-symbol {
+.hexagram-symbol {
     font-size: 1.5em;
 }
 
@@ -159,7 +239,7 @@ main a:hover {
 }
 
 /*六十四卦の表スタイル*/
-table.hexagram-table {
+.hexagram-table {
     border-collapse: collapse;
     width: 70%;
     table-layout: fixed;
@@ -287,6 +367,7 @@ table.hexagram-table {
         padding: 1em;
     }
 }
+
 .modal {
     display: none;
     position: fixed;
@@ -296,9 +377,10 @@ table.hexagram-table {
     top: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);/* 半透明の背景 */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* 半透明の背景 */
     overflow-y: auto;
-        /* スクロール対応 */
+    /* スクロール対応 */
     padding: 1em;
     box-sizing: border-box;
 }
@@ -317,7 +399,7 @@ table.hexagram-table {
     position: relative;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     text-align: left;
-    font-size:1rem;
+    font-size: 1rem;
     line-height: 1.6;
 }
 

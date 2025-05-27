@@ -1,0 +1,76 @@
+/* =======
+スピナー関連 
+==========*/
+
+/* スピナーの表示 */
+#lottie-spinner {
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* =========================
+   スピナー：モバイル用アニメーション
+========================= */
+@media (max-width: 768px) {
+    .spinner-disappear {
+        animation: scaleOut 0.6s ease forwards;
+    }
+
+    .spinner-appear {
+        animation: scaleIn 0.6s ease forwards;
+    }
+
+    @keyframes scaleOut {
+        from {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        to {
+            transform: scale(0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .result-reveal {
+        animation: slideUp 0.6s ease forwards;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+/* =========================
+     スピナー：PC用（上寄せ、小さめ）
+  ========================= */
+@media (min-width: 769px) {
+    #lottie-spinner {
+        width: 200px;
+        height: 200px;
+        margin: 20px auto 40px;
+        /* 上寄せ */
+    }
+}

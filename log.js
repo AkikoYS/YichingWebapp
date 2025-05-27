@@ -16,14 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${entry.changed.name}<br><img src="assets/images/hexagrams/${entry.changed.image}" alt=""></td>
             <td>${entry.reverse?.name || "不明"}<br><img src="assets/images/hexagrams/${entry.reverse?.image || ""}" alt=""></td>
             <td>${entry.sou?.name || "不明"}<br><img src="assets/images/hexagrams/${entry.sou?.image || ""}" alt=""></td>
-            <td>${entry.go?.name || "不明"}<br><img src="assets/images/hexagrams/${entry.go?.image || ""}" alt=""></td>
-                        <td>
-                ${
-            entry.pdfDataUri
-                ? `<a href="${entry.pdfDataUri}" download="易断_${entry.timestamp.replace(/[\/: ]/g, "_")}.pdf" class="pdf-download-link">📄ダウンロード</a>`
-                : "なし"
-                }
-            </td>
+            <td>${entry.go?.name || "不明"}<br><img src="assets/images/hexagrams/${entry.go?.image || ""}" alt=""></td>               
             <td class="delete-cell"><span class="delete-button">✖</span></td>
         `;
 

@@ -1,3 +1,41 @@
+/* =============
+ログ画面
+============== */
+/* ログ画面の文字 */
+#log-table {
+    font-size: 0.85em;
+}
+
+/* 削除ボタンの色 */
+.delete-button {
+    color: #555;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+.delete-button:hover {
+    color: red;
+}
+
+.pdf-download-link {
+    text-decoration: none;
+    color: #4B0082;
+    font-size: 0.9em;
+}
+
+.pdf-download-link:hover {
+    text-decoration: underline;
+    color: #b50b0b;
+}
+
+.delete-button:hover {
+    color: red;
+    cursor: pointer;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;

@@ -81,26 +81,17 @@ main pre {
 /* ----------
 テーブル
 ----------- */
-/* PCレイアウト（通常表示） */
 main table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 1.5em;
+    margin: 0 auto 1.5em;
+    /* ✅ テーブルを中央に */
 }
-
-main th,
-main td {
-    border: 1px solid #ddd;
-    padding: 0.75em;
-    text-align: left;
-}
-
-main th {
-    background-color: #f2f2f2;
-}
-
 /* モバイル表示：カード形式に切り替え */
 @media (max-width: 768px) {
+    .desktop-row {
+            display: none;   }
+
     main table {
         border: none;
     }
@@ -113,7 +104,7 @@ main th {
         display: block;
     }
 
-    main tr.tr-card {
+    main tr.mobile-card {
         display: block;
         width: 100%;
         background: #fff;
@@ -123,7 +114,7 @@ main th {
         margin-bottom: 16px;
     }
 
-    main tr.tr-card td {
+    main tr.mobile-card td {
         display: block;
         width: 100%;
         padding: 0;
@@ -139,17 +130,17 @@ main th {
     }
 
     .hexagram-name {
-        font-size: 1.2em;
+        font-size: 1.5em;
         font-weight: bold;
     }
 
     .hexagram-symbol {
-        font-size: 2.4em;
+        font-size: 3em;
         line-height: 1;
     }
 
     .hexagram-info {
-        font-size: 0.9em;
+        font-size: 1em;
         line-height: 1.5;
     }
 
@@ -159,31 +150,55 @@ main th {
         color: #666;
         display: inline-block;
         min-width: 4em;
+        margin-right:1em;
     }
 }
 
-/* テーブル行を非カード形式に戻すために、PCでは通常表示 */
+/* PCでは通常表示 */
 @media (min-width: 769px) {
-    main thead {
-        display: table-header-group;
-    }
-
-    main tbody {
-        display: table-row-group;
-    }
-
-    main tr {
-        display: table-row;
-    }
-
-    main td {
-        display: table-cell;
-    }
-
-    .tr-card .hexagram-header,
-    .tr-card .hexagram-info {
+    .mobile-card {
         display: none;
-    } }
+    }
+
+        main th,
+        main td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 5px 10px;
+            line-height: 1.2;
+        }
+    
+        main th {
+            background-color: #f2f2f2;
+            font-size: 0.8em;
+            color: #666;
+            font-weight: bold;
+        }
+    
+        main td {
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+    
+        .bigger-symbol {
+            font-size: 3em;
+        }
+    
+        .name {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    
+        .furigana {
+            font-size: 0.7em;
+        }
+    
+        main td:first-child main td:nth-child(4) {
+            min-width: 6em;
+            /* ✅ 横幅を確保 */
+            white-space: nowrap;
+            /* ✅ 折り返さない */   }
+}
 
 /* 画像 */
 main img {
@@ -216,9 +231,7 @@ main a:hover {
     font-size: 1.5em;
 }
 
-.bigger-symbol {
-    font-size: 4em;
-}
+
 
 /* 八卦画像のアニメーション */
 .rotate-on-load {

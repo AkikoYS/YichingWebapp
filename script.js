@@ -14,7 +14,8 @@ let cachedChangedLineIndex = null; // ✅ 追加: 変爻のインデックス
 let shownVariantKeys = new Set();  // ✅ 追加: バリアント表示履歴
 let originalProgressMessages = [];//本卦の進行状況メッセージの保存
 let finalFortuneReady = false;// ← 総合的な易断ボタン表示の可否管理
-let currentPdfUri = "";
+let currentPdfUri = null;
+let saveButton = null;
 
 
 // Index.htmlからUI要素（DOM）の取得
@@ -61,14 +62,17 @@ function updateResultBorder() {
 //進行状況メッセージを初期化
 function initializeProgressMessages() {
     progressContainer.innerHTML = "";
+
     for (let i = 0; i < 6; i++) {
         const div = document.createElement("div");
         div.className = "spinner-progress-message";
-        div.id = `progress-line-${i}`;  // ← 文字列にする必要あり
+        div.id = `progress-line-${i}`;
         div.innerHTML = "";
         progressContainer.appendChild(div);
     }
 }
+
+
 
 //本卦の進行状況メッセージ
 function restoreOriginalProgressMessages() {
@@ -154,7 +158,6 @@ questionInput.addEventListener("input", () => {
         warningText.style.display = "none";
     }
 });
-
 // 卦の表示処理の関数
 function showHexagram(hexagram, isOriginal = false) {
     result.innerHTML = "";
@@ -466,6 +469,8 @@ function createFutureButton(originalHexagram, index) {
     const button = document.createElement("button");
     button.textContent = "長い目で見るとどうなる？";
     button.classList.add("variant-button");
+    button.style.display = "block";
+    button.style.margin = "20px auto";
     button.onclick = () => {
         toggleYinYangAtIndex(index);
         const changedArray = resultArray.split("").map((bit, i) =>
@@ -601,6 +606,9 @@ spinnerContainer.addEventListener("click", () => {
 //リセットボタンによる初期化（もう一度占う）
 resetButton.style.display = "none";
 resetButton.addEventListener("click", () => {
+    if (saveButton) {
+        saveButton.style.display = "none"; // ✅ ログ保存ボタンを非表示に
+    }
     document.getElementById("progress-container").innerHTML = '';
     result.innerHTML = "";
     clickCount = 0;
@@ -610,10 +618,6 @@ resetButton.addEventListener("click", () => {
     spinnerAnimation.stop();
     currentRotation = 0;
     resetButton.style.display = "none";
-    // const finalButton = document.getElementById("final-fortune-button");
-    // if (finalButton) finalButton.style.display = "none";
-    // const instructionText = document.querySelector("h2");
-    // futureExpansionUsed = false;
     cachedChangedHexagram = null;
     cachedChangedLineIndex = null;
     shownVariantKeys.clear();
@@ -663,6 +667,7 @@ resetButton.addEventListener("click", () => {
 
 // ===== 6. 総合的な易断表示処理 =====
 //表示ボタンを押したときの処理（1.5秒で結果表示）
+// ✅ displayFinalFortune: 総合易断の表示、保存ボタン表示、PDF生成は10秒後にモーダル確認
 function displayFinalFortune() {
     if (!originalHexagram || !cachedChangedHexagram || cachedChangedLineIndex === null) {
         result.innerHTML = "<div class='error-message'>必要な情報がそろっていません。</div>";
@@ -678,16 +683,23 @@ function displayFinalFortune() {
         result.innerHTML = summaryHTML;
         updateResultBorder();
 
-        // ✅ DOMが反映されるまで待ってから取得
-        setTimeout(() => {
+        // ✅ 保存ボタンをこのタイミングで表示（PDFとは独立）
+        renderSaveButton();
+        const resetButton = document.getElementById("reset-button");
+        if (resetButton) resetButton.style.display = "inline-block";
 
-            generatePdfFromSummary((pdfUri) => {
-                currentPdfUri = pdfUri;
-                renderSaveButton();
-                resetButton.style.display = "inline-block";
-            });
-        }, 100); // 💡 100ms 後に DOM を確実に取得
-    }, 1500);
+        // ✅ PDF生成は一度だけに限定（重複防止）
+        if (!window.pdfAlreadyGenerated) {
+            window.pdfAlreadyGenerated = true;
+            setTimeout(() => {
+                generatePdfFromSummary((pdfUri) => {
+                    currentPdfUri = pdfUri;
+                    // ✅ PDFの保存確認はモーダルだけで行い、ログ保存ボタンは呼ばない
+                    showPdfDownloadToast(pdfUri);
+                });
+            }, 1000);
+        }
+    }, 1000);
 }
 //h2テキストのアップデート
 function updateInstructionText(text) {
@@ -704,7 +716,6 @@ function hideSpinnerAndProgress() {
     const progressContainer = document.getElementById("progress-container");
     if (progressContainer) progressContainer.style.display = "none";
 }
-
 //総合的な易断の内容
 function generateFortuneSummaryHTML() {
     const reverseHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.reverse);
@@ -728,28 +739,37 @@ function generateFortuneSummaryHTML() {
         </div>
     `;
 }
-//結果を保存ボタンを生成
-function renderSaveButton() {
+//結果をログで保存ボタンを生成
+function renderSaveButton(pdfUri) {
+    // PDF URI を保存しておく（あとで再利用できる）
+    currentPdfUri = pdfUri;
+
+    // すでにあるなら再生成しない
+    if (document.getElementById("save-button")) return;
+
     const saveButton = document.createElement("button");
-    saveButton.textContent = "▶️ 結果をログに保存";
-    saveButton.className = "variant-button";
+    saveButton.textContent = "▶️ 出た卦をログに保存";
     saveButton.id = "save-button";
+    saveButton.className = "variant-button";
+    saveButton.style.display = "inline-block";
     saveButton.style.marginRight = "10px";
     saveButton.style.padding = "10px 20px";
+
     saveButton.onclick = () => {
-        if (currentPdfUri) {
-            saveCurrentFortuneToLog(currentPdfUri);
-            alert("ログとPDFを保存しました！");
-        } else {
-            alert("PDFがまだ準備できていません。");
+        saveCurrentFortuneToLog(currentPdfUri); // pdfUri は null でも問題なし
+        const instructionText = document.getElementById("instructionText");
+        if (instructionText) {
+            instructionText.textContent = "";
         }
     };
-
-    resetButton.style.display = "inline-block";
-    resetButton.parentNode.insertBefore(saveButton, resetButton);
+    const resetButton = document.getElementById("reset-button");
+    if (resetButton && resetButton.parentNode) {
+        resetButton.parentNode.style.textAlign = "center";
+        resetButton.parentNode.insertBefore(saveButton, resetButton);
+        resetButton.style.display = "inline-block";
+    }
 }
-
-//結果を保存するログ
+//結果保存ログ
 function saveCurrentFortuneToLog(pdfUri) {
     if (!originalHexagram || !cachedChangedHexagram || cachedChangedLineIndex === null) {
         alert("保存に必要な情報がそろっていません。");
@@ -802,33 +822,87 @@ function saveCurrentFortuneToLog(pdfUri) {
             summary: getHexagramByNumber(originalHexagram.go)?.summary,
             image: `hexagram_${String(originalHexagram.go).padStart(2, "0")}.svg`
         },
-        pdfDataUri: pdfUri
+        pdfStatus: pdfUri ? "✅ PDFダウンロード済み" : "未ダウンロード"
     };
 
+    // ログ配列を更新
     const logs = JSON.parse(localStorage.getItem("fortuneLogs") || "[]");
     logs.push(logEntry);
     localStorage.setItem("fortuneLogs", JSON.stringify(logs));
 
-    alert("ログとPDFを保存しました！");
-
-    // ✅ 保存ボタンを無効化
+    // ✅ ボタンを無効化・状態表示変更
     const saveButton = document.getElementById("save-button");
     if (saveButton) {
         saveButton.disabled = true;
         saveButton.style.opacity = 0.6;
-        saveButton.textContent = "✅ 保存済み";
+        saveButton.textContent = "✅ ログ一覧ページに保存しました";
+        saveButton.style.backgroundColor = "#000000";
     }
+}
+//補助関数
+function triggerPdfDownload(uri) {
+    const link = document.createElement("a");
+    link.href = uri;
+    link.download = "易断結果.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+//PDFを保存しますか？というトースト表示
+function showPdfDownloadToast(pdfUri) {
+    // すでに表示中なら何もしない
+    if (document.getElementById("pdf-toast")) return;
+
+    const toast = document.createElement("div");
+    toast.id = "pdf-toast";
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.right = "20px";
+    toast.style.background = "#f9f6f1";
+    toast.style.border = "1px solid #ccc";
+    toast.style.padding = "14px 18px";
+    toast.style.borderRadius = "8px";
+    toast.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+    toast.style.zIndex = "9999";
+    toast.style.fontSize = "0.95em";
+    toast.style.display = "flex";
+    toast.style.alignItems = "center";
+    toast.style.gap = "12px";
+
+    const message = document.createElement("span");
+    message.textContent = "易断結果をPDFにできます";
+
+    const button = document.createElement("button");
+    button.textContent = "📄 ダウンロード";
+    button.style.padding = "6px 12px";
+    button.style.border = "none";
+    button.style.borderRadius = "4px";
+    button.style.background = "#4caf50";
+    button.style.color = "white";
+    button.style.cursor = "pointer";
+
+    button.onclick = () => {
+        triggerPdfDownload(pdfUri);
+        toast.remove();
+    };
+
+    toast.appendChild(message);
+    toast.appendChild(button);
+    document.body.appendChild(toast);
+
+    // 自動で5秒後に消える（手動ダウンロードしても消える）
+    setTimeout(() => {
+        toast.remove();
+    }, 10000);
 }
 
 //易断のPDF化
 function generatePdfFromSummary(callback) {
     const summaryElement = document.querySelector(".fortune-summary");
-    if (!summaryElement)
-        return;
+    if (!summaryElement) return;
 
-    // 元の背景色を保存
     const originalBg = summaryElement.style.backgroundColor;
-    // 背景色を一時的に透明にする
     summaryElement.style.backgroundColor = "transparent";
 
     html2pdf().set({
@@ -837,19 +911,18 @@ function generatePdfFromSummary(callback) {
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
             scale: 2,
-            backgroundColor: null // ✅ 背景キャンバス色も除去
+            backgroundColor: null
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     })
         .from(summaryElement)
         .outputPdf('datauristring')
         .then(pdfUri => {
-            // 背景色を元に戻す
             summaryElement.style.backgroundColor = originalBg;
-            // コールバックがあれば実行（例：renderSaveButtonなど）
             if (typeof callback === "function") {
                 callback(pdfUri);
             }
         });
 }
+
 

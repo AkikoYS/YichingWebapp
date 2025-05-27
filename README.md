@@ -31,13 +31,26 @@ Using a spinning animation and six rounds of yin-yang determination, it generate
 ## 📁 Project Structure
 project/
 ├── index.html
+├── about-iching.html
+├── bagua.html
+├── about-iching.html
+├── hexagrams.html
+├── how-to-read.html
+├── how-to.html
+├── log.html
 ├── style.css
 ├── script.js
 ├── logic.js
+├── log.js
 ├── spinner.js
 ├── ui.js
-├── hexagrams.json
+├── hexagram.json
 ├── assets/
+├── spinner.css
+├── ui.css
+├── log.css
+├── base.css
+├── note-style.css
 ├── README.md
 
 ## 🔐 Security

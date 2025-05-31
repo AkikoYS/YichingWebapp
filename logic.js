@@ -39,4 +39,5 @@ function getProgressMessage(clickCount, yinYang) {
 function getYaoName(index) {
     return ["初", "二", "三", "四", "五", "上"][index] || "不明";
 }
-    
+
+

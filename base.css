@@ -30,7 +30,7 @@ main,
     background-color: #ffffff;
     padding: 14px 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 @media (max-width: 768px) {

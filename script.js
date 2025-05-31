@@ -5,7 +5,6 @@ let clickCount = 0; // クリック回数（最大６）
 let resultArray = ""; // 結果の配列
 let clickTime = 0; // 最後のクリック時刻
 let alreadyClicked = false;//クリック済みかどうかのフラグ
-// let sixtyFourHexagrams = [];//JSONデータ
 let selectedHexagram = null;//現在表示されている卦
 let originalHexagram = null;//最初に表示された卦（本卦）
 let futureExpansionUsed = false;//今後の展開が行われたか？
@@ -17,8 +16,7 @@ let finalFortuneReady = false;// ← 総合的な易断ボタン表示の可否�
 let currentPdfUri = null;
 let saveButton = null;
 
-
-// Index.htmlからUI要素（DOM）の取得
+// ============ 2. DOM取得 ===========
 const result = document.getElementById("result");
 const resetButton = document.getElementById("reset-button");
 const spinnerContainer = document.getElementById("lottie-spinner");
@@ -26,38 +24,22 @@ const progressContainer = document.getElementById("progress-container");
 const questionInput = document.getElementById("question-input");
 const warningText = document.getElementById("question-warning");
 
-// ============2 ユーティリティ関数 ===========
+// ============3 スピナー初期化 ===========
 // Lottieアニメーションの設定（スピナー初期化）
 const spinnerAnimation = lottie.loadAnimation({
     container: spinnerContainer,
     renderer: 'svg',
     loop: true,
     autoplay: false,
-    path: 'assets/animations/spinner-animation.json'
+    path: 'assets/animations/2.json',
+    rendererSettings: {
+        preserveAspectRatio: 'none' // ← これがポイント！
+    }
+
 });
 
-//結果ボーダー関数
-function updateResultBorder() {
-    if (result.innerHTML.trim() === "") {
-        result.style.border = "none";
-        result.style.height = "0";
-        result.style.padding = "0";
-        result.style.margin = "0";
-        result.style.background = "transparent";
-        result.style.boxShadow = "none";
-    } else {
-        result.style.border = "1px solid #ccc";
-        result.style.background = "#ffffff";
-        result.style.borderRadius = "10px";
-        result.style.marginTop = "30px";
-        result.style.padding = "20px";
-        result.style.maxWidth = "700px";
-        result.style.marginLeft = "auto";
-        result.style.marginRight = "auto";
-        result.style.boxShadow = "0 0 10px rgba(0,0,0,0.1)";
-        result.style.height = "auto";
-    }
-}
+// ============4 ユーティリティ関数（ほかの処理をたすける） ===========
+
 
 //進行状況メッセージを初期化
 function initializeProgressMessages() {
@@ -71,8 +53,6 @@ function initializeProgressMessages() {
         progressContainer.appendChild(div);
     }
 }
-
-
 
 //本卦の進行状況メッセージ
 function restoreOriginalProgressMessages() {
@@ -101,19 +81,6 @@ function saveOriginalProgressMessages() {
         }
     }
 }
-
-//総合的な易断ボタン生成の条件
-function allVariantsShown() {
-    return cachedChangedHexagram !== null;
-}
-//易断ボタンの表示、非表示
-function maybeShowFinalFortuneButton() {
-    const finalButton = document.getElementById("final-fortune-button");
-    if (finalButton && allVariantsShown()) {
-        finalButton.style.display = "block";
-    }
-}
-
 // ✅ スピナーをふわっと表示（再拡大）
 function showSpinnerAnimated() {
     const spinner = document.getElementById('lottie-spinner');
@@ -147,17 +114,75 @@ function revealResult() {
     result.classList.add('result-reveal');
 }
 
+//総合的な易断ボタン生成の条件
+function allVariantsShown() {
+    return cachedChangedHexagram !== null;
+}
+//易断ボタンの表示、非表示
+function maybeShowFinalFortuneButton() {
+    // 変卦が決定していることを確認（変爻だけでなく変卦）
+    console.log("✅ maybeShowFinalFortuneButton 実行", cachedChangedHexagram);
+    if (!cachedChangedHexagram) return;
 
-// ===== 3. 表示処理 =====
+    let finalButton = document.getElementById("final-fortune-button");
 
-//占う内容が制限文字数を超えた場合の警告
-questionInput.addEventListener("input", () => {
-    if (questionInput.value.length > 50) {
-        warningText.style.display = "block";
+    // ボタンが存在しないなら生成して追加
+    if (!finalButton) {
+        finalButton = document.createElement("button");
+        finalButton.id = "final-fortune-button";
+        finalButton.textContent = "総合的な易断を見る";
+        finalButton.className = "variant-button";
+        finalButton.onclick = displayFinalFortune;
+
+        const result = document.getElementById("result");
+        if (result) {
+            // ✅ 他のボタンの下に配置
+            const variantButtons = document.getElementById("variant-buttons");
+            if (variantButtons && variantButtons.parentNode === result) {
+                result.insertBefore(finalButton, variantButtons.nextSibling);
+            } else {
+                result.appendChild(finalButton);
+            }
+            console.log("✅ ボタンを result に追加しました");
+        } else {
+            console.warn("⚠️ result が存在しません");
+        }
     } else {
-        warningText.style.display = "none";
+        console.log("✅ 既存のボタンを使用");
     }
-});
+
+    // 表示を有効にする
+    finalButton.style.display = "block";
+    console.log("✅ ボタンを表示しました");
+}
+
+//h2テキストのアップデート
+function updateInstructionText(text) {
+    const instructionText = document.getElementById("instructionText");
+    if (instructionText) {
+        instructionText.textContent = text;
+    }
+}
+
+//スピナーと進行状況メッセージを非表示にする
+function hideSpinnerAndProgress() {
+    const spinnerContainer = document.getElementById("lottie-spinner");
+    if (spinnerContainer) spinnerContainer.style.display = "none";
+
+    const progressContainer = document.getElementById("progress-container");
+    if (progressContainer) progressContainer.style.display = "none";
+}
+//補助関数
+function triggerPdfDownload(uri) {
+    const link = document.createElement("a");
+    link.href = uri;
+    link.download = "易断結果.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// ===== 5. 表示処理 =====
 // 卦の表示処理の関数
 function showHexagram(hexagram, isOriginal = false) {
     result.innerHTML = "";
@@ -192,7 +217,7 @@ function showHexagram(hexagram, isOriginal = false) {
         maybeShowFinalFortuneButton();
     }
 }
-//卦の結果を示す構成の関数
+//卦の結果を示すHTML構成の関数
 function createHexagramHTML(hexagram) {
     const description = hexagram.description || "説明は準備中です";
     const formattedDescription = description.replace(/\n/g, "<br>");
@@ -207,7 +232,7 @@ function createHexagramHTML(hexagram) {
       <div class="description-image">⚪︎イメージ：${hexagram.desimage}</div>
     `;
 }
-//「本卦に戻る」のボタン生成関数
+//「本卦に戻る」ボタン生成関数
 function createBackToOriginalButton() {
     const button = document.createElement("button");
     button.textContent = "本卦に戻る";
@@ -248,7 +273,7 @@ function createBackToOriginalButton() {
     };
     return button;
 }
-// VariantButtons表示の関数
+// VariantButtons（4つ）表示の関数
 function showVariantButtons(originalHexagram) {
     // VariantButtonsがすでに表示されていれば削除
     const existing = document.getElementById("variant-buttons");
@@ -311,10 +336,30 @@ function showVariantButtons(originalHexagram) {
     // ボタンの表示を判定して切り替える
     maybeShowFinalFortuneButton();
 }
+//結果ボーダー関数
+function updateResultBorder() {
+    if (result.innerHTML.trim() === "") {
+        result.style.border = "none";
+        result.style.height = "0";
+        result.style.padding = "0";
+        result.style.margin = "0";
+        result.style.background = "transparent";
+        result.style.boxShadow = "none";
+    } else {
+        result.style.border = "1px solid #ccc";
+        result.style.background = "#ffffff";
+        result.style.borderRadius = "10px";
+        result.style.marginTop = "30px";
+        result.style.padding = "20px";
+        result.style.maxWidth = "700px";
+        result.style.marginLeft = "auto";
+        result.style.marginRight = "auto";
+        result.style.boxShadow = "0 0 10px rgba(0,0,0,0.1)";
+        result.style.height = "auto";
+    }
+}
 
-
-
-// ===== 4. 今後の展開関連処理 =====
+// ===== 6. 今後の展開関連処理 =====
 
 // 今後の展開（変爻と変卦）の準備関数
 function prepareForFutureExpansion() {
@@ -327,32 +372,28 @@ function prepareForFutureExpansion() {
     spinnerAnimation.stop();
     isSpinning = false;
 }
-// 今後の展開（変卦）のメイン処理（１回目と２回目以降の分岐）
+// 今後の展開（変卦）のメイン処理（１回目と２回目以降の分岐、易断ボタンを表示）
 function handleFutureExpansion(originalHex) {
-    if (!originalHex) originalHex = originalHexagram; // fallback対策
+    if (!originalHex) originalHex = originalHexagram;
     resetButton.style.display = "none";
 
+    const isFirstTime = !futureExpansionUsed && !cachedChangedHexagram;
 
-    if (!futureExpansionUsed && !cachedChangedHexagram) {
-        // ✅ スマホだけスピナーを再表示（ふわっと登場）
-        if (window.innerWidth <= 768) {
-            showSpinnerAnimated();
-        }
+    // ✅ スマホだけスピナーを再表示（初回のみ）
+    if (isFirstTime && window.innerWidth <= 768) {
+        showSpinnerAnimated();
+    }
+
+    // ✅ 初回 or キャッシュ表示
+    if (isFirstTime) {
         setupSpinnerForChangedHexagram(originalHex);
-
     } else {
-        // ✅ 2回目以降はクリックなしで即表示
         showCachedChangedHexagram(originalHex);
     }
 
-    //1回目のボタン押す（まだ一度もボタンが押されておらず、変卦の結果の一時保存も行われていない場合）
-    if (!futureExpansionUsed && !cachedChangedHexagram) {
-        setupSpinnerForChangedHexagram(originalHex);
-
-    } else {
-        // ✅ 2回目以降はクリックなしで即表示
-        showCachedChangedHexagram(originalHex);
-    }
+    // ✅ バリアント表示記録＆ボタン表示（ここは共通）
+    shownVariantKeys.add("future-expansion");
+    maybeShowFinalFortuneButton();
 }
 //今後の展開ボタン１回目クリック後のセットアップ処理
 function setupSpinnerForChangedHexagram(originalHex) {
@@ -411,9 +452,10 @@ function showCachedChangedHexagram(originalHex) {
         }
         resetButton.style.display = "block";
         showChangedHexagram(cachedChangedHexagram, originalHex);
+        maybeShowFinalFortuneButton();
     } else {
         console.warn("cachedChangedHexagram is null: 変卦が未生成の状態で2回目の展開が呼ばれました。");
-        result.innerHTML = `<div class="error-message">変卦データが存在しません。最初からやり直してください。</div>`;
+        result.innerHTML = `<div class=\"error-message\">変卦データが存在しません。最初からやり直してください。</div>`;
     }
 }
 
@@ -437,7 +479,7 @@ function displayChangedLine(index, hexagram) {
     }
 
     // 結果表示
-    result.innerHTML = `<div class="spinner-progress-message"><strong>変爻は${yaoNames[index]}です</strong></div>`;
+    result.innerHTML = `<div style="text-align:center;"><strong>変爻は${yaoNames[index]}です</strong></div>`;
 
     // ✅ スマホ時にスピナーをふわっと消す
     if (window.innerWidth <= 768) {
@@ -480,6 +522,7 @@ function createFutureButton(originalHexagram, index) {
         cachedChangedHexagram = changedHexagram;
 
         showChangedHexagram(changedHexagram, originalHexagram, true);
+    
     };
     result.appendChild(button);
 }
@@ -493,6 +536,7 @@ function showChangedHexagram(hexagram, originalHexagram, delay = false) {
             if (hexagram) {
                 showHexagram(hexagram);
                 resetButton.style.display = "none";
+                maybeShowFinalFortuneButton(); 
             } else {
                 result.innerHTML = `<div class="error-message">該当する変卦が見つかりませんでした。</div>`;
             }
@@ -505,6 +549,7 @@ function showChangedHexagram(hexagram, originalHexagram, delay = false) {
             result.innerHTML = `<div class="error-message">該当する変卦が見つかりませんでした。</div>`;
         }
     }
+    
 }
 // 爻の陰陽を反転させる関数
 function toggleYinYangAtIndex(index) {
@@ -522,7 +567,7 @@ function toggleYinYangAtIndex(index) {
     line.style.fontWeight = "bold";
 }
 
-// ===== 5. イベントハンドラ =====
+// ===== 7. イベントハンドラ =====
 //占い開始ボタン
 document.getElementById("start-button").addEventListener("click", () => {
     const input = document.getElementById("question-input");
@@ -543,6 +588,15 @@ document.getElementById("start-button").addEventListener("click", () => {
             mainApp.classList.add("show");
         }, 20); // 微遅延で transition を発火させる
     }, 1000); // CSSの transition と同じ時間にする
+});
+
+//占う内容が制限文字数を超えた警告
+questionInput.addEventListener("input", () => {
+    if (questionInput.value.length > 50) {
+        warningText.style.display = "block";
+    } else {
+        warningText.style.display = "none";
+    }
 });
 
 //スピナー処理
@@ -623,6 +677,11 @@ resetButton.addEventListener("click", () => {
     shownVariantKeys.clear();
     selectedHexagram = null;
     originalProgressMessages = [];
+    const finalButton = document.getElementById("final-fortune-button");
+    if (finalButton) finalButton.remove();
+
+    const saveNotice = document.querySelector(".save-notice");
+    if (saveNotice) saveNotice.remove();
 
     // ✅ スピナーと進行状況メッセージを再表示
     const spinnerContainer = document.getElementById("lottie-spinner");
@@ -701,21 +760,7 @@ function displayFinalFortune() {
         }
     }, 1000);
 }
-//h2テキストのアップデート
-function updateInstructionText(text) {
-    const instructionText = document.getElementById("instructionText");
-    if (instructionText) {
-        instructionText.textContent = text;
-    }
-}
-//スピナーと進行状況メッセージを非表示にする
-function hideSpinnerAndProgress() {
-    const spinnerContainer = document.getElementById("lottie-spinner");
-    if (spinnerContainer) spinnerContainer.style.display = "none";
 
-    const progressContainer = document.getElementById("progress-container");
-    if (progressContainer) progressContainer.style.display = "none";
-}
 //総合的な易断の内容
 function generateFortuneSummaryHTML() {
     const reverseHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.reverse);
@@ -839,15 +884,6 @@ function saveCurrentFortuneToLog(pdfUri) {
         saveButton.style.backgroundColor = "#000000";
     }
 }
-//補助関数
-function triggerPdfDownload(uri) {
-    const link = document.createElement("a");
-    link.href = uri;
-    link.download = "易断結果.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
 
 //PDFを保存しますか？というトースト表示
 function showPdfDownloadToast(pdfUri) {
@@ -896,7 +932,6 @@ function showPdfDownloadToast(pdfUri) {
         toast.remove();
     }, 10000);
 }
-
 //易断のPDF化
 function generatePdfFromSummary(callback) {
     const summaryElement = document.querySelector(".fortune-summary");

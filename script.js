@@ -478,8 +478,15 @@ function displayChangedLine(index, hexagram) {
         targetLine.style.fontWeight = "bold";
     }
 
-    // 結果表示
-    result.innerHTML = `<div style="text-align:center;"><strong>変爻は${yaoNames[index]}です</strong></div>`;
+
+
+    // 結果表示(テキストとSVG)
+    result.innerHTML = `
+    <div style="text-align:center;">
+        <strong>変爻は${yaoNames[index]}です</strong>
+
+    </div>
+`;
 
     // ✅ スマホ時にスピナーをふわっと消す
     if (window.innerWidth <= 768) {
@@ -497,10 +504,14 @@ function displayChangedLine(index, hexagram) {
         const yaoText = hexagram.yao_descriptions?.[(index + 1).toString()] || "該当する爻辞が見つかりません。";
         const yaoName = yaoNames[index];
         const title = `第${hexagram.number}卦：${hexagram.name} の ${yaoName}`;
+        const svgPath = `assets/images/hexagram_lines/${hexagram.number}_${index + 1}.svg`;
 
         result.innerHTML = `
             <div class="hexagram-title">${title}</div>
-            <div class="description-text">${yaoText}</div>
+            <div class="description-text-henko">${yaoText}</div>
+                    <div class="hexagram-svg">
+            <img src="${svgPath}" alt="卦象 第${hexagram.number}卦 ${yaoNames[index]}" style="width: 80px; height: auto;"></div>
+        </div>
         `;
         createFutureButton(hexagram, index);
     }, 1500);
@@ -522,7 +533,7 @@ function createFutureButton(originalHexagram, index) {
         cachedChangedHexagram = changedHexagram;
 
         showChangedHexagram(changedHexagram, originalHexagram, true);
-    
+
     };
     result.appendChild(button);
 }
@@ -536,7 +547,7 @@ function showChangedHexagram(hexagram, originalHexagram, delay = false) {
             if (hexagram) {
                 showHexagram(hexagram);
                 resetButton.style.display = "none";
-                maybeShowFinalFortuneButton(); 
+                maybeShowFinalFortuneButton();
             } else {
                 result.innerHTML = `<div class="error-message">該当する変卦が見つかりませんでした。</div>`;
             }
@@ -549,7 +560,7 @@ function showChangedHexagram(hexagram, originalHexagram, delay = false) {
             result.innerHTML = `<div class="error-message">該当する変卦が見つかりませんでした。</div>`;
         }
     }
-    
+
 }
 // 爻の陰陽を反転させる関数
 function toggleYinYangAtIndex(index) {

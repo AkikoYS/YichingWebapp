@@ -1,4 +1,3 @@
-
 /* =========
     main
 =========== */
@@ -11,8 +10,10 @@ h2 {
 /* 占い開始 */
 #question-input {
     width: 90%;
-    max-width: 400px; /* 横幅を抑えめに */
-    height: 5.5em;/* 高さを確保して複数行対応 */
+    max-width: 400px;
+    /* 横幅を抑えめに */
+    height: 5.5em;
+    /* 高さを確保して複数行対応 */
     font-size: 1.1em;
     padding: 10px 14px;
     margin: 12px auto;
@@ -21,10 +22,14 @@ h2 {
     border: 1px solid #ccc;
     box-sizing: border-box;
     font-family: "Helvetica Neue", Arial, sans-serif;
-    resize: none;/* ユーザーによるリサイズを禁止 */
-    overflow-y: auto;/* 必要に応じて縦スクロール */
-    overflow-x: hidden;/* 横スクロールは禁止 */
-    white-space: normal;/* 折り返しを有効に */
+    resize: none;
+    /* ユーザーによるリサイズを禁止 */
+    overflow-y: auto;
+    /* 必要に応じて縦スクロール */
+    overflow-x: hidden;
+    /* 横スクロールは禁止 */
+    white-space: normal;
+    /* 折り返しを有効に */
     line-height: 1.6;
 }
 
@@ -101,9 +106,10 @@ h2 {
     text-align: center;
     font-size: 1.0em;
 }
+
 @media (max-width: 768px) {
-    .spinner-progress-message{
-        font-size:0.9em;
+    .spinner-progress-message {
+        font-size: 0.9em;
     }
 
 }
@@ -131,6 +137,14 @@ h2 {
     margin: 20px auto;
 }
 
+/* SVG画像（<img> 用） */
+.hexagram-svg img {
+    display: block;
+    width: 100px;
+    height: auto;
+    margin: 0 auto 50px;
+}
+
 /*卦の説明文*/
 .description-text {
     font-family: Arial, Helvetica, sans-serif;
@@ -142,6 +156,17 @@ h2 {
     padding-left: 10%;
     padding-right: 10%;
     /* ✅ paddingを幅に含める（これ重要） */
+}
+
+.description-text-henko {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: left;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 /*卦のイメージ*/
@@ -164,7 +189,7 @@ h2 {
 }
 
 /* 占い結果を読み取ってます.... */
-.waiting-message{
+.waiting-message {
     text-align: center;
 }
 
@@ -184,13 +209,14 @@ h2 {
     margin: 0;
     /* ボタン間の隙間は親で調整 */
 }
+
 .variant-button:hover {
     background-color: #0d3643;
 }
 
-#back-to-original-button{
+#back-to-original-button {
     display: block;
-        margin: 30px auto;
+    margin: 30px auto;
 }
 
 /* ================================
@@ -213,7 +239,7 @@ h2 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size:1em;
+    font-size: 1em;
 }
 
 #save-button:hover {
@@ -311,6 +337,7 @@ h2 {
 .fade.show {
     opacity: 1;
 }
+
 /* 保存できますnotice */
 .save-notice {
     margin-top: 12px;

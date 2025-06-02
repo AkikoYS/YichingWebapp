@@ -9,6 +9,12 @@ main {
     margin: 0 auto;
     padding: 2em 1em;
 }
+@media (max-width: 768px) {
+    main{
+        padding:0 1em;
+    }
+}
+
 
 /* 見出し */
 main h1,
@@ -87,72 +93,7 @@ main table {
     margin: 0 auto 1.5em;
     /* ✅ テーブルを中央に */
 }
-/* モバイル表示：カード形式に切り替え */
-@media (max-width: 768px) {
-    .desktop-row {
-            display: none;   }
 
-    main table {
-        border: none;
-    }
-
-    main thead {
-        display: none;
-    }
-
-    main tbody {
-        display: block;
-    }
-
-    main tr.mobile-card {
-        display: block;
-        width: 100%;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 16px;
-        margin-bottom: 16px;
-    }
-
-    main tr.mobile-card td {
-        display: block;
-        width: 100%;
-        padding: 0;
-        border: none;
-    }
-
-    .hexagram-header {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-    }
-
-    .hexagram-name {
-        font-size: 1.5em;
-        font-weight: bold;
-    }
-
-    .hexagram-symbol {
-        font-size: 3em;
-        line-height: 1;
-    }
-
-    .hexagram-info {
-        font-size: 1em;
-        line-height: 1.5;
-    }
-
-    .hexagram-info .label {
-        font-weight: bold;
-        font-size: 0.8em;
-        color: #666;
-        display: inline-block;
-        min-width: 4em;
-        margin-right:1em;
-    }
-}
 
 /* PCでは通常表示 */
 @media (min-width: 769px) {
@@ -160,44 +101,45 @@ main table {
         display: none;
     }
 
-        main th,
-        main td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 5px 10px;
-            line-height: 1.2;
-        }
-    
-        main th {
-            background-color: #f2f2f2;
-            font-size: 0.8em;
-            color: #666;
-            font-weight: bold;
-        }
-    
-        main td {
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-    
-        .bigger-symbol {
-            font-size: 3em;
-        }
-    
-        .name {
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-    
-        .furigana {
-            font-size: 0.7em;
-        }
-    
-        main td:first-child main td:nth-child(4) {
-            min-width: 6em;
-            /* ✅ 横幅を確保 */
-            white-space: nowrap;
-            /* ✅ 折り返さない */   }
+    main th,
+    main td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 5px 10px;
+        line-height: 1.2;
+    }
+
+    main th {
+        background-color: #f2f2f2;
+        font-size: 0.8em;
+        color: #666;
+        font-weight: bold;
+    }
+
+    main td {
+        font-size: 0.9em;
+        font-weight: bold;
+    }
+
+    .bigger-symbol {
+        font-size: 3em;
+    }
+
+    .name {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .furigana {
+        font-size: 0.7em;
+    }
+
+    main td:first-child main td:nth-child(4) {
+        min-width: 6em;
+        /* ✅ 横幅を確保 */
+        white-space: nowrap;
+        /* ✅ 折り返さない */
+    }
 }
 
 /* 画像 */
@@ -230,8 +172,6 @@ main a:hover {
 .hexagram-symbol {
     font-size: 1.5em;
 }
-
-
 
 /* 八卦画像のアニメーション */
 .rotate-on-load {
@@ -331,6 +271,69 @@ main a:hover {
 .toggle-button.alt {
     background-color: #0d3643;
 }
+
+/* モバイル表示：４こずつ並べる */
+@media (max-width: 768px) {
+    .hexagram-header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .hexagram-name {
+        font-size: 1em;
+        margin: 0 auto;
+    }
+
+
+    .hexagram-symbol {
+        font-size: 5em;
+        line-height: 1;
+        margin-top: -12px;
+        margin-bottom: -10px;
+        color: #555;
+        cursor:pointer;
+        transition: color 0.3s ease;
+    }
+
+     .hexagram-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* ✅ 3 → 4列に変更 */
+            gap: 10px;
+            padding: 10px;
+        }
+    
+     .hexagram-card {
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 6px;
+            padding: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+     .hexagram-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* ← 左揃え */
+            gap: 4px;
+        }
+    
+        .hexagram-number {
+            padding-left: 10px;
+            margin-bottom: -10px;
+        }
+    
+        #toggleBtn {
+            display: none;
+            /* ✅ スマホではトグルボタン非表示 */
+
+}
+
 
 /*タグ*/
 .tag-container {

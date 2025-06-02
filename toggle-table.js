@@ -6,8 +6,33 @@ fetch("hexagram.json")
     .then((res) => res.json())
     .then((data) => {
         hexagramData = data;
-        buildHexagramTable();
+
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            renderGridCards(); // ✅ スマホ用カード表示
+        } else {
+            buildHexagramTable(); // ✅ PC用テーブル表示
+        }
     });
+
+//初期化時に画面を見て表示、非表示を切り替え
+document.addEventListener("DOMContentLoaded", () => {
+    const isMobile = window.innerWidth <= 768;
+    const table = document.getElementById("hexTable");
+    const grid = document.getElementById("hex-grid");
+    const toggleBtn = document.getElementById("toggleBtn");
+
+    if (isMobile) {
+        // スマホならテーブル非表示、グリッド表示、トグル非表示
+        if (table) table.style.display = "none";
+        if (grid) grid.style.display = "grid";
+        if (toggleBtn) toggleBtn.style.display = "none";
+    } else {
+        // PCならグリッド非表示（テーブルはデフォルトで表示される）
+        if (grid) grid.style.display = "none";
+        if (toggleBtn) toggleBtn.style.display = "inline-block";
+    }
+});
 
 // 🔠 卦配列（number)をUnicode六十四卦に変換（HTMLエスケープ）
 function getHexagramSymbol(number) {
@@ -81,6 +106,33 @@ function toggleHexagramOrder() {
     document.getElementById("toggleBtn").textContent =
         isHexagramOrder ? "八卦構成順に表示" : "卦番号順に表示";
     buildHexagramTable();
+}
+//レスポンシブ対応
+function renderGridCards() {
+    const hexGrid = document.getElementById("hex-grid");
+    if (!hexGrid || !hexagramData) return;
+
+    hexGrid.innerHTML = ""; // 一度リセット
+
+    for (let i = 0; i < 64; i++) {
+        const hex = hexagramData.find(h => h.number === i + 1);
+        if (!hex) continue;
+
+        const symbol = getHexagramSymbol(hex.number);
+        const card = document.createElement("div");
+        card.className = "hexagram-card";
+        card.innerHTML = `
+        <div class="hexagram-content">
+        <div class="hexagram-number">${hex.number}</div>
+        <div class="hexagram-symbol hex-link" data-name="${hex.name}" style="font-size:5em;">
+    ${symbol}</div>
+         <div class="hexagram-name"> 
+         <a href="#" class="hex-link" data-name="${hex.name}"> ${hex.name}</a>
+        </div></div>
+      `;
+        hexGrid.appendChild(card);
+    }
+    setupModalEvents(); // ✅ スマホでもモーダル機能を有効に
 }
 
 // 📦 モーダル表示処理

@@ -1,8 +1,5 @@
 /* note-style.css */
 
-
-
-
 /* メインコンテンツ */
 main {
     max-width: 720px;
@@ -12,6 +9,9 @@ main {
 @media (max-width: 768px) {
     main{
         padding:0 1em;
+    }
+    main h2{
+        margin-top:0.5em !important;
     }
 }
 
@@ -201,7 +201,6 @@ main a:hover {
     margin-right: auto;
     display: table;
 }
-
 .hexagram-table th,
 .hexagram-table td {
     border: 1px solid #999;
@@ -209,7 +208,6 @@ main a:hover {
     padding: 2px;
     font-size: 1em;
 }
-
 .header-top {
     background-color: #ffd700;
     vertical-align: middle;
@@ -217,14 +215,12 @@ main a:hover {
     line-height: 50px;
     font-size: 1em;
 }
-
 .header-side {
     background-color: #f9cbd3;
     text-align: center;
     font-size: 2em;
     line-height: 50px;
 }
-
 .hexagram {
     font-family: monospace;
     font-size: 5em;
@@ -237,7 +233,6 @@ main a:hover {
     position: relative;
     background: linear-gradient(to top left, transparent 49%, #999 49.5%, #999 50.5%, transparent 51%);
 }
-
 .corner-cell .upper-label {
     position: absolute;
     top: 6px;
@@ -245,7 +240,6 @@ main a:hover {
     font-size: 0.9em;
     color: #333;
 }
-
 .corner-cell .lower-label {
     position: absolute;
     bottom: 5px;
@@ -267,13 +261,15 @@ main a:hover {
     margin: 1em auto;
     transition: background-color 0.3s ease;
 }
-
 .toggle-button.alt {
     background-color: #0d3643;
 }
 
-/* モバイル表示：４こずつ並べる */
+/* 六十四卦モバイル表示：４こずつ並べる */
 @media (max-width: 768px) {
+    .hide-on-mobile {
+            display: none !important;   }
+
     .hexagram-header {
         display: flex;
         justify-content: flex-start;
@@ -281,13 +277,10 @@ main a:hover {
         gap: 10px;
         margin-bottom: 12px;
     }
-
     .hexagram-name {
         font-size: 1em;
         margin: 0 auto;
     }
-
-
     .hexagram-symbol {
         font-size: 5em;
         line-height: 1;
@@ -297,7 +290,6 @@ main a:hover {
         cursor:pointer;
         transition: color 0.3s ease;
     }
-
      .hexagram-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -305,7 +297,6 @@ main a:hover {
             gap: 10px;
             padding: 10px;
         }
-    
      .hexagram-card {
             border: 1px solid #ccc;
             background: white;
@@ -313,8 +304,18 @@ main a:hover {
             padding: 5px;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.15s ease;
+            cursor: pointer;
         }
-    
+        .hexagram-card:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);    
+             }
+    .tap-hint {
+            font-size: 0.85em;
+            color: #888;
+            margin-left: 4px;        
+         }
      .hexagram-content {
             display: flex;
             flex-direction: column;
@@ -322,19 +323,14 @@ main a:hover {
             /* ← 左揃え */
             gap: 4px;
         }
-    
         .hexagram-number {
             padding-left: 10px;
             margin-bottom: -10px;
-        }
-    
+        }   
         #toggleBtn {
             display: none;
             /* ✅ スマホではトグルボタン非表示 */
-
 }
-
-
 /*タグ*/
 .tag-container {
     margin-top: 2em;
@@ -344,7 +340,6 @@ main a:hover {
     flex-wrap: wrap;
     gap: 0.5em;
 }
-
 .tag {
     display: inline-block;
     padding: 0.4em 0.8em;
@@ -356,12 +351,10 @@ main a:hover {
     font-size: 0.9em;
     transition: background-color 0.3s, color 0.3s;
 }
-
 .tag:hover {
     background-color: #eee;
     color: #000;
 }
-
 /*リストの卦名*/
 .hex-link {
     font-size: 1em;
@@ -369,7 +362,6 @@ main a:hover {
     color: black;
     text-decoration: none;
 }
-
 .hex-link:hover {
     text-decoration: underline;
 }
@@ -383,7 +375,6 @@ main a:hover {
         padding: 1em;
     }
 }
-
 .modal {
     display: none;
     position: fixed;
@@ -400,11 +391,9 @@ main a:hover {
     padding: 1em;
     box-sizing: border-box;
 }
-
 .hidden {
     display: none;
 }
-
 .modal-content {
     background: #fff;
     padding: 1.5em;
@@ -418,7 +407,6 @@ main a:hover {
     font-size: 1rem;
     line-height: 1.6;
 }
-
 .close {
     position: absolute;
     top: 0.5em;
@@ -427,15 +415,13 @@ main a:hover {
     cursor: pointer;
     color: #666;
 }
-
 .close:hover {
     color: #d00;
 }
-
 .modal .close {
     font-size: 1.8em;
     position: absolute;
     top: 0.5em;
     right: 0.8em;
     cursor: pointer;
-}
+}}

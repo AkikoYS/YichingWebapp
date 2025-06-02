@@ -123,11 +123,11 @@ function renderGridCards() {
         card.className = "hexagram-card";
         card.innerHTML = `
         <div class="hexagram-content">
-        <div class="hexagram-number">${hex.number}</div>
+        <div class="hexagram-number">第${hex.number}卦</div>
         <div class="hexagram-symbol hex-link" data-name="${hex.name}" style="font-size:5em;">
     ${symbol}</div>
          <div class="hexagram-name"> 
-         <a href="#" class="hex-link" data-name="${hex.name}"> ${hex.name}</a>
+         <a href="#" class="hex-link" data-name="${hex.name}"> ${hex.name}<span class="tap-hint">📖</span></a>
         </div></div>
       `;
         hexGrid.appendChild(card);

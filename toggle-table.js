@@ -127,7 +127,7 @@ function renderGridCards() {
         <div class="hexagram-symbol hex-link" data-name="${hex.name}" style="font-size:5em;">
     ${symbol}</div>
          <div class="hexagram-name"> 
-         <a href="#" class="hex-link" data-name="${hex.name}"> ${hex.name}<span class="tap-hint">📖</span></a>
+         <a href="#" class="hex-link" data-name="${hex.name}"> ${hex.name}</a>
         </div></div>
       `;
         hexGrid.appendChild(card);

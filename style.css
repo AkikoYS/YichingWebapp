@@ -22,14 +22,10 @@ h2 {
     border: 1px solid #ccc;
     box-sizing: border-box;
     font-family: "Helvetica Neue", Arial, sans-serif;
-    resize: none;
-    /* ユーザーによるリサイズを禁止 */
-    overflow-y: auto;
-    /* 必要に応じて縦スクロール */
-    overflow-x: hidden;
-    /* 横スクロールは禁止 */
-    white-space: normal;
-    /* 折り返しを有効に */
+    resize: none;/* ユーザーによるリサイズを禁止 */
+    overflow-y: auto;/* 必要に応じて縦スクロール */
+    overflow-x: hidden;/* 横スクロールは禁止 */
+    white-space: normal;/* 折り返しを有効に */
     line-height: 1.6;
 }
 
@@ -39,7 +35,7 @@ h2 {
 }
 
 #start-button {
-    background-color: #b50b0b;
+    background-color: #c9302c;
     color: #fff;
     padding: 10px 20px;
     font-size: 1em;
@@ -52,11 +48,11 @@ h2 {
 }
 
 #start-button:hover {
-    background-color: #0c0113;
+    background-color: #333;
 }
 
 #start-button:active {
-    background-color: #2a0055;
+    background-color: #310066;
 }
 
 #result {
@@ -93,7 +89,7 @@ h2 {
 
 .custom-line {
     text-align: center;
-    color: red;
+    color: #c9302c;
     display: block;
 }
 
@@ -113,7 +109,6 @@ h2 {
     }
 
 }
-
 
 /*卦のタイトル*/
 .hexagram-title {
@@ -234,7 +229,7 @@ h2 {
 
 /*ログを保存するボタン*/
 #save-button {
-    background-color: #b50b0b;
+    background-color: #c9302c;
     color: white;
     border: none;
     border-radius: 5px;
@@ -267,7 +262,7 @@ h2 {
    総合易断ボタンのスタイル
 ================================= */
 #final-fortune-button {
-    background-color: #b50b0b;
+    background-color: #c9302c;
     /* 赤みのある紫 */
     color: white;
     font-weight: bold;
@@ -281,7 +276,7 @@ h2 {
 }
 
 #final-fortune-button:hover {
-    background-color: #0c0113;
+    background-color: #333;
 }
 
 #final-fortune-button:active {
@@ -300,7 +295,7 @@ h2 {
     border: none;
     border-radius: 30px;
     padding: 10px 30px 30px;
-    color: #2c2c2c;
+    color: #333;
     line-height: 1.7;
     font-size: 1em;
     max-width: 680px;
@@ -311,7 +306,7 @@ h2 {
 .fortune-summary h3 {
     font-size: 1.3em;
     margin-bottom: 16px;
-    color: #4B0082;
+    color: #310066;
     text-align: center;
 }
 

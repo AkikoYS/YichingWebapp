@@ -1,6 +1,12 @@
 
-import { auth, db, firebaseReady } from "./firebase.js";
+import { auth, db, firebaseReady, onAuthStateChanged, provider } from "./firebase.js";
 import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// firebaseReady.then(() => {
+//     console.log("🔥 Firebase 初期化完了。ログイン状態:", auth.currentUser);
+//     // ここでボタン生成などを呼ぶ
+// });
 
 // ============1 初期設定 ===========
 //状況管理用関数
@@ -21,6 +27,20 @@ let finalFortuneReady = false;// ← 総合的な易断ボタン表示の可否�
 let currentPdfUri = null;
 let saveButton = null;
 let userQuestion = "";
+let currentUser = null;
+
+// Firebase 初期化後にユーザー状態を監視
+firebaseReady.then(() => {
+    onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        if (user) {
+            console.log("✅ ログイン中:", user.email || "匿名ユーザー");
+        } else {
+            console.log("🕳 未ログイン状態です");
+        }
+    });
+});
+
 
 // ============ 2. DOM取得 ===========
 const result = document.getElementById("result");
@@ -45,7 +65,6 @@ const spinnerAnimation = lottie.loadAnimation({
 });
 
 // ============4 ユーティリティ関数（ほかの処理をたすける） ===========
-
 
 //進行状況メッセージを初期化
 function initializeProgressMessages() {
@@ -169,7 +188,6 @@ function updateInstructionText(text) {
         instructionText.textContent = text;
     }
 }
-
 //スピナーと進行状況メッセージを非表示にする
 function hideSpinnerAndProgress() {
     const spinnerContainer = document.getElementById("lottie-spinner");
@@ -186,6 +204,82 @@ function triggerPdfDownload(uri) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+//トースト表示
+function showToast(message, options = {}) {
+    const {
+        id = null,
+        duration = 4000,
+        isWarning = false,
+        buttonText = null,
+        buttonCallback = null
+    } = options;
+
+    if (id && document.getElementById(id)) return;
+
+    const toast = document.createElement("div");
+    if (id) toast.id = id;
+
+    toast.classList.add("custom-toast");
+    toast.style.background = isWarning ? "#ffc700" : "#666666";
+    toast.style.color = "#fff";
+
+    const messageElem = document.createElement("span");
+    messageElem.textContent = message;
+    toast.appendChild(messageElem);
+
+    if (buttonText && typeof buttonCallback === "function") {
+        const button = document.createElement("button");
+        button.textContent = buttonText;
+        button.style.padding = "6px 12px";
+        button.style.border = "none";
+        button.style.borderRadius = "4px";
+        button.style.background = "#4caf50";
+        button.style.color = "#fff";
+        button.style.cursor = "pointer";
+        button.onclick = () => {
+            buttonCallback();
+            toast.remove();
+        };
+        toast.appendChild(button);
+    }
+
+    // ✅ トーストコンテナに追加（なければ作る）
+    let container = document.getElementById("toast-container");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "toast-container";
+        container.style.position = "fixed";
+        container.style.bottom = "20px";
+        container.style.right = "20px";
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.gap = "12px";
+        container.style.zIndex = "9999";
+        document.body.appendChild(container);
+    }
+
+    // スタイル調整
+    toast.style.padding = "12px 16px";
+    toast.style.borderRadius = "8px";
+    toast.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+    toast.style.fontSize = "0.95em";
+    toast.style.display = "flex";
+    toast.style.alignItems = "center";
+    toast.style.gap = "12px";
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.3s ease";
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.style.opacity = "1";
+    });
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
 }
 
 // ===== 5. 表示処理 =====
@@ -480,17 +574,14 @@ function displayChangedLine(index, hexagram) {
     // 対象の爻を赤く太字にする
     const targetLine = document.getElementById(`progress-line-${index}`);
     if (targetLine) {
-        targetLine.style.color = "red";
+        targetLine.style.color = "#c9302c";
         targetLine.style.fontWeight = "bold";
     }
-
-
 
     // 結果表示(テキストとSVG)
     result.innerHTML = `
     <div style="text-align:center;">
         <strong>変爻は${yaoNames[index]}です</strong>
-
     </div>
 `;
 
@@ -511,6 +602,11 @@ function displayChangedLine(index, hexagram) {
         const yaoName = yaoNames[index];
         const title = `第${hexagram.number}卦：${hexagram.name} の ${yaoName}`;
         const svgPath = `assets/images/hexagram_lines/${hexagram.number}_${index + 1}.svg`;
+        // ✅ ここで画像の読み込み確認
+        const img = new Image();
+        img.src = svgPath;
+        img.onload = () => console.log("✅ 画像読み込み成功:", svgPath);
+        img.onerror = () => console.error("❌ 画像読み込み失敗:", svgPath);
 
         result.innerHTML = `
             <div class="hexagram-title">${title}</div>
@@ -580,7 +676,7 @@ function toggleYinYangAtIndex(index) {
     }
 
     // スタイルは維持（赤・太字のまま）
-    line.style.color = "red";
+    line.style.color = "#c9302c";
     line.style.fontWeight = "bold";
 }
 
@@ -678,7 +774,11 @@ spinnerContainer.addEventListener("click", () => {
 resetButton.style.display = "none";
 resetButton.addEventListener("click", () => {
     if (saveButton) {
-        saveButton.style.display = "none"; // ✅ ログ保存ボタンを非表示に
+        saveButton.disabled = false;
+        saveButton.style.opacity = 1;
+        saveButton.textContent = "▶️ 出た卦をログに保存";
+        saveButton.style.backgroundColor = "";
+        saveButton.style.display = "none"; // 非表示にするなら最後に
     }
     document.getElementById("progress-container").innerHTML = '';
     result.innerHTML = "";
@@ -720,6 +820,7 @@ resetButton.addEventListener("click", () => {
     // ✅ 表示を最初の画面に戻す
     const questionSection = document.getElementById("question-section");
     const mainApp = document.getElementById("main-app");
+
 
     // フェードアウト mainApp
     mainApp.classList.remove("show");
@@ -800,7 +901,7 @@ function generateFortuneSummaryHTML() {
         </div>
     `;
 }
-//結果をログで保存ボタンを生成
+//結果保存ボタンを生成、ログインしてなければトースト表示
 function renderSaveButton(pdfUri) {
     // PDF URI を保存しておく（あとで再利用できる）
     currentPdfUri = pdfUri;
@@ -816,13 +917,35 @@ function renderSaveButton(pdfUri) {
     saveButton.style.marginRight = "10px";
     saveButton.style.padding = "10px 20px";
 
-    saveButton.onclick = () => {
-        saveCurrentFortuneToLog(currentPdfUri); // pdfUri は null でも問題なし
-        const instructionText = document.getElementById("instructionText");
-        if (instructionText) {
-            instructionText.textContent = "";
+    //googleにログイン
+    saveButton.onclick = async () => {
+        await firebaseReady; // Firebase 初期化を待つ
+
+        if (auth.currentUser) {
+            saveCurrentFortuneToLog(currentPdfUri);
+        } else {
+            showToast("ログを保存するにはGoogleログインが必要です", {
+                id: "login-toast",
+                isWarning: true,
+                buttonText: "🔐 ログイン",
+                buttonCallback: async () => {
+                    try {
+                        await signInWithPopup(auth, provider);
+                        console.log("✅ Googleログイン成功");
+                    } catch (error) {
+                        console.error("❌ Googleログイン失敗:", error);
+                        showToast("❌ Googleログインに失敗しました", {
+                            isWarning: true,
+                            duration: 5000
+                        });
+                    }
+                },
+                duration: 10000
+            });
         }
-    };
+      };
+
+
     const resetButton = document.getElementById("reset-button");
     if (resetButton && resetButton.parentNode) {
         resetButton.parentNode.style.textAlign = "center";
@@ -830,10 +953,14 @@ function renderSaveButton(pdfUri) {
         resetButton.style.display = "inline-block";
     }
 }
-//結果保存ログ（ローカル、firebase）
+//結果保存ログ（Firebase）
 function saveCurrentFortuneToLog(pdfUri) {
     if (!originalHexagram || !cachedChangedHexagram || cachedChangedLineIndex === null) {
-        alert("保存に必要な情報がそろっていません。");
+        showToast("保存に必要な情報がそろっていません。", {
+            id: "incomplete-toast",
+            isWarning: true,
+            duration: 5000
+        });
         return;
     }
 
@@ -886,16 +1013,13 @@ function saveCurrentFortuneToLog(pdfUri) {
         pdfStatus: pdfUri ? "✅ PDFダウンロード済み" : "未ダウンロード"
     };
 
-    // ローカルに保存
-    const logs = JSON.parse(localStorage.getItem("fortuneLogs") || "[]");
-    logs.push(logEntry);
-    localStorage.setItem("fortuneLogs", JSON.stringify(logs));
+    // // ローカルに保存
+    // const logs = JSON.parse(localStorage.getItem("fortuneLogs") || "[]");
+    // logs.push(logEntry);
+    // localStorage.setItem("fortuneLogs", JSON.stringify(logs));
 
-    // ✅ Firestore にも保存
-    console.log("🧪 auth:", auth);
-    console.log("🧪 auth.currentUser:", auth?.currentUser);
-    console.log("🧪 db:", db);
-    if (typeof auth !== "undefined" && auth.currentUser && typeof db !== "undefined") {
+    // ✅ Firestore にも保存（すでにGoogleログインしていたらログインアラートなし）
+    if (auth?.currentUser && db) {
         const firestoreEntry = {
             ...logEntry,
             uid: auth.currentUser.uid
@@ -904,14 +1028,20 @@ function saveCurrentFortuneToLog(pdfUri) {
         addDoc(collection(db, "logs"), firestoreEntry)
             .then((docRef) => {
                 console.log("✅ Firestore に保存成功:", docRef.id);
+                showToast("✅ ログが保存されました", { duration: 4000 });
             })
             .catch((error) => {
                 console.error("❌ Firestore 保存エラー:", error);
+                showToast("❌ Firestore 保存に失敗しました", { isWarning: true });
             });
     } else {
-        console.warn("⚠️ Firebase 認証が完了していません");
+        showToast("⚠️ Googleにログインしてください", {
+            id: "login-toast",
+            isWarning: true,
+            duration: 5000
+        });
+        return;
     }
-
     // ✅ ボタンを無効化・状態表示変更
     const saveButton = document.getElementById("save-button");
     if (saveButton) {
@@ -921,53 +1051,14 @@ function saveCurrentFortuneToLog(pdfUri) {
         saveButton.style.backgroundColor = "#000000";
     }
 }
-
 //PDFを保存しますか？というトースト表示
 function showPdfDownloadToast(pdfUri) {
-    // すでに表示中なら何もしない
-    if (document.getElementById("pdf-toast")) return;
-
-    const toast = document.createElement("div");
-    toast.id = "pdf-toast";
-    toast.style.position = "fixed";
-    toast.style.bottom = "20px";
-    toast.style.right = "20px";
-    toast.style.background = "#f9f6f1";
-    toast.style.border = "1px solid #ccc";
-    toast.style.padding = "14px 18px";
-    toast.style.borderRadius = "8px";
-    toast.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
-    toast.style.zIndex = "9999";
-    toast.style.fontSize = "0.95em";
-    toast.style.display = "flex";
-    toast.style.alignItems = "center";
-    toast.style.gap = "12px";
-
-    const message = document.createElement("span");
-    message.textContent = "易断結果をPDFにできます";
-
-    const button = document.createElement("button");
-    button.textContent = "📄 ダウンロード";
-    button.style.padding = "6px 12px";
-    button.style.border = "none";
-    button.style.borderRadius = "4px";
-    button.style.background = "#4caf50";
-    button.style.color = "white";
-    button.style.cursor = "pointer";
-
-    button.onclick = () => {
-        triggerPdfDownload(pdfUri);
-        toast.remove();
-    };
-
-    toast.appendChild(message);
-    toast.appendChild(button);
-    document.body.appendChild(toast);
-
-    // 自動で5秒後に消える（手動ダウンロードしても消える）
-    setTimeout(() => {
-        toast.remove();
-    }, 10000);
+    showToast("易断結果をPDFにできます", {
+        id: "pdf-toast",
+        duration: 10000,
+        buttonText: "📄 ダウンロード",
+        buttonCallback: () => triggerPdfDownload(pdfUri)
+    });
 }
 //易断のPDF化
 function generatePdfFromSummary(callback) {
@@ -996,7 +1087,7 @@ function generatePdfFromSummary(callback) {
             }
         });
 }
-
+//firebaseの呼び込み
 firebaseReady.then(() => {
     console.log("🔥 Firebase 準備完了");
 

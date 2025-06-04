@@ -31,12 +31,13 @@ main,
     padding: 14px 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
+    position: relative;
+    z-index: 1000;
 }
 
 .title-container {
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 10px 0;
 }
 
 .title-svg {
@@ -66,12 +67,6 @@ main,
 .nav-link:hover {
     color: #b50b0b;
 }
-
-.hamburger {
-    display: none;
-}
-
-/* 現在ページにいるリンク */
 .nav-link.active {
     cursor: default;
     pointer-events: none;
@@ -90,45 +85,99 @@ main,
     background-color: black;
 }
 
+/*googleログイン*/
+.login-container {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index:1000;
+}
+
+.auth-button {
+    display:flex;
+    align-items:center;
+    background: none;
+    border: none;
+    font-size: 0.9em;
+    color: #333;
+    cursor: pointer;
+    padding: 6px 10px;
+    transition: background 0.3s;
+}
+.auth-button:hover {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+/* スマホ用googleアイコン非表示 */
+.auth-icon-container {
+    display: none;
+}
+/* テキストとして見せる「Sign in」状態 */
+.auth-icon-container.signin-text::before {
+    content: "Sign in";
+    font-family:"Roboto", sans-serif;
+    font-size: 14px;
+    color: #5f6368;
+    font-weight:500;
+    letter-spacing: 0.25px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  .auth-icon-container.signin-text img {
+    display: none;
+  }
+
+
+.auth-icon{
+    width:36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.auth-icon:hover{
+   transform: scale(1.05);
+}
+
 /* スマホハンバーガー */
 .hamburger {
-    width: 32px;
-    height: 24px;
+    width: 36px;
+    height: 36px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap:5px;
     position: relative;
     cursor: pointer;
-    display: none;
-    /* ← 表示はスマホだけ */
     z-index: 1000;
     transition: transform 0.3s ease;
 }
 
 .hamburger span {
-    display: block;
-    position: absolute;
-    height: 3px;
-    width: 100%;
+    height: 4px;
     background: #333;
     border-radius: 2px;
-    opacity: 1;
-    left: 0;
-    transform: rotate(0deg);
     transition: all 0.3s ease;
+    position:absolute;
+    width:100%;
+    transform-origin: center center;
 }
 
 .hamburger span:nth-child(1) {
-    top: 0px;
-}
-
+    top: 0px;}
 .hamburger span:nth-child(2) {
-    top: 10px;
-}
-
+    top: 10px;}
 .hamburger span:nth-child(3) {
-    top: 20px;
-}
+    top: 20px;}
 
 .hamburger.open span:nth-child(1) {
-    top: 10px;
+    top: 16px;
     transform: rotate(45deg);
 }
 
@@ -137,18 +186,19 @@ main,
 }
 
 .hamburger.open span:nth-child(3) {
-    top: 10px;
+    top: 16px;
     transform: rotate(-45deg);
 }
 
 /* スマホ表示対応 */
 @media (max-width: 768px) {
+    .login-container {
+        display: none !important; /* ← これを追加 */
+    }
     .main-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: relative;
-        z-index: 1000;
         padding: 0 10px;
     }
 
@@ -159,12 +209,26 @@ main,
 
     .title-svg {
         width: 180px !important;
-        height: auto;
+    }
+    .auth-icon-container {
         display: block;
+      }
+
+    .auth-hamburger-wrapper{
+        position:absolute;
+        display: flex;
+        gap:10px;
+        align-items: center;
+        position: absolute;
+        right: 12px;
+        transform: translateY(-50%);
+        top:50%;
+        z-index:1001;
     }
 
+
     .hamburger {
-        display: block !important;
+        display: flex;
     }
 
     .nav-menu {
@@ -182,7 +246,7 @@ main,
     }
 
     .nav-menu.show {
-        display: block !important;
+        /* display: block !important; */
         max-height: 500px;/* 中にある項目の高さ以上に */
         opacity: 1;
     }
@@ -196,7 +260,7 @@ main,
     }
 
     .nav-menu li {
-        margin: 30px 100px;
+        margin: 30px 50px;
     }
 
     .nav-link{

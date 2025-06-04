@@ -18,7 +18,8 @@ main h3 {
     margin-top: 2em;
     margin-bottom: 1em;
     line-height: 1.4;
-    color: #111;
+    color: #0c0113;
+
 }
 
 main h1 {
@@ -64,12 +65,12 @@ main blockquote {
     color: #666;
     margin: 1.5em 0;
     font-style: italic;
-    background-color: #f9f9f9;
+    background-color: #f9f8f6;
 }
 
 /* コードブロック */
 main pre {
-    background-color: #f4f4f4;
+    background-color: #f9f8f6;
     padding: 1em;
     overflow-x: auto;
     font-family: monospace;
@@ -92,7 +93,7 @@ main strong {
 
 main a {
     font-size: 1em;
-    color: #1e90ff;
+    color: #007acc;
     text-decoration: none;
     transition: text-decoration 0.2s;
 }
@@ -175,7 +176,7 @@ main a:hover {
 .toggle-button {
     padding: 8px 18px;
     font-size: 1em;
-    background-color: #b50b0b;
+    background-color: #c9302c;
     color: white;
     border: none;
     border-radius: 5px;
@@ -213,7 +214,7 @@ main a:hover {
 }
 
 .tag:hover {
-    background-color: #eee;
+    background-color: #fff;
     color: #000;
 }
 
@@ -289,7 +290,7 @@ main a:hover {
 ------------------------------ */
 .hex-link {
     font-size: 1em;
-            color: black;
+            color: #0c0113;
             text-decoration: none;
         }
     

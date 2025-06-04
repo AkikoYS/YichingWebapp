@@ -1,3 +1,7 @@
+
+import { auth, db, firebaseReady } from "./firebase.js";
+import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 // ============1 初期設定 ===========
 //状況管理用関数
 let isSpinning = false; // 回転中かどうか
@@ -12,9 +16,11 @@ let cachedChangedHexagram = null;//変爻の一時保存
 let cachedChangedLineIndex = null; // ✅ 追加: 変爻のインデックス
 let shownVariantKeys = new Set();  // ✅ 追加: バリアント表示履歴
 let originalProgressMessages = [];//本卦の進行状況メッセージの保存
+let currentRotation = 0;
 let finalFortuneReady = false;// ← 総合的な易断ボタン表示の可否管理
 let currentPdfUri = null;
 let saveButton = null;
+let userQuestion = "";
 
 // ============ 2. DOM取得 ===========
 const result = document.getElementById("result");
@@ -771,7 +777,6 @@ function displayFinalFortune() {
         }
     }, 1000);
 }
-
 //総合的な易断の内容
 function generateFortuneSummaryHTML() {
     const reverseHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.reverse);
@@ -825,7 +830,7 @@ function renderSaveButton(pdfUri) {
         resetButton.style.display = "inline-block";
     }
 }
-//結果保存ログ
+//結果保存ログ（ローカル、firebase）
 function saveCurrentFortuneToLog(pdfUri) {
     if (!originalHexagram || !cachedChangedHexagram || cachedChangedLineIndex === null) {
         alert("保存に必要な情報がそろっていません。");
@@ -881,10 +886,31 @@ function saveCurrentFortuneToLog(pdfUri) {
         pdfStatus: pdfUri ? "✅ PDFダウンロード済み" : "未ダウンロード"
     };
 
-    // ログ配列を更新
+    // ローカルに保存
     const logs = JSON.parse(localStorage.getItem("fortuneLogs") || "[]");
     logs.push(logEntry);
     localStorage.setItem("fortuneLogs", JSON.stringify(logs));
+
+    // ✅ Firestore にも保存
+    console.log("🧪 auth:", auth);
+    console.log("🧪 auth.currentUser:", auth?.currentUser);
+    console.log("🧪 db:", db);
+    if (typeof auth !== "undefined" && auth.currentUser && typeof db !== "undefined") {
+        const firestoreEntry = {
+            ...logEntry,
+            uid: auth.currentUser.uid
+        };
+
+        addDoc(collection(db, "logs"), firestoreEntry)
+            .then((docRef) => {
+                console.log("✅ Firestore に保存成功:", docRef.id);
+            })
+            .catch((error) => {
+                console.error("❌ Firestore 保存エラー:", error);
+            });
+    } else {
+        console.warn("⚠️ Firebase 認証が完了していません");
+    }
 
     // ✅ ボタンを無効化・状態表示変更
     const saveButton = document.getElementById("save-button");
@@ -971,4 +997,15 @@ function generatePdfFromSummary(callback) {
         });
 }
 
+firebaseReady.then(() => {
+    console.log("🔥 Firebase 準備完了");
 
+    const saveButton = document.getElementById("save-button");
+    if (saveButton) {
+        saveButton.addEventListener("click", () => {
+            generatePdfFromSummary((pdfUri) => {
+                saveCurrentFortuneToLog(pdfUri);
+            });
+        });
+    }
+});

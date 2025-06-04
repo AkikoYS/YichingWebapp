@@ -297,22 +297,5 @@ main a:hover {
     text-decoration: underline;
         }
         
-/* ------------------------------
-   アニメーション（八卦画像）
------------------------------- */
-.rotate-on-load {
-    animation: spin 4s ease-out forwards;
-    display: block;
-    margin: 0 auto;
-}
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
 
-    to {
-        transform: rotate(360deg);
-        /* 3回転 */
-    }
-}
 

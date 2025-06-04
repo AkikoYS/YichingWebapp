@@ -1,6 +1,13 @@
 /* =============
 ログ画面
 ============== */
+
+h2 {
+    font-size: 1.5em;
+    border-left: 4px solid #ccc;
+    padding-left: 0.5em;
+}
+
 /* ログ画面の文字 */
 #log-table {
     font-size: 0.85em;
@@ -36,14 +43,25 @@
     cursor: pointer;
 }
 
-table {
-    width: 100%;
+/*--------
+表
+-----------*/
+.log-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* iOSでスムーズにスクロール */
+    margin-bottom: 1em;
+  }
+
+
+#log-table {
+    min-width: 900px;
     border-collapse: collapse;
+    width:100%;
     margin-top: 30px;
 }
 
-th,
-td {
+#log-table th,
+#log-table td {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;

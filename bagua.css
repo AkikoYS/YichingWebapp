@@ -1,6 +1,32 @@
+/* ------------------------------
+   アニメーション（八卦画像）
+------------------------------ */
+.rotate-on-load {
+    animation: spin 4s ease-out forwards;
+    display: block;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .rotate-on-load {
+        display: none;
+    }
+}
+
 /*---------------
 八卦カード／リストのcss
 -------------------*/
+
 /* 八卦シンボルの文字サイズ拡大 */
 .hexagram-symbol {
     font-size: 1.5em;
@@ -61,67 +87,75 @@ main table {
 }
 
 /* モバイル対応 */
-@media (max-width: 768px){
+@media (max-width: 768px) {
     .desktop-row {
-    display: none;
-}
-main table {
-    border: none;
-}
-main thead {
-    display: none;
-}
-main tbody {
-    display: block;
-}
-.mobile-card {
-    display: block;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin: 1em 0;
-    padding: 1em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-.bagua-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    min-height: 90px;
-    padding-right: 220px;
-}
+        display: none;
+    }
 
-.bagua-info {
-    margin-top: 1em;
-    padding-left:30px;
-    font-size: 0.9em;
-    line-height: 1.5;
-    color: #444;
-}
+    main table {
+        border: none;
+    }
 
-.bagua-info .label {
-    font-weight: bold;
-    font-size: 0.8em;
-    color: #222;
-}
+    main thead {
+        display: none;
+    }
 
-.bagua-name img {
-    padding-left:10px;
-    width: 90px;
-    height: auto;
-    display: block; }
+    main tbody {
+        display: block;
+    }
 
-.bagua-symbol {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 90px;
-    height: auto;
-    display: block;   }    
+    .mobile-card {
+        display: block;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 1em 0;
+        padding: 1em;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-.bagua-symbol img {
-    width: 100%;
-    height: auto;
-    display: block;}
+    .bagua-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        min-height: 90px;
+        padding-right: 220px;
+    }
+
+    .bagua-info {
+        margin-top: 1em;
+        padding-left: 30px;
+        font-size: 0.9em;
+        line-height: 1.5;
+        color: #444;
+    }
+
+    .bagua-info .label {
+        font-weight: bold;
+        font-size: 0.8em;
+        color: #222;
+    }
+
+    .bagua-name img {
+        padding-left: 10px;
+        width: 90px;
+        height: auto;
+        display: block;
+    }
+
+    .bagua-symbol {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 90px;
+        height: auto;
+        display: block;
+    }
+
+    .bagua-symbol img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
 }

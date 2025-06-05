@@ -218,13 +218,29 @@ main a:hover {
     color: #000;
 }
 
+/* ---------
+スマホ対応 
+----------*/
 @media (max-width: 768px) {
+    .h2-mobile{
+        margin-top: 0;
+    }
 
-    .hide-on-mobile {
+    .hero-page {
         display: none !important;
     }
 
-    .hexagram-header {
+    main ul,
+main ol {
+    margin: 0;
+    padding-left:1.5em;
+}
+main li{
+    padding-left:0.5em;
+}
+}
+
+.hexagram-header {
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -232,12 +248,12 @@ main a:hover {
         margin-bottom: 12px;
     }
 
-    .hexagram-name {
+.hexagram-name {
         font-size: 1em;
         margin: 0 auto;
     }
 
-    .hexagram-symbol {
+.hexagram-symbol {
         font-size: 5em;
         line-height: 1;
         margin-top: -12px;
@@ -247,7 +263,7 @@ main a:hover {
         transition: color 0.3s ease;
     }
 
-    .hexagram-grid {
+.hexagram-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         /* ✅ 3 → 4列に変更 */
@@ -259,7 +275,7 @@ main a:hover {
         overflow-x: hidden;
     }
 
-    .hexagram-card {
+.hexagram-card {
         border: 1px solid #ccc;
         background: white;
         border-radius: 6px;
@@ -270,19 +286,19 @@ main a:hover {
         cursor: pointer;
     }
 
-    .hexagram-card:active {
+.hexagram-card:active {
         transform: scale(0.97);
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
-    .hexagram-number {
+.hexagram-number {
         margin-bottom: -15px;
     }
 
-    #toggleBtn {
+#toggleBtn {
         display: none;
         /* ✅ スマホではトグルボタン非表示 */
-    }}
+    }
 
 
 /* ------------------------------
@@ -296,6 +312,34 @@ main a:hover {
     
 .hex-link:hover {
     text-decoration: underline;
+        }
+
+/* ------------------------------
+   お問い合わせ欄
+------------------------------ */
+        p.description {
+            text-align: left;
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 2em;
+        }
+
+        iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            background-color: white;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 2em;
+            font-size: 0.95em;
+        }
+
+        .back-link a:hover {
+            text-decoration: none;
         }
         
 

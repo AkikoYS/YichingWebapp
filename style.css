@@ -345,6 +345,20 @@ h2 {
     border-radius: 4px;
     animation: fadeIn 0.3s ease-in;
 }
+/* 保存しましたリンク */
+.save-link {
+    color: #ffffff;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+.save-link:hover {
+    font-weight:bold; /* お好みの色に変更可能 */
+    color:#12f0e1;
+    text-decoration:none;
+    
+}
+
+
 
 @keyframes fadeIn {
     from {

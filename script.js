@@ -221,7 +221,7 @@ function showToast(message, options = {}) {
     if (id) toast.id = id;
 
     toast.classList.add("custom-toast");
-    toast.style.background = isWarning ? "#ffc700" : "#666666";
+    toast.style.background = isWarning ? "#c9302c" : "#666666";
     toast.style.color = "#fff";
 
     const messageElem = document.createElement("span");
@@ -943,7 +943,7 @@ function renderSaveButton(pdfUri) {
                 duration: 10000
             });
         }
-      };
+    };
 
 
     const resetButton = document.getElementById("reset-button");
@@ -1013,12 +1013,6 @@ function saveCurrentFortuneToLog(pdfUri) {
         pdfStatus: pdfUri ? "✅ PDFダウンロード済み" : "未ダウンロード"
     };
 
-    // // ローカルに保存
-    // const logs = JSON.parse(localStorage.getItem("fortuneLogs") || "[]");
-    // logs.push(logEntry);
-    // localStorage.setItem("fortuneLogs", JSON.stringify(logs));
-
-    // ✅ Firestore にも保存（すでにGoogleログインしていたらログインアラートなし）
     if (auth?.currentUser && db) {
         const firestoreEntry = {
             ...logEntry,
@@ -1047,9 +1041,24 @@ function saveCurrentFortuneToLog(pdfUri) {
     if (saveButton) {
         saveButton.disabled = true;
         saveButton.style.opacity = 0.6;
-        saveButton.textContent = "✅ ログ一覧ページに保存しました";
         saveButton.style.backgroundColor = "#000000";
+
+        // 中身を空にしてからリンク付きのテキストを挿入
+        saveButton.textContent = ""; // 初期化
+
+        const staticText = document.createTextNode("✅ ");
+        const link = document.createElement("a");
+        link.href = "log.html";
+        link.textContent = "ログ一覧ページ";
+        link.className = "save-link";
+        const suffix = document.createTextNode(" に保存しました");
+
+        saveButton.appendChild(staticText);
+        saveButton.appendChild(link);
+        saveButton.appendChild(suffix);
     }
+
+    document.getElementById("instructionText").textContent = "";
 }
 //PDFを保存しますか？というトースト表示
 function showPdfDownloadToast(pdfUri) {

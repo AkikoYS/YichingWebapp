@@ -2,9 +2,9 @@
 モーダル
 ===========*/
 @media screen and (max-width: 480px) {
-    main {
+    /* main {
         padding: 0 1em;
-    }
+    } */
     main h2 {
         margin-top: 0.5em !important;
     }

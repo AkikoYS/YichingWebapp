@@ -3,7 +3,6 @@
     box-sizing: border-box;
 }
 
-html,
 body {
     height:100%;
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, Meiryo, sans-serif;
@@ -135,8 +134,8 @@ main,
 
 
 .auth-icon{
-    width:36px;
-    height: 36px;
+    width:30px;
+    height: 30px;
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.3s;

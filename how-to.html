@@ -31,10 +31,23 @@
                 <li><a href="log.html" class="nav-link">ログ一覧</a></li>
             </ul>
         </nav>
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+        <!-- PC用のgoogleログイン -->
+        <div class="login-container">
+            <button id="login-button" class="auth-button">Googleでログイン</span></button>
+            <button id="logout-button" class="auth-button" style="display: none;">ログアウト</button>
+        </div>
+        <!-- スマホ用 コンテナー -->
+        <div class="auth-hamburger-wrapper">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!-- スマホ用 Google アイコン -->
+            <div class="auth-icon-container">
+                <img id="auth-icon" src="assets/images/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                    title="ログイン中 - タップでログアウト" />
+            </div>
         </div>
     </header>
     <main>
@@ -52,7 +65,8 @@
             <li>爻辞の下にある<strong>「長い目で見たらどうなるか？」</strong>ボタンを押すと、<strong>変卦</strong>が現れ、結果表示欄にその意味とイメージが表示されます。「総合的な易断」ボタンと「本卦に戻る」ボタンが変卦の下に表示されます。「総合的な易断」ボタンを押すと、本卦、変爻、変卦、裏卦、総卦、互卦を含む、総合的な易の診断結果が表示されます。<strong>「本卦に戻る」</strong>ボタンを押して、本卦に戻った後も<strong>「総合的な易断」</strong>ボタンを押すことができます。
             </li>
             <li>総合的な易断の内容は、PDFにしてダウンロードすることができます。</li>
-            <li>占いたい内容に対して出た本卦をはじめとする情報をログとして記録するには、Googleでログインしてから、<strong>「記録する」</strong>のボタンを押してください。結果がログ一覧のページに新規追加されます。同じログイン・ネームを使うと、どんなデバイスからでも同じログに占い結果を保存し、閲覧することができます</li>
+            <li>占いたい内容に対して出た本卦をはじめとする情報をログとして記録するには、Googleでログインしてから、<strong>「記録する」</strong>のボタンを押してください。結果がログ一覧のページに新規追加されます。同じログイン・ネームを使うと、どんなデバイスからでも同じログに占い結果を保存し、閲覧することができます
+            </li>
             <li><strong>「他のことを占う」</strong>ボタンを押すと初期画面に戻ります。</li>
             <li>追加されたログの閲覧、削除、集計などはログ一覧ページで行えます。</li>
         </ol>
@@ -65,6 +79,7 @@
 
     <script src="log.js"></script>
     <script src="ui.js"></script>
+    <script type="module" src="auth.js"></script>
 </body>
 
 </html>

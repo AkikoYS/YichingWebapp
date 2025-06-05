@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="log.css">
-    
+
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico">
@@ -20,7 +20,7 @@
         <div class="title-container">
             <h1><a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg"></a></h1>
         </div>
-       
+
         <nav class="nav-menu" id="nav-menu">
             <ul>
                 <li><a href="index.html" class="nav-link">易経くじ</a></li>
@@ -32,32 +32,47 @@
                 <li><span class="nav-link active">ログ一覧</span></li>
             </ul>
         </nav>
-        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        <!-- PC用のgoogleログイン -->
+        <div class="login-container">
+            <button id="login-button" class="auth-button">Googleでログイン</span></button>
+            <button id="logout-button" class="auth-button" style="display: none;">ログアウト</button>
+        </div>
+        <!-- スマホ用 コンテナー -->
+        <div class="auth-hamburger-wrapper">
+
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+            <!-- スマホ用 Google アイコン -->
+            <div class="auth-icon-container">
+                <img id="auth-icon" src="assets/images/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                    title="ログイン中 - タップでログアウト" />
+            </div>
+        </div>
     </header>
-  
-<main>
-    <!-- <h2 style>あなたの占いログ</h2> -->
-    <div style="text-align: center; margin-top: 1em;">
-        <a href="index.html" class="variant-button" style="text-decoration: none;">易経くじに戻る</a>
-      </div>
-    <div class="log-table-container" style="max-width: 1000px; margin: auto;">
-        <table id="log-table">
-            <thead>
-                <tr>
-                    <th>日時</th>
-                    <th>質問</th>
-                    <th>本卦</th>
-                    <th>変爻</th>
-                    <th>変卦</th>
-                    <th>裏卦</th>
-                    <th>総卦</th>
-                    <th>互卦</th>
-                    <th>削除</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div></main>
+
+    <main>
+        <!-- <h2 style>あなたの占いログ</h2> -->
+        <div style="text-align: center; margin-top: 1em;">
+            <a href="index.html" class="variant-button" style="text-decoration: none;">易経くじに戻る</a>
+        </div>
+        <div class="log-table-container" style="max-width: 1000px; margin: auto;">
+            <table id="log-table">
+                <thead>
+                    <tr>
+                        <th>日時</th>
+                        <th>質問</th>
+                        <th>本卦</th>
+                        <th>変爻</th>
+                        <th>変卦</th>
+                        <th>裏卦</th>
+                        <th>総卦</th>
+                        <th>互卦</th>
+                        <th>削除</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
     <footer class="simple-footer">
         Iching — Book of Change ©2025
         <p><a href="feedback.html">📝 ご意見・ご要望はこちら</a></p>
@@ -67,6 +82,8 @@
     <script src="logic.js"></script>
     <script type="module" src="log.js"></script>
     <script src="ui.js"></script>
+    <script type="module" src="auth.js"></script>
+
 
 </body>
 

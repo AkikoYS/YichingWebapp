@@ -20,7 +20,7 @@
         <div class="title-container">
             <h1><a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg" /></a></h1>
         </div>
-        <nav class="nav-menu" id="nav-menu">         
+        <nav class="nav-menu" id="nav-menu">
             <ul>
                 <li><a href="index.html" class="nav-link">易経くじ</a></li>
                 <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
@@ -31,10 +31,24 @@
                 <li><a href="log.html" class="nav-link">ログ一覧</a></li>
             </ul>
         </nav>
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+        <!-- PC用のgoogleログイン -->
+        <div class="login-container">
+            <button id="login-button" class="auth-button">Googleでログイン</span></button>
+            <button id="logout-button" class="auth-button" style="display: none;">ログアウト</button>
+        </div>
+        <!-- スマホ用 コンテナー -->
+        <div class="auth-hamburger-wrapper">
+            <!-- ハンバーガー -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!-- スマホ用 Google アイコン -->
+            <div class="auth-icon-container">
+                <img id="auth-icon" src="assets/images/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                    title="ログイン中 - タップでログアウト" />
+            </div>
         </div>
     </header>
     <main>
@@ -72,6 +86,7 @@
 
     <script src="log.js"></script>
     <script src="ui.js"></script>
+    <script type="module" src="auth.js"></script>
 </body>
 
 </html>

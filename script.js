@@ -57,7 +57,7 @@ const spinnerAnimation = lottie.loadAnimation({
     renderer: 'svg',
     loop: true,
     autoplay: false,
-    path: 'assets/animations/2.json',
+    path: 'assets/animations/spinner-animation.json',
     rendererSettings: {
         preserveAspectRatio: 'none' // ← これがポイント！
     }

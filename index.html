@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="spinner.css">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="assets/images/favicon-32x32_v2.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/images/favicon-16x16_v2.ico">
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#310066" />
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico"> -->
 
 </head>
 
@@ -30,55 +32,54 @@
                 <li><a href="log.html" class="nav-link">ログ一覧</a></li>
             </ul>
         </nav>
-<!-- PC用のgoogleログイン -->
+        <!-- PC用のgoogleログイン -->
         <div class="login-container">
             <button id="login-button" class="auth-button">Googleでログイン</span></button>
             <button id="logout-button" class="auth-button" style="display: none;">ログアウト</button>
         </div>
-
-
- <div class="auth-hamburger-wrapper">
-    <!-- ハンバーガー -->
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <!-- スマホ用 Google アイコン -->
-    <div class="auth-icon-container">
-    <img id="auth-icon" src="assets/images/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
-        title="ログイン中 - タップでログアウト" />
-    </div>
-</div>
-    </header>
-<main>
-
-    <div id="question-section" class="fade show">
-        <h2 style="text-align:center">天に問いたい内容を記してください（任意）</h2>
-        <textarea id="question-input" maxlength="50" placeholder="例：転職するべきでしょうか？"></textarea>
-        <div id="question-warning" style="color: red; font-size: 0.9em; text-align: center; display: none;">
-            文字数は50字以内にしてください。
+        <!-- スマホ用 コンテナー -->
+        <div class="auth-hamburger-wrapper">
+            <!-- ハンバーガー -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!-- スマホ用 Google アイコン -->
+            <div class="auth-icon-container">
+                <img id="auth-icon" src="assets/images/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                    title="ログイン中 - タップでログアウト" />
+            </div>
         </div>
-        <button id="start-button">占いを始める</button>
-    </div>
+    </header>
+    <main>
 
-    <div id="main-app" class="fade">
-        <h2 id="instructionText" style="text-align:center">こころに念じながら６回クリックしてください</h2>
+        <div id="question-section" class="fade show">
+            <h2 style="text-align:center">天に問いたい内容を記してください（任意）</h2>
+            <textarea id="question-input" maxlength="50" placeholder="例：転職するべきでしょうか？"></textarea>
+            <div id="question-warning" style="color: red; font-size: 0.9em; text-align: center; display: none;">
+                文字数は50字以内にしてください。
+            </div>
+            <button id="start-button">占いを始める</button>
+        </div>
 
-        <!-- Lottieで表示するスピナー -->
-        <div id="lottie-spinner" style="width: 280px; height: 280px;"></div>
+        <div id="main-app" class="fade">
+            <h2 id="instructionText" style="text-align:center">こころに念じながら６回クリックしてください</h2>
+
+            <!-- Lottieで表示するスピナー -->
+            <div id="lottie-spinner" style="width: 280px; height: 280px;"></div>
 
 
-        <!-- 進行状況を表示するコンテナ -->
-        <div id="progress-container" style="gap: 10px"></div>
+            <!-- 進行状況を表示するコンテナ -->
+            <div id="progress-container" style="gap: 10px"></div>
 
-        <!-- 卦の内容表示 -->
-        <div id="result"></div>
+            <!-- 卦の内容表示 -->
+            <div id="result"></div>
 
-        <!-- もう一度引くボタン -->
-        <button id="reset-button" style="display: none; margin: 100px auto; display: block;">他の内容を占う</button>
-    </div>
-</main>
+            <!-- もう一度引くボタン -->
+            <button id="reset-button" style="display: none; margin: 100px auto; display: block;">他の内容を占う</button>
+        </div>
+    </main>
 
 
     <footer class="simple-footer">
@@ -92,7 +93,16 @@
     <script src="logic.js"></script>
     <script src="ui.js"></script>
     <script type="module" src="script.js"></script>
-    <script type="module" src="index.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('✅ Service Worker registered', reg))
+                    .catch(err => console.error('❌ Service Worker registration failed:', err));
+            });
+        }
+    </script>
 
 </body>
 

@@ -33,25 +33,34 @@ project/
 ├── index.html
 ├── about-iching.html
 ├── bagua.html
-├── about-iching.html
 ├── hexagrams.html
 ├── how-to-read.html
 ├── how-to.html
 ├── log.html
-├── style.css
-├── script.js
+├── feedback.html     ←お問い合わせ関係
+├── service-worker.js ←PWA化
+├── manifest.json     ←PWA化
+├── firebase/
+│   ├── firebase.js   ← Firebaseの初期化
+│   └── auth.js       ← ログインUIと処理
+├── script.js         ← メインロジック（変更なし）
 ├── logic.js
-├── log.js
-├── spinner.js
 ├── ui.js
-├── hexagram.json
+├── toggle-table.js   ←hexagram.html内の六十四卦 
+├── heagrams.json     ←卦と爻のデータベース
+├── styles/
+│   ├── base.css      ←HeaderとFooter 
+│   ├── style.css     ←index.htmlのmain 
+│   ├── spinner.css   ←スピナーの挙動  
+|   |__ modal.css　　　←モーダル表示
+│   ├── note-style.css←index.html以外のページ
+|   ├── bagua.css　　　←bagua.htmlの表
+|
 ├── assets/
-├── spinner.css
-├── ui.css
-├── log.css
-├── base.css
-├── note-style.css
-├── README.md
+│   ├── images/
+│   ├── icons/
+│   └── animations/     ←スピナーのlottieAnimation
+|
 
 ## 🔐 Security
 

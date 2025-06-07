@@ -54,3 +54,21 @@ self.addEventListener('activate', event => {
         )
     );
 });
+
+// fetch エラーハンドリング
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request)
+            .then((response) => {
+                return response || fetch(event.request);
+            })
+            .catch((error) => {
+                console.error('❌ Fetch error:', error);
+                return new Response("Service Worker fetch error", {
+                    status: 500,
+                    statusText: "SW Fetch Failed"
+                });
+            })
+    );
+});
+  

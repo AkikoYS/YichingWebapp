@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>易経くじ</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="base.css">
-    <link rel="stylesheet" href="spinner.css">
-    <link rel="icon" type="image/x-icon" sizes="32x32" href="assets/images/favicon-32x32_v2.ico">
-    <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/images/favicon-16x16_v2.ico">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/spinner.css">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="assets/icons/favicon-32x32_v2.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/icons/favicon-16x16_v2.ico">
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#310066" />
     <!-- <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.ico"> -->
@@ -47,13 +47,12 @@
             </div>
             <!-- スマホ用 Google アイコン -->
             <div class="auth-icon-container">
-                <img id="auth-icon" src="assets/images/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                <img id="auth-icon" src="assets/icons/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
                     title="ログイン中 - タップでログアウト" />
             </div>
         </div>
     </header>
     <main>
-
         <div id="question-section" class="fade show">
             <h2 style="text-align:center">天に問いたい内容を記してください（任意）</h2>
             <textarea id="question-input" maxlength="50" placeholder="例：転職するべきでしょうか？"></textarea>
@@ -61,6 +60,9 @@
                 文字数は50字以内にしてください。
             </div>
             <button id="start-button">占いを始める</button>
+            <div id="info-container">
+            <p class="info-text" style="text-align: center; font-size: 0.8em; color: #666;">
+                易断は無料です。<br>個別の状況に寄り添った具体的なアドバイス（¥300）もご用意しています。   </p></div>
         </div>
 
         <div id="main-app" class="fade">
@@ -77,10 +79,9 @@
             <div id="result"></div>
 
             <!-- もう一度引くボタン -->
-            <button id="reset-button" style="display: none; margin: 100px auto; display: block;">他の内容を占う</button>
+            <button id="reset-button" style="display: none; margin: 30px auto; display: block;">他の内容を占う</button>
         </div>
     </main>
-
 
     <footer class="simple-footer">
         Iching — Book of Change ©2025
@@ -93,7 +94,7 @@
     <script src="logic.js"></script>
     <script src="ui.js"></script>
     <script type="module" src="script.js"></script>
-    <script type="module" src="auth.js"></script>
+    <script type="module" src="firebase/auth.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

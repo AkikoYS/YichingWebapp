@@ -1,5 +1,5 @@
 
-import { auth, db, firebaseReady, onAuthStateChanged, provider } from "./firebase.js";
+import { auth, db, firebaseReady, onAuthStateChanged, provider } from "./firebase/firebase.js";
 import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -41,7 +41,6 @@ firebaseReady.then(() => {
     });
 });
 
-
 // ============ 2. DOM取得 ===========
 const result = document.getElementById("result");
 const resetButton = document.getElementById("reset-button");
@@ -50,7 +49,8 @@ const progressContainer = document.getElementById("progress-container");
 const questionInput = document.getElementById("question-input");
 const warningText = document.getElementById("question-warning");
 
-// ============3 スピナー初期化 ===========
+
+// ============3-1 スピナー初期化 ===========
 // Lottieアニメーションの設定（スピナー初期化）
 const spinnerAnimation = lottie.loadAnimation({
     container: spinnerContainer,
@@ -78,14 +78,12 @@ function initializeProgressMessages() {
         progressContainer.appendChild(div);
     }
 }
-
 //本卦の進行状況メッセージ
 function restoreOriginalProgressMessages() {
     if (!originalProgressMessages || originalProgressMessages.length !== 6) {
         console.warn("originalProgressMessages が正しく保存されていません。");
         return;
     }
-
     for (let i = 0; i < 6; i++) {
         const targetLine = document.getElementById(`progress-line-${i}`);
         if (targetLine) {
@@ -95,7 +93,6 @@ function restoreOriginalProgressMessages() {
         }
     }
 }
-
 //保存された進行状況メッセージ
 function saveOriginalProgressMessages() {
     originalProgressMessages = []; // リセット
@@ -116,7 +113,6 @@ function showSpinnerAnimated() {
     void spinner.offsetWidth; // ← 再描画トリガー
     spinner.classList.add('spinner-appear');
 }
-
 // ✅ スピナーをふわっと縮小して非表示
 function hideSpinnerAnimated() {
     const spinner = document.getElementById('lottie-spinner');
@@ -130,7 +126,6 @@ function hideSpinnerAnimated() {
         spinner.style.display = 'none';
     }, 600); // CSSのアニメ時間と一致
 }
-
 // ✅ 結果表示をふわっとせり上げる
 function revealResult() {
     const result = document.getElementById('result');
@@ -138,7 +133,6 @@ function revealResult() {
 
     result.classList.add('result-reveal');
 }
-
 //総合的な易断ボタン生成の条件
 function allVariantsShown() {
     return cachedChangedHexagram !== null;
@@ -180,7 +174,6 @@ function maybeShowFinalFortuneButton() {
     finalButton.style.display = "block";
     console.log("✅ ボタンを表示しました");
 }
-
 //h2テキストのアップデート
 function updateInstructionText(text) {
     const instructionText = document.getElementById("instructionText");
@@ -221,7 +214,7 @@ function showToast(message, options = {}) {
     if (id) toast.id = id;
 
     toast.classList.add("custom-toast");
-    toast.style.background = isWarning ? "#c9302c" : "#666666";
+    toast.style.background = "#666666";
     toast.style.color = "#fff";
 
     const messageElem = document.createElement("span");
@@ -682,26 +675,52 @@ function toggleYinYangAtIndex(index) {
 
 // ===== 7. イベントハンドラ =====
 //占い開始ボタン
-document.getElementById("start-button").addEventListener("click", () => {
+document.getElementById("start-button").addEventListener("click", async () => {
     const input = document.getElementById("question-input");
-    userQuestion = input.value.trim(); // 空でもOK
+    userQuestion = input.value.trim();
 
+    // 入力チェック（50文字以内）
+    if (userQuestion.length > 50) {
+        document.getElementById("question-warning").style.display = "block";
+        return;
+    }
+
+    // ✅ localStorage に保存（ai-advice.html 用）
+    localStorage.setItem("userQuestion", userQuestion);
+
+    // ✅ Firestore に保存（ログイン済み想定）
+    try {
+        const user = auth.currentUser;
+        const userId = user ? user.uid : "anonymous";
+
+        await addDoc(collection(db, "ai_requests"), {
+            userId: userId,
+            question: userQuestion,
+            createdAt: new Date()
+        });
+
+        console.log("✅ Firestore に保存されました");
+
+    } catch (error) {
+        console.error("❌ Firestore 保存エラー:", error);
+    }
+
+    // ➡️ 既存のフェードイン・アウト処理
     const questionSection = document.getElementById("question-section");
     const mainApp = document.getElementById("main-app");
 
-    // フェードアウト
     questionSection.classList.remove("show");
 
     setTimeout(() => {
         questionSection.style.display = "none";
-
-        // フェードイン
         mainApp.style.display = "block";
+
         setTimeout(() => {
             mainApp.classList.add("show");
-        }, 20); // 微遅延で transition を発火させる
-    }, 1000); // CSSの transition と同じ時間にする
+        }, 20);
+    }, 1000);
 });
+
 
 //占う内容が制限文字数を超えた警告
 questionInput.addEventListener("input", () => {
@@ -858,10 +877,28 @@ function displayFinalFortune() {
 
         const summaryHTML = generateFortuneSummaryHTML();
         result.innerHTML = summaryHTML;
-        updateResultBorder();
+
+        renderSaveButton();
+
+        // ✅ 保存ボタンを描画した後にCTAを追加
+        const ctaBox = document.createElement("div");
+        ctaBox.className = "ai-cta-box";
+        ctaBox.innerHTML = `
+          <p><strong>さらに詳しいアドバイスが必要ですか？</strong></p>
+          <p>あなたの悩みに寄り添い、3000字で実践的な助言を差し上げます。</p>
+          <button id="purchase-button">くわしいAI助言を見る（300円）</button>
+        `;
+
+        const saveButton = document.getElementById("save-button");
+        if (saveButton && saveButton.parentNode) {
+            saveButton.parentNode.insertBefore(ctaBox, saveButton);
+        }
+
+        document.getElementById("purchase-button").addEventListener("click", () => {
+            window.location.href = "ai-advice.html";
+        }); 
 
         // ✅ 保存ボタンをこのタイミングで表示（PDFとは独立）
-        renderSaveButton();
         const resetButton = document.getElementById("reset-button");
         if (resetButton) resetButton.style.display = "inline-block";
 
@@ -896,7 +933,7 @@ function generateFortuneSummaryHTML() {
             <p>この変化により、中長期的に状況は「<strong>${cachedChangedHexagram.name}</strong> (${cachedChangedHexagram.summary})」へと展開していきます。</p>
             <hr>
             <p>この本卦に隠されている裏の意味は「<strong>${reverseHex?.name || "不明"}</strong> (${reverseHex?.summary || "不明"})」です。</p>
-            <p>状況を俯瞰すると、「<strong>${souHex?.name || "不明"}</strong> (${souHex?.summary || "不明"})」となります。</p>
+            <p>状況を俯瞰すると「<strong>${souHex?.name || "不明"}</strong> (${souHex?.summary || "不明"})」となります。</p>
             <p>そもそも本質は「<strong>${goHex?.name || "不明"}</strong> (${goHex?.summary || "不明"})」です。</p>
         </div>
     `;
@@ -1109,3 +1146,5 @@ firebaseReady.then(() => {
         });
     }
 });
+
+

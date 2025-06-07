@@ -1,0 +1,58 @@
+<!-- ai-advice.html -->
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI助言サービス</title>
+    <link rel="stylesheet" href="style/base.css" />
+    <link rel="stylesheet" href="style/ai-advice.css" />
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="assets/icons/favicon-32x32_v2.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/icons/favicon-16x16_v2.ico">
+</head>
+
+<body>
+    <main class="ai-advice-container">
+        <h1 style="text-align: center;">易断に基づく個人的なアドバイス</h1>
+        <div class="intro-box">
+            <p style="margin-bottom: 0;">
+                あなたの状況に鑑みて2000字前後の丁寧な助言をさしあげます。<br>
+                天に問いたい内容はすでに把握しています。よろしければ、状況をもう少し詳しく教えてください。
+            </p>
+        </div>
+    
+        <section class="question-section">
+            <form id="ai-detail-form">
+                <div class="question-step" data-step="1">
+                    <label>あなたをなんとお呼びしましょうか？</label>
+                    <input type="text" name="username" required placeholder="例：あきこ さん" />
+                    <button type="button" class="next-btn">次へ</button>
+                </div>
+    
+                <div class="question-step hidden" data-step="2">
+                    <label>何についてアドバイスをお望みですか？</label>
+                    <textarea name="topic" maxlength="100" required placeholder="例：転職しようか迷っている、人間関係を改善したい"></textarea>
+                    <button type="button" class="next-btn">次へ</button>
+                </div>
+    
+                <div class="question-step hidden" data-step="3">
+                    <label>現在、どのような状況・お気持ちですか？</label>
+                    <textarea name="situation" maxlength="100" required
+                        placeholder="例：3年つきあった彼がいるが、今度、遠距離になるかもしれない"></textarea>
+                    <button type="button" class="next-btn">次へ</button>
+                </div>
+    
+                <div class="question-step hidden" data-step="4">
+                    <label>伝えておいた方が良いことがあればご自由にどうぞ：</label>
+                    <textarea name="notes" maxlength="200" placeholder="任意：背景や気になる点など"></textarea>
+                    <button type="submit">送信</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="ai-advice.js"></script>
+    <script src="firebase/payment.js" type="module"></script>
+</body>
+
+</html>

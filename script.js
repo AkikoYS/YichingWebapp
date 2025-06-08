@@ -61,7 +61,6 @@ const spinnerAnimation = lottie.loadAnimation({
     rendererSettings: {
         preserveAspectRatio: 'none' // ← これがポイント！
     }
-
 });
 
 // ============4 ユーティリティ関数（ほかの処理をたすける） ===========
@@ -451,6 +450,33 @@ function updateResultBorder() {
         result.style.height = "auto";
     }
 }
+//googleログインを促すトースト表示
+export function handleLoginRequiredAction(callback) {
+    firebaseReady.then(async () => {
+        if (auth.currentUser) {
+            callback(); // ✅ ログイン済みなら処理続行
+        } else {
+            showToast("この操作にはGoogleログインが必要です", {
+                id: "login-toast",
+                isWarning: true,
+                buttonText: "🔐 ログイン",
+                buttonCallback: async () => {
+                    try {
+                        await signInWithPopup(auth, provider);
+                        console.log("✅ Googleログイン成功");
+                        callback(); // ログイン後に再実行
+                    } catch (error) {
+                        console.error("❌ Googleログイン失敗:", error);
+                        showToast("❌ Googleログインに失敗しました", {
+                            isWarning: true,
+                            duration: 5000
+                        });
+                    }
+                }
+            });
+        }
+    });
+}
 
 // ===== 6. 今後の展開関連処理 =====
 
@@ -685,25 +711,25 @@ document.getElementById("start-button").addEventListener("click", async () => {
         return;
     }
 
-    // ✅ localStorage に保存（ai-advice.html 用）
-    localStorage.setItem("userQuestion", userQuestion);
+    // // ✅ localStorage に保存（ai-advice.html 用）
+    // localStorage.setItem("userQuestion", userQuestion);
 
-    // ✅ Firestore に保存（ログイン済み想定）
-    try {
-        const user = auth.currentUser;
-        const userId = user ? user.uid : "anonymous";
+    // // ✅ Firestore に保存（ログイン済み想定）
+    // try {
+    //     const user = auth.currentUser;
+    //     const userId = user ? user.uid : "anonymous";
 
-        await addDoc(collection(db, "ai_requests"), {
-            userId: userId,
-            question: userQuestion,
-            createdAt: new Date()
-        });
+    //     await addDoc(collection(db, "ai_requests"), {
+    //         userId: userId,
+    //         question: userQuestion,
+    //         createdAt: new Date()
+    //     });
 
-        console.log("✅ Firestore に保存されました");
+    //     console.log("✅ Firestore に保存されました");
 
-    } catch (error) {
-        console.error("❌ Firestore 保存エラー:", error);
-    }
+    // } catch (error) {
+    //     console.error("❌ Firestore 保存エラー:", error);
+    // }
 
     // ➡️ 既存のフェードイン・アウト処理
     const questionSection = document.getElementById("question-section");
@@ -720,8 +746,6 @@ document.getElementById("start-button").addEventListener("click", async () => {
         }, 20);
     }, 1000);
 });
-
-
 //占う内容が制限文字数を超えた警告
 questionInput.addEventListener("input", () => {
     if (questionInput.value.length > 50) {
@@ -730,7 +754,6 @@ questionInput.addEventListener("input", () => {
         warningText.style.display = "none";
     }
 });
-
 //スピナー処理
 spinnerContainer.addEventListener("click", () => {
     if (alreadyClicked) return;
@@ -788,7 +811,6 @@ spinnerContainer.addEventListener("click", () => {
         }
     }
 });
-
 //リセットボタンによる初期化（もう一度占う）
 resetButton.style.display = "none";
 resetButton.addEventListener("click", () => {
@@ -878,6 +900,28 @@ function displayFinalFortune() {
         const summaryHTML = generateFortuneSummaryHTML();
         result.innerHTML = summaryHTML;
 
+        // 🌟 占い情報を保存（占い結果が出た直後）
+        const reverseHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.reverse);
+        const souHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.sou);
+        const goHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.go);
+
+        localStorage.setItem("userQuestion", userQuestion);
+        localStorage.setItem("originalHexagram", JSON.stringify(originalHexagram));
+        localStorage.setItem("changedHexagram", JSON.stringify(cachedChangedHexagram));
+        localStorage.setItem("reverseHexagram", JSON.stringify(reverseHex));
+        localStorage.setItem("souHexagram", JSON.stringify(souHex));
+        localStorage.setItem("goHexagram", JSON.stringify(goHex));
+        localStorage.setItem("changedLineIndex", cachedChangedLineIndex);
+        console.log("保存内容確認:", {
+            userQuestion,
+            originalHexagram,
+            cachedChangedHexagram,
+            reverseHex,
+            souHex,
+            goHex,
+            cachedChangedLineIndex
+        });
+
         renderSaveButton();
 
         // ✅ 保存ボタンを描画した後にCTAを追加
@@ -895,8 +939,10 @@ function displayFinalFortune() {
         }
 
         document.getElementById("purchase-button").addEventListener("click", () => {
-            window.location.href = "ai-advice.html";
-        }); 
+            handleLoginRequiredAction(() => {
+                window.location.href = "ai-advice.html";
+            });
+        });
 
         // ✅ 保存ボタンをこのタイミングで表示（PDFとは独立）
         const resetButton = document.getElementById("reset-button");
@@ -955,31 +1001,10 @@ function renderSaveButton(pdfUri) {
     saveButton.style.padding = "10px 20px";
 
     //googleにログイン
-    saveButton.onclick = async () => {
-        await firebaseReady; // Firebase 初期化を待つ
-
-        if (auth.currentUser) {
+    saveButton.onclick = () => {
+        handleLoginRequiredAction(() => {
             saveCurrentFortuneToLog(currentPdfUri);
-        } else {
-            showToast("ログを保存するにはGoogleログインが必要です", {
-                id: "login-toast",
-                isWarning: true,
-                buttonText: "🔐 ログイン",
-                buttonCallback: async () => {
-                    try {
-                        await signInWithPopup(auth, provider);
-                        console.log("✅ Googleログイン成功");
-                    } catch (error) {
-                        console.error("❌ Googleログイン失敗:", error);
-                        showToast("❌ Googleログインに失敗しました", {
-                            isWarning: true,
-                            duration: 5000
-                        });
-                    }
-                },
-                duration: 10000
-            });
-        }
+        });
     };
 
 

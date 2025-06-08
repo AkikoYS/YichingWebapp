@@ -13,46 +13,93 @@
 </head>
 
 <body>
+    <header class="main-header">
+        <div class="title-container">
+            <h1><a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg" /></a></h1>
+        </div>
+        <nav class="nav-menu" id="nav-menu">
+            <ul>
+                <li><span class="nav-link active">易経くじ</span></li>
+                <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
+                <li><a href="how-to.html" class="nav-link">占い方</a></li>
+                <li><a href="hexagrams.html" class="nav-link">六十四卦</a></li>
+                <li><a href="bagua.html" class="nav-link">八卦</a></li>
+                <li><a href="how-to-read.html" class="nav-link">卦の見方</a></li>
+                <li><a href="log.html" class="nav-link">ログ一覧</a></li>
+            </ul>
+        </nav>
+        <!-- PC用のgoogleログイン -->
+        <div class="login-container">
+            <button id="login-button" class="auth-button">Googleでログイン</span></button>
+            <button id="logout-button" class="auth-button" style="display: none;">ログアウト</button>
+        </div>
+        <!-- スマホ用 コンテナー -->
+        <div class="auth-hamburger-wrapper">
+            <!-- ハンバーガー -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!-- スマホ用 Google アイコン -->
+            <div class="auth-icon-container">
+                <img id="auth-icon" src="assets/icons/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                    title="ログイン中 - タップでログアウト" />
+            </div>
+        </div>
+    </header>
+
     <main class="ai-advice-container">
-        <h1 style="text-align: center;">易断に基づく個人的なアドバイス</h1>
-        <div class="intro-box">
-            <p style="margin-bottom: 0;">
-                あなたの状況に鑑みて2000字前後の丁寧な助言をさしあげます。<br>
-                天に問いたい内容はすでに把握しています。よろしければ、状況をもう少し詳しく教えてください。
+        <h1 style="text-align: center;">易断が導く道しるべ</h1>
+        <div id="intro-text" class="intro-box">
+            <p style="margin-bottom: 0; margin-top:0;">
+                あなたの状況に鑑みて3000字程度の丁寧な助言をさしあげますので、<br>
+                よろしければ、状況をもう少し詳しく教えてください。
             </p>
         </div>
     
         <section class="question-section">
+            <div id="chat-log"></div>
             <form id="ai-detail-form">
                 <div class="question-step" data-step="1">
                     <label>あなたをなんとお呼びしましょうか？</label>
-                    <input type="text" name="username" required placeholder="例：あきこ さん" />
+                    <input type="text" name="username" required placeholder="例：あきこ" />
                     <button type="button" class="next-btn">次へ</button>
                 </div>
+
     
                 <div class="question-step hidden" data-step="2">
-                    <label>何についてアドバイスをお望みですか？</label>
+                    <label id="label-topic"></label>
                     <textarea name="topic" maxlength="100" required placeholder="例：転職しようか迷っている、人間関係を改善したい"></textarea>
                     <button type="button" class="next-btn">次へ</button>
                 </div>
-    
+                
                 <div class="question-step hidden" data-step="3">
-                    <label>現在、どのような状況・お気持ちですか？</label>
-                    <textarea name="situation" maxlength="100" required
-                        placeholder="例：3年つきあった彼がいるが、今度、遠距離になるかもしれない"></textarea>
+                    <label id="label-situation"></label>
+                    <textarea name="situation" maxlength="100" required placeholder="例：3年つきあった彼がいるが、今度、遠距離になるかもしれない"></textarea>
                     <button type="button" class="next-btn">次へ</button>
                 </div>
-    
                 <div class="question-step hidden" data-step="4">
-                    <label>伝えておいた方が良いことがあればご自由にどうぞ：</label>
+                    <label>メールアドレスを教えてください（PDF送付先）：</label>
+                    <input type="email" name="email" required placeholder="例：example@example.com" />
+                    <button type="button" class="next-btn">次へ</button>    </div>
+                
+                <div class="question-step hidden" data-step="5">
+                    <label>助言を受けるにあたり、それ以外にも伝えておいた方がいいことがあればご自由にどうぞ：</label>
                     <textarea name="notes" maxlength="200" placeholder="任意：背景や気になる点など"></textarea>
-                    <button type="submit">送信</button>
-                </div>
-            </form>
-        </section>
+                    <button type="submit">送信して決済</button>
+                </div>   </form>
+            </section>
     </main>
-    <script src="ai-advice.js"></script>
-    <script src="firebase/payment.js" type="module"></script>
+    <footer class="simple-footer">
+        Iching — Book of Change ©2025
+        <p><a href="feedback.html">📝 ご意見・ご要望はこちら</a></p>
+    </footer>
+    <script type="module" src="firebase/firebase.js"></script>
+    <script type="module" src="firebase/auth.js"></script>
+    <script type="module" src="ai-advice.js"></script>
+    <script type="module" src="payment.js"></script>
+    
 </body>
 
 </html>

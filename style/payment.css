@@ -1,0 +1,41 @@
+
+.payment-container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 2em;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+p {
+    font-size: 1em;
+    margin-bottom: 1.5em;
+}
+
+.price-box {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 1.5em;
+}
+
+.pay-button {
+    padding: 0.8em 2em;
+    font-size: 1em;
+    background-color: #4a148c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pay-button:hover {
+    background-color: #6a1b9a;
+}

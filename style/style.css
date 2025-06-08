@@ -203,13 +203,14 @@ h2 {
     padding: 8px 18px;
     font-size: 0.95em;
     background-color: #4bc0de;
-    color: white;
+    color: white !important;
     font-size: 1em;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.2s ease;
     margin: 0;
+    color:#333;
     /* ボタン間の隙間は親で調整 */
 }
 

@@ -1,10 +1,10 @@
-body {
+/* body {
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", Arial, Meiryo, sans-serif;
     background-color: #f9f8f6;
     color: #333;
     margin: 0;
     padding: 2em;
-}
+} */
 
 .ai-advice-container {
     max-width: 600px;
@@ -16,15 +16,20 @@ body {
 }
 
 h1 {
-    font-size: 1.5em;
+    font-size: 1.2em;
     margin-bottom: 0.5em;
+    text-align: center;
+    color:#333
 }
 
 .intro-box {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1em;
-    background-color: #fdfdfd;
+    border-radius: 12px;
+    padding: 1.5em;
+    margin: 0 auto;
+    max-width: 500px;
+    font-size: 0.8em;
+    background: linear-gradient(to bottom right, #fdf9ff, #f7f0fa);
+    box-shadow: 0 2px 6px rgba(106, 27, 154, 0.2);
     margin-bottom: 1.5em;
 }
 
@@ -34,6 +39,14 @@ h1 {
 
 .question-step {
     margin-bottom: 2em;
+}
+
+.chat-log {
+    margin-bottom: 1em;
+    padding: 1em;
+    background: #fafafa;
+    border-left: 4px solid #ccc;
+    white-space: pre-wrap;
 }
 
 .hidden {
@@ -53,7 +66,8 @@ textarea {
 
 button.next-btn,
 button[type="submit"] {
-    margin-top: 1em;
+    margin: 1.5em auto 0;
+    display: block;
     background-color: #4a148c;
     color: white;
     border: none;
@@ -67,4 +81,15 @@ button[type="submit"] {
 button.next-btn:hover,
 button[type="submit"]:hover {
     background-color: #6a1b9a;
+}
+
+.final-message {
+    margin-top: 2em;
+    padding: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f0f0f5;
+    color: #333;
+    font-size: 1em;
+    text-align: center;
 }

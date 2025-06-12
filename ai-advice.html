@@ -12,14 +12,18 @@
     <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/icons/favicon-16x16_v2.ico">
 </head>
 
-<body>
-    <header class="main-header">
+<body class="ai-advice-page">
+    <div class="background-image"></div>
+    <!-- 背景画像 -->
+    <div class="background-image">
+    </div>
+    <header class="main-header" style="margin-bottom:0;">
         <div class="title-container">
             <h1><a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg" /></a></h1>
         </div>
         <nav class="nav-menu" id="nav-menu">
             <ul>
-                <li><span class="nav-link active">易経くじ</span></li>
+                <li><a href="index.html" class="nav-link">易経くじ</a></li>
                 <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
                 <li><a href="how-to.html" class="nav-link">占い方</a></li>
                 <li><a href="hexagrams.html" class="nav-link">六十四卦</a></li>
@@ -57,7 +61,7 @@
                 よろしければ、状況をもう少し詳しく教えてください。
             </p>
         </div>
-    
+
         <section class="question-section">
             <div id="chat-log"></div>
             <form id="ai-detail-form">
@@ -67,31 +71,35 @@
                     <button type="button" class="next-btn">次へ</button>
                 </div>
 
-    
+
                 <div class="question-step hidden" data-step="2">
                     <label id="label-topic"></label>
                     <textarea name="topic" maxlength="100" required placeholder="例：転職しようか迷っている、人間関係を改善したい"></textarea>
                     <button type="button" class="next-btn">次へ</button>
                 </div>
-                
+
                 <div class="question-step hidden" data-step="3">
                     <label id="label-situation"></label>
-                    <textarea name="situation" maxlength="100" required placeholder="例：3年つきあった彼がいるが、今度、遠距離になるかもしれない"></textarea>
+                    <textarea name="situation" maxlength="100" required
+                        placeholder="例：3年つきあった彼がいるが、今度、遠距離になるかもしれない"></textarea>
                     <button type="button" class="next-btn">次へ</button>
                 </div>
                 <div class="question-step hidden" data-step="4">
                     <label>メールアドレスを教えてください（PDF送付先）：</label>
                     <input type="email" name="email" required placeholder="例：example@example.com" />
-                    <button type="button" class="next-btn">次へ</button>    </div>
-                
+                    <button type="button" class="next-btn">次へ</button>
+                </div>
+
                 <div class="question-step hidden" data-step="5">
                     <label>助言を受けるにあたり、それ以外にも伝えておいた方がいいことがあればご自由にどうぞ：</label>
                     <textarea name="notes" maxlength="200" placeholder="任意：背景や気になる点など"></textarea>
                     <button type="submit">送信して決済</button>
-                </div>   </form>
-            </section>
+                    <button type="button" id="testSendButton">💡 テスト送信（決済なし）</button>
+                </div>
+            </form>
+        </section>
     </main>
-    <footer class="simple-footer">
+    <footer>
         Iching — Book of Change ©2025
         <p><a href="feedback.html">📝 ご意見・ご要望はこちら</a></p>
     </footer>
@@ -99,7 +107,7 @@
     <script type="module" src="firebase/auth.js"></script>
     <script type="module" src="ai-advice.js"></script>
     <script type="module" src="payment.js"></script>
-    
+
 </body>
 
 </html>

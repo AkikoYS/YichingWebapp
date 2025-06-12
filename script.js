@@ -10,6 +10,7 @@ import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/fire
 
 // ============1 初期設定 ===========
 //状況管理用関数
+let result;
 let isSpinning = false; // 回転中かどうか
 let clickCount = 0; // クリック回数（最大６）
 let resultArray = ""; // 結果の配列
@@ -28,6 +29,13 @@ let currentPdfUri = null;
 let saveButton = null;
 let userQuestion = "";
 let currentUser = null;
+let isRestoringFromTemp = false; // ✅ 復元中フラグ
+
+// 🔽 占いの状態を復元（最初に呼び出す）
+document.addEventListener("DOMContentLoaded", () => {
+    result = document.getElementById("result");
+    restoreFortuneFromTemp();
+});
 
 // Firebase 初期化後にユーザー状態を監視
 firebaseReady.then(() => {
@@ -42,7 +50,6 @@ firebaseReady.then(() => {
 });
 
 // ============ 2. DOM取得 ===========
-const result = document.getElementById("result");
 const resetButton = document.getElementById("reset-button");
 const spinnerContainer = document.getElementById("lottie-spinner");
 const progressContainer = document.getElementById("progress-container");
@@ -273,10 +280,64 @@ function showToast(message, options = {}) {
         setTimeout(() => toast.remove(), 300);
     }, duration);
 }
+//保存関数
+function saveFortuneToTemp() {
+    const state = {
+        originalHexagram,
+        cachedChangedHexagram,
+        cachedChangedLineIndex,
+        selectedHexagram,
+        userQuestion
+    };
+    localStorage.setItem("iching_fortune_temp", JSON.stringify(state));
+    console.log("✅ 状態を一時保存しました");
+}
+//復元関数
+function restoreFortuneFromTemp() {
+    const saved = localStorage.getItem("iching_fortune_temp");
+    if (!saved) return;
+
+    try {
+        const state = JSON.parse(saved);
+
+        // ✅ 入力が完了していない状態では復元しない（初回アクセス防止）
+        if (!state.userQuestion || state.userQuestion.trim() === "") {
+            console.log("🔁 復元スキップ: 占い内容が空です");
+            return;
+        }
+
+        // ✅ 本当に初回（スピナーが1回もクリックされていない）なら復元しない
+        if (clickCount === 0) {
+            console.log("🔁 復元スキップ: まだ占いが始まっていません");
+            return;
+        }
+
+        originalHexagram = state.originalHexagram;
+        cachedChangedHexagram = state.cachedChangedHexagram;
+        cachedChangedLineIndex = state.cachedChangedLineIndex;
+        selectedHexagram = state.selectedHexagram;
+        userQuestion = state.userQuestion;
+
+        isRestoringFromTemp = true;
+        showHexagram(originalHexagram, true);
+        showVariantButtons(originalHexagram);
+        maybeShowFinalFortuneButton();
+        isRestoringFromTemp = false;
+
+        console.log("✅ 占い状態を復元しました");
+    } catch (e) {
+        console.error("❌ 復元エラー:", e);
+    }
+}
+
 
 // ===== 5. 表示処理 =====
 // 卦の表示処理の関数
 function showHexagram(hexagram, isOriginal = false) {
+    if (!result) {
+        console.warn("❌ result が未定義です");
+        return;
+    }
     result.innerHTML = "";
     result.innerHTML = createHexagramHTML(hexagram);
     selectedHexagram = hexagram;
@@ -900,7 +961,7 @@ function displayFinalFortune() {
         const summaryHTML = generateFortuneSummaryHTML();
         result.innerHTML = summaryHTML;
 
-        // 🌟 占い情報を保存（占い結果が出た直後）
+        // 🌟 占い情報を保存
         const reverseHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.reverse);
         const souHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.sou);
         const goHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.go);
@@ -924,37 +985,39 @@ function displayFinalFortune() {
 
         renderSaveButton();
 
-        // ✅ 保存ボタンを描画した後にCTAを追加
-        const ctaBox = document.createElement("div");
-        ctaBox.className = "ai-cta-box";
-        ctaBox.innerHTML = `
-          <p><strong>さらに詳しいアドバイスが必要ですか？</strong></p>
-          <p>あなたの悩みに寄り添い、3000字で実践的な助言を差し上げます。</p>
-          <button id="purchase-button">くわしいAI助言を見る（300円）</button>
-        `;
+        // ✅ CTAを保存ボタンの上に追加（遅延して安全に）
+        setTimeout(() => {
+            const saveButton = document.getElementById("save-button");
+            if (saveButton && saveButton.parentNode) {
+                const ctaBox = document.createElement("div");
+                ctaBox.className = "ai-cta-box";
+                ctaBox.innerHTML = `
+                  <p><strong>さらに詳しいアドバイスが必要ですか？</strong></p>
+                  <p>あなたの悩みに寄り添い、3000字で実践的な助言を差し上げます。</p>
+                  <button id="purchase-button">くわしいAI助言を見る（300円）</button>
+                `;
+                saveButton.parentNode.insertBefore(ctaBox, saveButton);
 
-        const saveButton = document.getElementById("save-button");
-        if (saveButton && saveButton.parentNode) {
-            saveButton.parentNode.insertBefore(ctaBox, saveButton);
-        }
+                document.getElementById("purchase-button").addEventListener("click", () => {
+                    handleLoginRequiredAction(() => {
+                        window.location.href = "ai-advice.html";
+                    });
+                });
+            } else {
+                console.warn("save-buttonが見つかりませんでした");
+            }
+        }, 0);
 
-        document.getElementById("purchase-button").addEventListener("click", () => {
-            handleLoginRequiredAction(() => {
-                window.location.href = "ai-advice.html";
-            });
-        });
-
-        // ✅ 保存ボタンをこのタイミングで表示（PDFとは独立）
+        // ✅ リセットボタンの表示
         const resetButton = document.getElementById("reset-button");
         if (resetButton) resetButton.style.display = "inline-block";
 
-        // ✅ PDF生成は一度だけに限定（重複防止）
+        // ✅ PDFの生成（1回限り）
         if (!window.pdfAlreadyGenerated) {
             window.pdfAlreadyGenerated = true;
             setTimeout(() => {
                 generatePdfFromSummary((pdfUri) => {
                     currentPdfUri = pdfUri;
-                    // ✅ PDFの保存確認はモーダルだけで行い、ログ保存ボタンは呼ばない
                     showPdfDownloadToast(pdfUri);
                 });
             }, 1000);
@@ -1084,11 +1147,18 @@ function saveCurrentFortuneToLog(pdfUri) {
         addDoc(collection(db, "logs"), firestoreEntry)
             .then((docRef) => {
                 console.log("✅ Firestore に保存成功:", docRef.id);
+                // 🔽 ここで占い状態をローカルストレージにも一時保存
+                saveFortuneToTemp();
                 showToast("✅ ログが保存されました", { duration: 4000 });
             })
             .catch((error) => {
                 console.error("❌ Firestore 保存エラー:", error);
-                showToast("❌ Firestore 保存に失敗しました", { isWarning: true });
+                showToast(`❌ Firestore 保存に失敗しました", ${error.message}`, {
+                    isWarning: true,
+                    duration: 6000
+                }
+
+                );
             });
     } else {
         showToast("⚠️ Googleにログインしてください", {

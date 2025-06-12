@@ -17,71 +17,75 @@
 </head>
 
 <body>
-    <header class="main-header">
-        <div class="title-container">
-            <h1><a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg" /></a></h1>
-        </div>
-        <nav class="nav-menu" id="nav-menu">
-            <ul>
-                <li><span class="nav-link active">易経くじ</span></li>
-                <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
-                <li><a href="how-to.html" class="nav-link">占い方</a></li>
-                <li><a href="hexagrams.html" class="nav-link">六十四卦</a></li>
-                <li><a href="bagua.html" class="nav-link">八卦</a></li>
-                <li><a href="how-to-read.html" class="nav-link">卦の見方</a></li>
-                <li><a href="log.html" class="nav-link">ログ一覧</a></li>
-            </ul>
-        </nav>
-        <!-- PC用のgoogleログイン -->
-        <div class="login-container">
-            <button id="login-button" class="auth-button">Googleでログイン</span></button>
-            <button id="logout-button" class="auth-button" style="display: none;">ログアウト</button>
-        </div>
-        <!-- スマホ用 コンテナー -->
-        <div class="auth-hamburger-wrapper">
-            <!-- ハンバーガー -->
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+    <div class="background-image"></div>
+        <header class="main-header">
+            <div class="title-container">
+                <h1><a href="index.html"><img src="assets/images/title.svg" alt="易経くじ" class="title-svg" /></a></h1>
             </div>
-            <!-- スマホ用 Google アイコン -->
-            <div class="auth-icon-container">
-                <img id="auth-icon" src="assets/icons/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
-                    title="ログイン中 - タップでログアウト" />
+            <nav class="nav-menu" id="nav-menu">
+                <ul>
+                    <li><span class="nav-link active">易経くじ</span></li>
+                    <li><a href="about-iching.html" class="nav-link">易経とは</a></li>
+                    <li><a href="how-to.html" class="nav-link">占い方</a></li>
+                    <li><a href="hexagrams.html" class="nav-link">六十四卦</a></li>
+                    <li><a href="bagua.html" class="nav-link">八卦</a></li>
+                    <li><a href="how-to-read.html" class="nav-link">卦の見方</a></li>
+                    <li><a href="log.html" class="nav-link">ログ一覧</a></li>
+                </ul>
+            </nav>
+            <!-- PC用のgoogleログイン -->
+            <div class="login-container">
+                <button id="login-button" class="auth-button">Googleでログイン</span></button>
+                <button id="logout-button" class="auth-button" style="display: none;">ログアウト</button>
             </div>
-        </div>
-    </header>
-    <main>
-        <div id="question-section" class="fade show">
-            <h2 style="text-align:center">天に問いたい内容を記してください（任意）</h2>
-            <textarea id="question-input" maxlength="50" placeholder="例：転職するべきでしょうか？"></textarea>
-            <div id="question-warning" style="color: red; font-size: 0.9em; text-align: center; display: none;">
-                文字数は50字以内にしてください。
+            <!-- スマホ用 コンテナー -->
+            <div class="auth-hamburger-wrapper">
+                <!-- ハンバーガー -->
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <!-- スマホ用 Google アイコン -->
+                <div class="auth-icon-container">
+                    <img id="auth-icon" src="assets/icons/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                        title="ログイン中 - タップでログアウト" />
+                </div>
             </div>
-            <button id="start-button">占いを始める</button>
-            <div id="info-container">
-            <p class="info-text" style="text-align: center; font-size: 0.8em; color: #666;">
-                易断は無料です。<br>個別の状況に寄り添った具体的なアドバイス（¥300）もご用意しています。   </p></div>
-        </div>
+        </header>
 
-        <div id="main-app" class="fade">
-            <h2 id="instructionText" style="text-align:center">こころに念じながら６回クリックしてください</h2>
+        <main class="main-container">
+            <div id="question-section" class="fade show">
+                <h2 style="text-align:center">天に問いたい内容を記してください（任意）</h2>
+                <textarea id="question-input" maxlength="50" placeholder="例：転職するべきでしょうか？"></textarea>
+                <div id="question-warning" style="color: red; font-size: 0.9em; text-align: center; display: none;">
+                    文字数は50字以内にしてください。
+                </div>
+                <button id="start-button">占いを始める</button>
+                <div id="info-container">
+                    <p class="info-text" style="text-align: center; font-size: 0.8em; color: #666;">
+                        易断は無料です。<br>個別の状況に寄り添った具体的なアドバイス（¥300）もご用意しています。 </p>
+                </div>
+            </div>
 
-            <!-- Lottieで表示するスピナー -->
-            <div id="lottie-spinner" style="width: 280px; height: 280px;"></div>
+            <div id="main-app" class="fade">
+                <h2 id="instructionText" style="text-align:center">こころに念じながら６回クリックしてください</h2>
+
+                <!-- Lottieで表示するスピナー -->
+                <div id="lottie-spinner" style="width: 280px; height: 280px;"></div>
 
 
-            <!-- 進行状況を表示するコンテナ -->
-            <div id="progress-container" style="gap: 10px"></div>
+                <!-- 進行状況を表示するコンテナ -->
+                <div id="progress-container" style="gap: 10px"></div>
 
-            <!-- 卦の内容表示 -->
-            <div id="result"></div>
+                <!-- 卦の内容表示 -->
+                <div id="result"></div>
 
-            <!-- もう一度引くボタン -->
-            <button id="reset-button" style="display: none; margin: 30px auto; display: block;">他の内容を占う</button>
-        </div>
-    </main>
+                <!-- もう一度引くボタン -->
+                <button id="reset-button" style="display: none; margin: 30px auto; display: block;">他の内容を占う</button>
+            </div>
+        </main>
+
 
     <footer class="simple-footer">
         Iching — Book of Change ©2025
@@ -95,7 +99,7 @@
     <script src="ui.js"></script>
     <script type="module" src="script.js"></script>
     <script type="module" src="firebase/auth.js"></script>
-    <script>
+    <!-- <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
@@ -103,7 +107,7 @@
                     .catch(err => console.error('❌ Service Worker registration failed:', err));
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

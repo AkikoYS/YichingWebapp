@@ -135,11 +135,15 @@ document.addEventListener("DOMContentLoaded", () => {
 //テスト送信ボタン
 document.getElementById("testSendButton").addEventListener("click", async () => {
     const button = document.getElementById("testSendButton");
+
+    // ✅ ボタン無効化 & ローディング表示
     button.disabled = true;
     button.textContent = "送信中...";
+    showSending();  // ← 追加：送信中メッセージ表示
+
     const form = document.getElementById("ai-detail-form");
     const formData = new FormData(form);
-    // ✅ 卦データを localStorage から取得
+
     const originalHexagram = JSON.parse(localStorage.getItem("originalHexagram") || "{}");
     const changedHexagram = JSON.parse(localStorage.getItem("changedHexagram") || "{}");
     const reverseHexagram = JSON.parse(localStorage.getItem("reverseHexagram") || "{}");
@@ -186,12 +190,47 @@ document.getElementById("testSendButton").addEventListener("click", async () => 
         const result = JSON.parse(text);
 
         if (response.ok) {
-            alert("テスト送信成功！メールをご確認ください。");
+            showToast("✅ メールが送信されました。ご確認ください。");
+            markAsSent();  // ✅ ボタンを「送信済」に変更する
         } else {
-            alert("送信失敗: " + (result.error || "サーバーエラー"));
+            showToast("送信失敗: " + (result.error || "サーバーエラー"));
+            button.disabled = false;
+            button.textContent = "再送信";
         }
     } catch (error) {
         console.error("通信エラー:", error);
-        alert("通信エラーが発生しました: " + error.message);
+        showToast("通信エラー: " + error.message);
+        button.disabled = false;
+        button.textContent = "再送信";
+    } finally {
+        hideSending();  // ✅ 成功でも失敗でもローディング終了
     }
 });
+
+//トースト表示
+function showToast(message, duration = 3000) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, duration);
+  }
+
+const statusDiv = document.getElementById("sendingStatus");
+
+//送信中
+function showSending() {
+    statusDiv.style.display = "block";
+}
+function hideSending() {
+    statusDiv.style.display = "none";
+}
+//送信済のボタン記載変更
+function markAsSent() {
+    const button = document.getElementById("testSendButton");
+    button.textContent = "送信済";
+    button.disabled = true;
+    button.style.backgroundColor = "#ccc";
+    button.style.cursor = "default";
+}

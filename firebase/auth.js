@@ -51,7 +51,7 @@ onAuthStateChanged(auth, (user) => {
         // ✅ スマホ：アイコン表示、Sign in非表示
         authIconContainer.classList.remove("signin-text");
         authIcon.style.display = "inline-block";
-        authIcon.src = "assets/images/google-icon-1.svg"; // ✅ ログイン中用アイコンに変更
+        authIcon.src = "assets/icons/google-icon-1.svg"; // ✅ ログイン中用アイコンに変更
     } else {
         // ✅ ログアウト中：PC用ボタン切替
         loginBtn.style.display = "inline-block";

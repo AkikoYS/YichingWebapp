@@ -47,7 +47,7 @@
             </div>
             <!-- スマホ用 Google アイコン -->
             <div class="auth-icon-container">
-                <img id="auth-icon" src="assets/icons/google-icon-2.svg" alt="Googleアカウント" class="auth-icon"
+                <img id="auth-icon" src="assets/icons/google-icon-1.svg" alt="Googleアカウント" class="auth-icon"
                     title="ログイン中 - タップでログアウト" />
             </div>
         </div>
@@ -93,8 +93,10 @@
                 <div class="question-step hidden" data-step="5">
                     <label>助言を受けるにあたり、それ以外にも伝えておいた方がいいことがあればご自由にどうぞ：</label>
                     <textarea name="notes" maxlength="200" placeholder="任意：背景や気になる点など"></textarea>
-                    <button type="submit">送信して決済</button>
-                    <button type="button" id="testSendButton">💡 テスト送信（決済なし）</button>
+                    <button type="submit" class="send-button">送信して決済</button>
+                    <button type="button" id="testSendButton" class="send-button">💡 テスト送信（決済なし）</button>
+                    <div id="sendingStatus" style="display:none; text-align:center; margin-top:10px;">
+                        <span>送信中です...🌀</span>                </div>
                 </div>
             </form>
         </section>
@@ -103,6 +105,7 @@
         Iching — Book of Change ©2025
         <p><a href="feedback.html">📝 ご意見・ご要望はこちら</a></p>
     </footer>
+    <div id="toast" class="toast"></div>
     <script type="module" src="firebase/firebase.js"></script>
     <script type="module" src="firebase/auth.js"></script>
     <script type="module" src="ai-advice.js"></script>

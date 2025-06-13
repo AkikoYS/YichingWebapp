@@ -109,7 +109,15 @@ function saveOriginalProgressMessages() {
         }
     }
 }
-// ✅ スピナーをふわっと表示（再拡大）
+//スピナー縮小（PC用）
+function shrinkSpinnerForPC() {
+    const spinner = document.getElementById("lottie-spinner");
+    if (!spinner) return;
+
+    spinner.classList.remove("spinner-appear", "spinner-disappear"); // 念のため
+    spinner.classList.add("spinner-shrink");
+}
+// ✅ スピナーをふわっと表示（再拡大、スマホ）
 function showSpinnerAnimated() {
     const spinner = document.getElementById('lottie-spinner');
     if (!spinner) return;
@@ -119,7 +127,7 @@ function showSpinnerAnimated() {
     void spinner.offsetWidth; // ← 再描画トリガー
     spinner.classList.add('spinner-appear');
 }
-// ✅ スピナーをふわっと縮小して非表示
+// ✅ スピナーをふわっと縮小して非表示(スマホ)
 function hideSpinnerAnimated() {
     const spinner = document.getElementById('lottie-spinner');
     if (!spinner) return;
@@ -330,7 +338,6 @@ function restoreFortuneFromTemp() {
     }
 }
 
-
 // ===== 5. 表示処理 =====
 // 卦の表示処理の関数
 function showHexagram(hexagram, isOriginal = false) {
@@ -342,9 +349,11 @@ function showHexagram(hexagram, isOriginal = false) {
     result.innerHTML = createHexagramHTML(hexagram);
     selectedHexagram = hexagram;
 
-    // ✅ スマホ時にスピナーを縮小して消す
+    // ✅ スマホ時にスピナーを縮小（スマホは消す）
     if (isOriginal && window.innerWidth <= 768) {
         hideSpinnerAnimated();
+    } else {
+        shrinkSpinnerForPC();
     }
 
     // ✅ 1回だけしか originalHexagram に代入しない
@@ -564,6 +573,15 @@ function handleFutureExpansion(originalHex) {
         showSpinnerAnimated();
     }
 
+    // ✅ PCのみ、スピナーを元サイズに戻す
+    if (window.innerWidth > 768) {
+        const spinner = document.getElementById("lottie-spinner");
+        if (spinner) {
+            spinner.classList.remove("spinner-shrink");
+            void spinner.offsetWidth; // 再描画トリガー
+            spinner.classList.add("spinner-expand");
+        }
+    }
     // ✅ 初回 or キャッシュ表示
     if (isFirstTime) {
         setupSpinnerForChangedHexagram(originalHex);
@@ -618,6 +636,14 @@ function startChangedHexagramSpin(originalHex) {
             cachedChangedHexagram = hexagramCandidate;
             finalFortuneReady = true;
             displayChangedLine(cachedChangedLineIndex, originalHex);
+            // ✅ PC時にスピナーを縮小
+            if (window.innerWidth > 768) {
+                const spinner = document.getElementById("lottie-spinner");
+                spinner.classList.remove("spinner-shrink");
+                void spinner.offsetWidth; // 再描画を強制してアニメ発火
+                spinner.classList.add("spinner-shrink");
+            }
+
         }
         spinnerContainer.onclick = null; //クリックイベントを解除
     }
@@ -664,6 +690,7 @@ function displayChangedLine(index, hexagram) {
         <strong>変爻は${yaoNames[index]}です</strong>
     </div>
 `;
+ 
 
     // ✅ スマホ時にスピナーをふわっと消す
     if (window.innerWidth <= 768) {

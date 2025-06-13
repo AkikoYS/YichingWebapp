@@ -6,7 +6,6 @@
     padding: 2em;
 } */
 
-
 body.ai-advice-page {
     background-color: transparent;
     position: relative;
@@ -86,6 +85,7 @@ textarea {
 }
 
 button.next-btn,
+button.send-button,
 button[type="submit"] {
     margin: 1.5em auto 0;
     display: block;
@@ -100,8 +100,9 @@ button[type="submit"] {
 }
 
 button.next-btn:hover,
+button.send-button:hover,
 button[type="submit"]:hover {
-    background-color: #6a1b9a;
+    background-color: #2a0055;
 }
 
 .final-message {
@@ -114,6 +115,30 @@ button[type="submit"]:hover {
     font-size: 1em;
     text-align: center;
 }
+
+/*トースト表示*/
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
 
 footer {
     background-color: #fff;

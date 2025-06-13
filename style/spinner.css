@@ -1,11 +1,63 @@
-
 /* スピナーの表示 */
-#lottie-spinner {    
-margin: 0 auto;
-display: block;
-overflow: hidden;
-/* border: 1px dashed  blue; */
+#lottie-spinner {
+    width: 280px;
+    height: 280px;
+    margin: 0 auto 20px;
+    display: block;
+    overflow: hidden;
+    /* border: 1px dashed  blue; */
     /* 位置確認用、あとで削除可 */
+}
+
+/* =========================
+   スピナー：PC用アニメーション
+========================= */
+/* スピナーを小さくする */
+.spinner-shrink {
+    animation: shrinkSpinner 0.6s ease forwards;
+    /* transform-origin: top center; */
+    height: 140px;
+    width: 140px;
+    margin: 0 auto;
+    transition: all 0.6s ease;
+    /* ← 実際の高さも小さく */
+}
+
+@keyframes shrinkSpinner {
+    from {
+        transform: scale(1);
+        height: 280px;
+        width: 280px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    to {
+        transform: scale(1);
+        margin-top: 0;
+        margin-bottom: 20px;
+        height: 140px;
+        width: 140px;
+    }
+}
+
+/*拡大する*/
+.spinner-expand {
+    animation: expandSpinner 0.6s ease forwards;
+}
+
+@keyframes expandSpinner {
+    from {
+        transform: scale(1);
+        width: 140px;
+        height: 140px;
+    }
+
+    to {
+        transform: scale(1);
+        width: 280px;
+        height: 280px;
+    }
 }
 
 /* =========================
@@ -58,15 +110,5 @@ overflow: hidden;
             transform: translateY(0);
             opacity: 1;
         }
-    }
-}
-
-/* =========================
-     スピナー：PC用（上寄せ、小さめ）
-  ========================= */
-@media (min-width: 769px) {
-    #lottie-spinner {
-        margin: 20px auto 10px;
-        /* 上寄せ */
     }
 }

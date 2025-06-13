@@ -1,38 +1,45 @@
 // UI処理
 
-// ハンバーガークリックでメニューを開閉
 document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
-//開くとハンバーガーがバツになる
+
+    // ハンバーガーメニュー開閉処理
     if (hamburger && navMenu) {
         hamburger.addEventListener('click', () => {
             navMenu.classList.toggle('show');
-            hamburger.classList.toggle('open'); // ← ✖️に切り替え
+            hamburger.classList.toggle('open');
         });
     }
-    
-//active navの空白を削除
-    document.addEventListener('DOMContentLoaded', () => {
-        if (window.innerWidth <= 768) {
-            const currentPage = window.location.pathname.split('/').pop();
-            const navLinks = document.querySelectorAll('.nav-link');
 
-            navLinks.forEach(link => {
-                let href = link.getAttribute('href');
+    // // スマホで .nav-link の現在ページリンクを削除
+    // if (window.innerWidth <= 768) {
+    //     const currentPage = window.location.pathname.split('/').pop();
+    //     const navLinks = document.querySelectorAll('.nav-link');
 
-                // hrefが無い場合は span要素とみなして現在ページと判断
-                const isActivePage =
-                    (href && href === currentPage) || link.classList.contains('active');
+    //     navLinks.forEach(link => {
+    //         const href = link.getAttribute('href');
+    //         const isActivePage = (href && href === currentPage) || link.classList.contains('active');
 
-                if (isActivePage) {
-                    const li = link.closest('li');
-                    if (li) {
-                        li.remove(); // ✅ <li> ごと削除
-                    }
-                }
-            });
-        }
-    });
+    //         if (isActivePage) {
+    //             const li = link.closest('li');
+    //             if (li) li.remove(); // <li> ごと削除
+    //         }
+    //     });
 
+    //     // ✅ スマホでは signin-text を削除してアイコンを表示
+    //     const authIconContainer = document.querySelector(".auth-icon-container");
+    //     if (authIconContainer?.classList.contains("signin-text")) {
+    //         authIconContainer.classList.remove("signin-text");
+    //     }
+   
+    // }
+
+    // // ✅ スマホの場合は .login-container を非表示に強制する
+    // if (window.innerWidth <= 768) {
+    //     const pcLogin = document.querySelector(".login-container");
+    //     if (pcLogin) {
+    //         pcLogin.style.display = "none";
+    //     }
+    // }
 });

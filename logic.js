@@ -33,11 +33,23 @@ function getProgressMessage(clickCount, yinYang) {
         case 6: return `上爻: ${yinYangText}`;
         default: return "";
     }
-    }
+}
 
 //ログ保存用
 function getYaoName(index) {
     return ["初", "二", "三", "四", "五", "上"][index] || "不明";
 }
+//総合的な易断にルビ
+function applyRubyToHexagramNamesWithJson(html, hexagramList) {
+    hexagramList.forEach(hex => {
+        const name = hex.name;
+        const reading = hex.reading;
+        const rubyTag = `<ruby>${name}<rt>${reading}</rt></ruby>`;
+        const nameRegex = new RegExp(name, "g");
+        html = html.replace(nameRegex, rubyTag);
+    });
+    return html;
+}
+
 
 

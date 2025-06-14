@@ -5,58 +5,59 @@
     margin: 0 auto 20px;
     display: block;
     overflow: hidden;
-    /* border: 1px dashed  blue; */
-    /* 位置確認用、あとで削除可 */
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    transform-origin: center center
+        /* border: 1px dashed  blue; */
+        /* 位置確認用、あとで削除可 */
 }
 
 /* =========================
    スピナー：PC用アニメーション
 ========================= */
-/* スピナーを小さくする */
-.spinner-shrink {
-    animation: shrinkSpinner 0.6s ease forwards;
-    /* transform-origin: top center; */
-    height: 140px;
-    width: 140px;
-    margin: 0 auto;
-    transition: all 0.6s ease;
-    /* ← 実際の高さも小さく */
-}
+/* スピナーを縮小、拡大する*/
+@media (min-width: 769px) {
 
-@keyframes shrinkSpinner {
-    from {
-        transform: scale(1);
-        height: 280px;
-        width: 280px;
-        margin-top: 20px;
-        margin-bottom: 20px;
+    /* アニメーション */
+    .spinner-shrink {
+        animation: shrinkSpinner 0.6s ease forwards;
     }
 
-    to {
-        transform: scale(1);
-        margin-top: 0;
-        margin-bottom: 20px;
-        height: 140px;
-        width: 140px;
-    }
-}
-
-/*拡大する*/
-.spinner-expand {
-    animation: expandSpinner 0.6s ease forwards;
-}
-
-@keyframes expandSpinner {
-    from {
-        transform: scale(1);
-        width: 140px;
-        height: 140px;
+    .spinner-expand {
+        animation: expandSpinner 0.6s ease forwards;
     }
 
-    to {
-        transform: scale(1);
-        width: 280px;
-        height: 280px;
+    @keyframes shrinkSpinner {
+        0% {
+            transform: scale(1);
+            width: 280px;
+            height: 280px;
+            margin-bottom: 30px;
+        }
+
+        100% {
+            transform: scale(0.54);
+            width: 150px;
+            height: 150px;
+            margin-top: -30px;
+            margin-bottom: -10px;
+        }
+    }
+
+    /* 拡大アニメーション */
+    @keyframes expandSpinner {
+        0% {
+            transform: scale(0.54);
+            width: 150px;
+            height: 150px;
+            margin-bottom: 0px;
+        }
+
+        100% {
+            transform: scale(1);
+            width: 280px;
+            height: 280px;
+            margin-bottom: 30px;
+        }
     }
 }
 

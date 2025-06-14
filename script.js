@@ -1,12 +1,8 @@
 
 import { auth, db, firebaseReady, onAuthStateChanged, provider } from "./firebase/firebase.js";
-import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// firebaseReady.then(() => {
-//     console.log("🔥 Firebase 初期化完了。ログイン状態:", auth.currentUser);
-//     // ここでボタン生成などを呼ぶ
-// });
 
 // ============1 初期設定 ===========
 //状況管理用関数
@@ -71,7 +67,19 @@ const spinnerAnimation = lottie.loadAnimation({
 });
 
 // ============4 ユーティリティ関数（ほかの処理をたすける） ===========
+//ルビ
+function applyRubyToHexagramNamesWithJson(html, hexagramList) {
+    hexagramList.forEach(hex => {
+        const name = hex.name;
+        const reading = hex.reading;
 
+        // 正規表現で全体を置換（重複や含まれがちな名前も対応）
+        const rubyTag = `<ruby>${name}<rt>${reading}</rt></ruby>`;
+        const nameRegex = new RegExp(name, "g");
+        html = html.replace(nameRegex, rubyTag);
+    });
+    return html;
+}
 //進行状況メッセージを初期化
 function initializeProgressMessages() {
     progressContainer.innerHTML = "";
@@ -114,8 +122,31 @@ function shrinkSpinnerForPC() {
     const spinner = document.getElementById("lottie-spinner");
     if (!spinner) return;
 
-    spinner.classList.remove("spinner-appear", "spinner-disappear"); // 念のため
-    spinner.classList.add("spinner-shrink");
+    if (window.innerWidth > 768) {
+        spinner.classList.remove("spinner-expand");
+        void spinner.offsetWidth;
+        spinner.classList.add("spinner-shrink");
+    } else {
+        spinner.classList.remove("spinner-appear");
+        void spinner.offsetWidth;
+        spinner.classList.add("spinner-disappear");
+    }
+}
+//スピナー拡大（PC用）
+function expandSpinnerForPC() {
+    const spinner = document.getElementById("lottie-spinner");
+    if (!spinner) return;
+
+    if (window.innerWidth > 768) {
+        spinner.classList.remove("spinner-shrink");
+        void spinner.offsetWidth;
+        spinner.classList.add("spinner-expand");
+
+    } else {
+        spinner.classList.remove("spinner-disappear");
+        void spinner.offsetWidth;
+        spinner.classList.add("spinner-appear");
+    }
 }
 // ✅ スピナーをふわっと表示（再拡大、スマホ）
 function showSpinnerAnimated() {
@@ -336,6 +367,13 @@ function restoreFortuneFromTemp() {
     } catch (e) {
         console.error("❌ 復元エラー:", e);
     }
+
+}
+// ✅ スピナー停止時に音を鳴らす（beep）
+function playSoundEffect(src) {
+    const audio = new Audio(src);
+    audio.volume = 0.5; // 音量（0〜1で調整）
+    audio.play();
 }
 
 // ===== 5. 表示処理 =====
@@ -349,7 +387,7 @@ function showHexagram(hexagram, isOriginal = false) {
     result.innerHTML = createHexagramHTML(hexagram);
     selectedHexagram = hexagram;
 
-    // ✅ スマホ時にスピナーを縮小（スマホは消す）
+    // ✅ スピナーを縮小（スマホは消す）
     if (isOriginal && window.innerWidth <= 768) {
         hideSpinnerAnimated();
     } else {
@@ -383,10 +421,12 @@ function showHexagram(hexagram, isOriginal = false) {
 function createHexagramHTML(hexagram) {
     const description = hexagram.description || "説明は準備中です";
     const formattedDescription = description.replace(/\n/g, "<br>");
+    // ✅ name にルビを振る
+    const nameWithRuby = `<ruby>${hexagram.name}<rt>${hexagram.reading}</rt></ruby>`;
 
     return `
-      <div class="hexagram-title">第${hexagram.number}卦：${hexagram.name}<span style="font-size: 0.8em;">—${hexagram.composition}</span></div>
-      <div class="hexagram-reading" style="text-align: center;">${hexagram.reading}—${hexagram.summary}</div>
+      <div class="hexagram-title">第${hexagram.number}卦：${nameWithRuby}<span style="font-size: 0.8em;">—${hexagram.composition}</span></div>
+      <div class="hexagram-reading" style="text-align: center;">${hexagram.summary}</div>
       <div class="hexagram-svg">
         <object data="assets/images/hexagrams/hexagram_${hexagram.number.toString().padStart(2, '0')}.svg" type="image/svg+xml"></object>
       </div>
@@ -549,14 +589,13 @@ export function handleLoginRequiredAction(callback) {
 }
 
 // ===== 6. 今後の展開関連処理 =====
-
 // 今後の展開（変爻と変卦）の準備関数
 function prepareForFutureExpansion() {
     result.innerHTML = "";
     updateResultBorder();
     const instructionText = document.getElementById("instructionText");
     if (!futureExpansionUsed && instructionText) {
-        instructionText.innerHTML = "最後に一回だけクリックしてください";
+        instructionText.innerHTML = "今度は１回だけクリック！";
     }
     spinnerAnimation.stop();
     isSpinning = false;
@@ -568,20 +607,13 @@ function handleFutureExpansion(originalHex) {
 
     const isFirstTime = !futureExpansionUsed && !cachedChangedHexagram;
 
-    // ✅ スマホだけスピナーを再表示（初回のみ）
+    // ✅ スピナーを再表示（初回のみ）
     if (isFirstTime && window.innerWidth <= 768) {
         showSpinnerAnimated();
+    } else {
+        expandSpinnerForPC();
     }
 
-    // ✅ PCのみ、スピナーを元サイズに戻す
-    if (window.innerWidth > 768) {
-        const spinner = document.getElementById("lottie-spinner");
-        if (spinner) {
-            spinner.classList.remove("spinner-shrink");
-            void spinner.offsetWidth; // 再描画トリガー
-            spinner.classList.add("spinner-expand");
-        }
-    }
     // ✅ 初回 or キャッシュ表示
     if (isFirstTime) {
         setupSpinnerForChangedHexagram(originalHex);
@@ -620,6 +652,7 @@ function startChangedHexagramSpin(originalHex) {
         }
         spinnerAnimation.goToAndStop(spinnerAnimation.currentFrame, true);
         isSpinning = false;
+        playSoundEffect("assets/sounds/click.mp3");
 
         //ランダムな位置で爻を反転させ、変卦を生成
         cachedChangedLineIndex = Math.floor(Math.random() * 6);
@@ -636,14 +669,6 @@ function startChangedHexagramSpin(originalHex) {
             cachedChangedHexagram = hexagramCandidate;
             finalFortuneReady = true;
             displayChangedLine(cachedChangedLineIndex, originalHex);
-            // ✅ PC時にスピナーを縮小
-            if (window.innerWidth > 768) {
-                const spinner = document.getElementById("lottie-spinner");
-                spinner.classList.remove("spinner-shrink");
-                void spinner.offsetWidth; // 再描画を強制してアニメ発火
-                spinner.classList.add("spinner-shrink");
-            }
-
         }
         spinnerContainer.onclick = null; //クリックイベントを解除
     }
@@ -690,11 +715,12 @@ function displayChangedLine(index, hexagram) {
         <strong>変爻は${yaoNames[index]}です</strong>
     </div>
 `;
- 
 
-    // ✅ スマホ時にスピナーをふわっと消す
+    // ✅ スピナーをふわっと消す)(スマホ)/縮小する（PC）
     if (window.innerWidth <= 768) {
         hideSpinnerAnimated();
+    } else {
+        shrinkSpinnerForPC();
     }
 
     updateResultBorder();
@@ -702,12 +728,13 @@ function displayChangedLine(index, hexagram) {
     setTimeout(() => {
         const instructionText = document.getElementById("instructionText");
         if (instructionText) {
-            instructionText.innerHTML = "もうすぐ総合的な運勢が出ます";
+            instructionText.innerHTML = "もうすぐ総合的な運勢が出ます...";
         }
 
         const yaoText = hexagram.yao_descriptions?.[(index + 1).toString()] || "該当する爻辞が見つかりません。";
+        const nameWithRuby = `<ruby>${hexagram.name}<rt>${hexagram.reading}</rt></ruby>`;
         const yaoName = yaoNames[index];
-        const title = `第${hexagram.number}卦：${hexagram.name} の ${yaoName}`;
+        const title = `第${hexagram.number}卦：${nameWithRuby} の ${yaoName}`;
         const svgPath = `assets/images/hexagram_lines/${hexagram.number}_${index + 1}.svg`;
         // ✅ ここで画像の読み込み確認
         const img = new Image();
@@ -756,6 +783,7 @@ function showChangedHexagram(hexagram, originalHexagram, delay = false) {
             if (hexagram) {
                 showHexagram(hexagram);
                 resetButton.style.display = "none";
+
                 maybeShowFinalFortuneButton();
             } else {
                 result.innerHTML = `<div class="error-message">該当する変卦が見つかりませんでした。</div>`;
@@ -765,6 +793,7 @@ function showChangedHexagram(hexagram, originalHexagram, delay = false) {
         if (hexagram) {
             showHexagram(hexagram);
             resetButton.style.display = "none";
+
         } else {
             result.innerHTML = `<div class="error-message">該当する変卦が見つかりませんでした。</div>`;
         }
@@ -855,6 +884,7 @@ spinnerContainer.addEventListener("click", () => {
         }
 
     } else {
+        playSoundEffect("assets/sounds/click.mp3")// 停止処理（beep付き）
         isSpinning = false;
         const currentFrame = spinnerAnimation.currentFrame;
         spinnerAnimation.goToAndStop(currentFrame, true);
@@ -879,7 +909,7 @@ spinnerContainer.addEventListener("click", () => {
                 setTimeout(() => {
                     const instructionText = document.getElementById("instructionText");
                     if (instructionText) {
-                        instructionText.textContent = "今後の展開、裏の意味などを探ってみましょう";
+                        instructionText.textContent = "今後の展開ボタンを押したら、もう一度スピナーが出てきます";
                     }
                     selectedHexagram = getHexagramByArray(resultArray);
                     originalHexagram = selectedHexagram;
@@ -979,14 +1009,47 @@ function displayFinalFortune() {
         result.innerHTML = "<div class='error-message'>必要な情報がそろっていません。</div>";
         return;
     }
-
     updateInstructionText("卦を保存して記録を残しましょう");
+
+    // ✅ 背景を暗くする
+    const overlay = document.getElementById("fortune-overlay");
+    overlay.classList.remove("hidden");
+    overlay.classList.add("visible");
 
     setTimeout(() => {
         hideSpinnerAndProgress();
 
         const summaryHTML = generateFortuneSummaryHTML();
+        // const rubyHTML = applyRubyToHexagramNamesWithJson(summaryHTML, sixtyFourHexagrams);
         result.innerHTML = summaryHTML;
+
+        const wrapper = document.getElementById("final-fortune-wrapper");
+        const confettiDiv = document.getElementById("confetti-lottie");
+
+        if (wrapper) {
+            // 🌸 巻物展開
+            wrapper.classList.remove("hidden");
+            wrapper.classList.add("expanded");
+
+            // 🌸 花吹雪アニメーション再生
+            confettiDiv.innerHTML = "";
+            confettiDiv.style.display = "block";
+            lottie.loadAnimation({
+                container: confettiDiv,
+                renderer: "svg",
+                loop: false,
+                autoplay: true,
+                path: "assets/animations/confetti.json" // 実パスに合わせて変更
+            });
+            overlay.classList.remove("visible");
+            overlay.classList.add("hidden");
+
+            // 一定時間後に非表示
+            setTimeout(() => {
+                confettiDiv.style.display = "none";
+
+            }, 3000);
+        }
 
         // 🌟 占い情報を保存
         const reverseHex = sixtyFourHexagrams.find(h => h.number === originalHexagram.reverse);
@@ -1020,8 +1083,8 @@ function displayFinalFortune() {
                 ctaBox.className = "ai-cta-box";
                 ctaBox.innerHTML = `
                   <p><strong>さらに詳しいアドバイスが必要ですか？</strong></p>
-                  <p>あなたの悩みに寄り添い、3000字で実践的な助言を差し上げます。</p>
-                  <button id="purchase-button">くわしいAI助言を見る（300円）</button>
+                  <p>あなたの悩みに寄り添い、5000字で実践的な助言を差し上げます。</p>
+                  <button id="purchase-button">くわしいAI助言を見る（100円）</button>
                 `;
                 saveButton.parentNode.insertBefore(ctaBox, saveButton);
 
@@ -1060,18 +1123,26 @@ function generateFortuneSummaryHTML() {
     const yaoText = originalHexagram.yao_descriptions?.[(cachedChangedLineIndex + 1).toString()] || "該当する爻辞が見つかりません";
     const yaoName = ["初", "二", "三", "四", "五", "上"][cachedChangedLineIndex];
 
+    const originalName = `<ruby>${originalHexagram.name}<rt>${originalHexagram.reading}</rt></ruby>`;
+    const changedName = `<ruby>${cachedChangedHexagram.name}<rt>${cachedChangedHexagram.reading}</rt></ruby>`;
+    const reverseName = reverseHex ? `<ruby>${reverseHex.name}<rt>${reverseHex.reading}</rt></ruby>` : "不明";
+    const souName = souHex ? `<ruby>${souHex.name}<rt>${souHex.reading}</rt></ruby>` : "不明";
+    const goName = goHex ? `<ruby>${goHex.name}<rt>${goHex.reading}</rt></ruby>` : "不明";
+
     return `
+    <div id="final-fortune-wrapper" class="final-fortune hidden">
+    <div id="confetti-lottie"></div>
         <div class="fortune-summary">
             <h3>🔮 総合的な易断</h3>
-            <p>今のあなたの状況は、本卦である「<strong>${originalHexagram.name}</strong>（${originalHexagram.summary}）」に示されています。<strong>${originalHexagram.description}</strong></p>
+            <p>今のあなたの状況は、本卦である「<strong>${originalName}</strong>（${originalHexagram.summary}）」に示されています。<strong>${originalHexagram.description}</strong></p>
             <p>とくに注目すべきは <strong>${yaoName}爻</strong> の変化であり、</p>
             <p>この爻辞である「<strong>${yaoText}</strong>」があなたの今後の行動の鍵です。</p>
-            <p>この変化により、中長期的に状況は「<strong>${cachedChangedHexagram.name}</strong> (${cachedChangedHexagram.summary})」へと展開していきます。</p>
+            <p>この変化により、中長期的に状況は「<strong>${changedName}</strong> (${cachedChangedHexagram.summary})」へと展開していきます。</p>
             <hr>
-            <p>この本卦に隠されている裏の意味は「<strong>${reverseHex?.name || "不明"}</strong> (${reverseHex?.summary || "不明"})」です。</p>
-            <p>状況を俯瞰すると「<strong>${souHex?.name || "不明"}</strong> (${souHex?.summary || "不明"})」となります。</p>
-            <p>そもそも本質は「<strong>${goHex?.name || "不明"}</strong> (${goHex?.summary || "不明"})」です。</p>
-        </div>
+            <p>この本卦に隠されている裏の意味は「<strong>${reverseName || "不明"}</strong> (${reverseHex?.summary || "不明"})」です。</p>
+            <p>状況を俯瞰すると「<strong>${souName || "不明"}</strong> (${souHex?.summary || "不明"})」となります。</p>
+            <p>そもそも本質は「<strong>${goName || "不明"}</strong> (${goHex?.summary || "不明"})」です。</p>
+        </div></div>
     `;
 }
 //結果保存ボタンを生成、ログインしてなければトースト表示
@@ -1096,8 +1167,6 @@ function renderSaveButton(pdfUri) {
             saveCurrentFortuneToLog(currentPdfUri);
         });
     };
-
-
     const resetButton = document.getElementById("reset-button");
     if (resetButton && resetButton.parentNode) {
         resetButton.parentNode.style.textAlign = "center";
@@ -1168,7 +1237,8 @@ function saveCurrentFortuneToLog(pdfUri) {
     if (auth?.currentUser && db) {
         const firestoreEntry = {
             ...logEntry,
-            uid: auth.currentUser.uid
+            uid: auth.currentUser.uid,
+            timestamp: serverTimestamp()
         };
 
         addDoc(collection(db, "logs"), firestoreEntry)

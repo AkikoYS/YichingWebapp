@@ -1,7 +1,7 @@
 console.log("✅ log.js 読み込み完了");
 
 import { auth, db } from './firebase/firebase.js';
-import { collection, query, where, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { collection, query, where, getDocs, deleteDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.querySelector("#log-table tbody");
@@ -12,7 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const q = query(collection(db, "logs"), where("uid", "==", user.uid));
+        const q = query(
+            collection(db, "logs"),
+            where("uid", "==", user.uid),
+            orderBy("timestamp", "desc")
+        );
+
         const querySnapshot = await getDocs(q);
 
         console.log("📦 ログ件数:", querySnapshot.size);

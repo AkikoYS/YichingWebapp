@@ -171,6 +171,19 @@ function hideSpinnerAnimated() {
         spinner.style.display = 'none';
     }, 600); // CSSのアニメ時間と一致
 }
+// ✅ スピナーのリセット
+function resetSpinnerState() {
+    const spinner = document.getElementById("lottie-spinner");
+    if (spinner) {
+        spinner.classList.remove("spinner-shrink", "spinner-expand");
+        spinner.style.width = "280px";
+        spinner.style.height = "280px";
+        spinner.style.marginTop = "0";
+        spinner.style.marginBottom = "20px";
+        spinner.style.transform = "none";
+        spinner.style.display = "block";
+    }
+}
 // ✅ 結果表示をふわっとせり上げる
 function revealResult() {
     const result = document.getElementById('result');
@@ -196,7 +209,10 @@ function maybeShowFinalFortuneButton() {
         finalButton.id = "final-fortune-button";
         finalButton.textContent = "総合的な易断を見る";
         finalButton.className = "variant-button";
-        finalButton.onclick = displayFinalFortune;
+        finalButton.onclick = () => {
+            playSoundEffect("assets/sounds/click_final.mp3");
+            displayFinalFortune();
+        }
 
         const result = document.getElementById("result");
         if (result) {
@@ -377,24 +393,29 @@ function playSoundEffect(src) {
 }
 
 // ===== 5. 表示処理 =====
-// 卦の表示処理の関数
+// 卦の表示処理の関数（まずスピナー縮小）
 function showHexagram(hexagram, isOriginal = false) {
     if (!result) {
         console.warn("❌ result が未定義です");
         return;
     }
-    result.innerHTML = "";
-    result.innerHTML = createHexagramHTML(hexagram);
     selectedHexagram = hexagram;
 
-    // ✅ スピナーを縮小（スマホは消す）
+    // ✅ スピナーを縮小（スマホは消す）→ 結果表示を後にまわす
     if (isOriginal && window.innerWidth <= 768) {
         hideSpinnerAnimated();
+        setTimeout(() => renderHexagramHTML(hexagram, isOriginal), 600); // アニメーション完了後に表示
     } else {
         shrinkSpinnerForPC();
+        setTimeout(() => renderHexagramHTML(hexagram, isOriginal), 600);
     }
+}
+// 卦の表示処理（次に結果が表示）
+function renderHexagramHTML(hexagram, isOriginal) {
+    result.innerHTML = createHexagramHTML(hexagram);
+    updateResultBorder();
 
-    // ✅ 1回だけしか originalHexagram に代入しない
+    // ✅ 1回だけ originalHexagram に保存
     if (isOriginal && !originalHexagram) {
         originalHexagram = hexagram;
 
@@ -405,7 +426,6 @@ function showHexagram(hexagram, isOriginal = false) {
             originalProgressMessages.push(line.innerHTML);
         }
     }
-    updateResultBorder();
 
     if (!isOriginal && originalHexagram) {
         const backButton = createBackToOriginalButton();
@@ -414,9 +434,13 @@ function showHexagram(hexagram, isOriginal = false) {
 
     if (isOriginal) {
         showVariantButtons(hexagram);
-        maybeShowFinalFortuneButton();
     }
+    // ✅ 🔽🔽🔽 必ず描画後に実行する！
+    setTimeout(() => {
+        maybeShowFinalFortuneButton();
+    }, 0); // 0msでも「描画
 }
+
 //卦の結果を示すHTML構成の関数
 function createHexagramHTML(hexagram) {
     const description = hexagram.description || "説明は準備中です";
@@ -441,6 +465,7 @@ function createBackToOriginalButton() {
     button.className = "variant-button";
     button.id = "back-to-original-button";
     button.onclick = () => {
+        playSoundEffect("assets/sounds/click_button.mp3");
         const existingBackButton = document.getElementById("back-to-original-button");
         if (existingBackButton) existingBackButton.remove();
 
@@ -498,6 +523,7 @@ function showVariantButtons(originalHexagram) {
         button.classList.add("variant-button");
 
         button.onclick = () => {
+            playSoundEffect("assets/sounds/click_button.mp3")// ボタン音
             const buttonContainer = document.getElementById("variant-buttons");
             if (buttonContainer) buttonContainer.remove();
 
@@ -529,7 +555,10 @@ function showVariantButtons(originalHexagram) {
     finalBtn.textContent = "総合的な易断";
     finalBtn.classList.add("variant-button");
     finalBtn.style.display = "none"; // ← 初期は非表示
-    finalBtn.onclick = () => displayFinalFortune();
+    finalBtn.onclick = () => {
+        playSoundEffect("assets/sounds/click_final.mp3");
+        displayFinalFortune();
+    }
 
     // ボタンを一段下に配置（全体で一括append）
     result.appendChild(wrapper);
@@ -761,6 +790,7 @@ function createFutureButton(originalHexagram, index) {
     button.style.display = "block";
     button.style.margin = "20px auto";
     button.onclick = () => {
+        playSoundEffect("assets/sounds/click_button.mp3");
         toggleYinYangAtIndex(index);
         const changedArray = resultArray.split("").map((bit, i) =>
             i === index ? (bit === "0" ? "1" : "0") : bit
@@ -819,6 +849,7 @@ function toggleYinYangAtIndex(index) {
 // ===== 7. イベントハンドラ =====
 //占い開始ボタン
 document.getElementById("start-button").addEventListener("click", async () => {
+    playSoundEffect("assets/sounds/click_button.mp3")
     const input = document.getElementById("question-input");
     userQuestion = input.value.trim();
 
@@ -929,9 +960,13 @@ spinnerContainer.addEventListener("click", () => {
         }
     }
 });
+
 //リセットボタンによる初期化（もう一度占う）
 resetButton.style.display = "none";
 resetButton.addEventListener("click", () => {
+    playSoundEffect("assets/sounds/click_button.mp3");
+    // 🔁 保存ボタン初期化・非表示
+    const saveButton = document.getElementById("save-button");
     if (saveButton) {
         saveButton.disabled = false;
         saveButton.style.opacity = 1;
@@ -939,66 +974,71 @@ resetButton.addEventListener("click", () => {
         saveButton.style.backgroundColor = "";
         saveButton.style.display = "none"; // 非表示にするなら最後に
     }
+    // 🔁 スピナー状態のリセット
+    resetSpinnerState();
+
+    // 🔁 AI助言ボックス（CTA）を削除
+    const ctaBox = document.querySelector(".ai-cta-box");
+    if (ctaBox) ctaBox.remove();
+
+    // 🔁 総合的な易断ボタンを削除
+    const finalButton = document.getElementById("final-fortune-button");
+    if (finalButton) finalButton.remove();
+
+    // 🔁 結果・進行状況・アニメーションのリセット
     document.getElementById("progress-container").innerHTML = '';
     result.innerHTML = "";
+    spinnerAnimation.stop();
+    currentRotation = 0;
+    updateResultBorder();
+
+    // 🔁 変数の初期化
     clickCount = 0;
     resultArray = "";
     alreadyClicked = false;
     isSpinning = false;
-    spinnerAnimation.stop();
-    currentRotation = 0;
-    resetButton.style.display = "none";
     cachedChangedHexagram = null;
     cachedChangedLineIndex = null;
     shownVariantKeys.clear();
     selectedHexagram = null;
     originalProgressMessages = [];
-    const finalButton = document.getElementById("final-fortune-button");
-    if (finalButton) finalButton.remove();
 
+    // 🔁 「保存済メッセージ」が残っていれば削除
     const saveNotice = document.querySelector(".save-notice");
     if (saveNotice) saveNotice.remove();
-
     // ✅ スピナーと進行状況メッセージを再表示
     const spinnerContainer = document.getElementById("lottie-spinner");
     if (spinnerContainer) {
         spinnerContainer.style.display = "block";
     }
-
     const progressContainer = document.getElementById("progress-container");
     if (progressContainer) {
         progressContainer.style.display = "flex";
     }
-    updateResultBorder();
     //h2テキスト初期化
     const instructionText = document.getElementById("instructionText");
     if (instructionText) {
         instructionText.innerHTML = "こころに念じながら６回クリックしてください";
     }
-
     // ✅ 表示を最初の画面に戻す
     const questionSection = document.getElementById("question-section");
     const mainApp = document.getElementById("main-app");
-
-
+    // ✅ 占いたい内容の入力欄をクリア
+    const questionInput = document.getElementById("question-input");
+    if (questionInput) {
+        questionInput.value = "";
+    }
+    resetButton.style.display = "none"; // ← 最後に再確認として
     // フェードアウト mainApp
     mainApp.classList.remove("show");
-
     setTimeout(() => {
         mainApp.style.display = "none";
-
         // フェードイン questionSection
         questionSection.style.display = "block";
         setTimeout(() => {
             questionSection.classList.add("show");
         }, 20);
     }, 1000);
-
-    // ✅ 占いたい内容の入力欄をクリア
-    const questionInput = document.getElementById("question-input");
-    if (questionInput) {
-        questionInput.value = "";
-    }
 });
 
 // ===== 6. 総合的な易断表示処理 =====
@@ -1022,6 +1062,12 @@ function displayFinalFortune() {
         const summaryHTML = generateFortuneSummaryHTML();
         // const rubyHTML = applyRubyToHexagramNamesWithJson(summaryHTML, sixtyFourHexagrams);
         result.innerHTML = summaryHTML;
+        setTimeout(() => {
+            const fortuneSummaryHTML = document.querySelector(".fortune-summary");
+            const fortuneSummaryText = fortuneSummaryHTML?.innerText || "";
+            localStorage.setItem("fortuneSummary", fortuneSummaryText);
+            console.log("🌟 fortuneSummary 保存:", fortuneSummaryText);
+        }, 100); // 少し遅らせてDOM反映を確実に
 
         const wrapper = document.getElementById("final-fortune-wrapper");
         const confettiDiv = document.getElementById("confetti-lottie");
@@ -1089,6 +1135,7 @@ function displayFinalFortune() {
                 saveButton.parentNode.insertBefore(ctaBox, saveButton);
 
                 document.getElementById("purchase-button").addEventListener("click", () => {
+                    playSoundEffect("assets/sounds/click_button.mp3")// ボタン音
                     handleLoginRequiredAction(() => {
                         window.location.href = "ai-advice.html";
                     });
@@ -1163,6 +1210,7 @@ function renderSaveButton(pdfUri) {
 
     //googleにログイン
     saveButton.onclick = () => {
+        playSoundEffect("assets/sounds/click_button.mp3");
         handleLoginRequiredAction(() => {
             saveCurrentFortuneToLog(currentPdfUri);
         });
@@ -1332,6 +1380,7 @@ firebaseReady.then(() => {
     const saveButton = document.getElementById("save-button");
     if (saveButton) {
         saveButton.addEventListener("click", () => {
+            playSoundEffect("assets/sounds/click_button.mp3")// ボタン音
             generatePdfFromSummary((pdfUri) => {
                 saveCurrentFortuneToLog(pdfUri);
             });

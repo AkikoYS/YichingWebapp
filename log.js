@@ -28,7 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 tr.innerHTML = `
-                <td>${entry.timestamp || '(日時なし)'}</td>
+                <td>${(entry.timestamp?.toDate?.()?.toLocaleString("ja-JP", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true
+                })) || "(日時なし)"
+                    }</td>
                 <td>${entry.question || '(質問なし)'}</td>
                 <td>${entry.original.name || '不明'}<br><img src="assets/images/hexagrams/${entry.original.image || ''}" alt=""></td>
                 <td>${entry.changedLine.label || '不明'}<br>${entry.changedLine.yaoText}</td>

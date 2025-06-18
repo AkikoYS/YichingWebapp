@@ -3,14 +3,13 @@
 
 <head>
     <meta charset="UTF-8" />
+    <title>決済完了｜AI助言送信中</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI助言 決済画面</title>
     <link rel="stylesheet" href="style/base.css" />
-    <link rel="stylesheet" href="style/payment.css" />
-
+    <link rel="stylesheet" href="style/success.css" />
 </head>
 
-<body class="payment-page">
+<body>
     <div class="background-image">
     </div>
     <div class="layout">
@@ -49,24 +48,21 @@
                 </div>
             </div>
         </header>
-        <main class="payment-container">
-            <h1>易断が導く人生の道しるべ（PDF）</h1>
-            <p>以下の決済ボタンを押すと、<br>ご記入いただいた内容に基づいて生成された<br><strong>3000字程度のテキスト（PDF）</strong>があなたのメールに届きます。</p>
+        <main class="container">
+            <p>🎉 決済が完了しました！</p>
+            <p id="status">AI助言を送信しています... 🌀</p>
 
-            <div class="price-box">料金：100円（税込）</div>
-
-            <button class="pay-button" onclick="handlePayment()">決済して受け取る</button>
-
+            <div id="toast" class="toast-message" style="display: none;"></div>
 
         </main>
-
         <footer>
             Iching — Book of Change ©2025
             <p><a href="feedback.html">📝 ご意見・ご要望はこちら</a></p>
         </footer>
     </div>
 
-    <script src="payment.js"></script>
+    <script type="module" src="success.js">
+    </script>
 </body>
 
 </html>
